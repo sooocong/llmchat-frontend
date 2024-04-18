@@ -12,7 +12,7 @@ assignees: ''
 - 예시) 
     - #1 에 대한 구현작업
     - resolve #1
-    - {*.*}에 대한 모듈 및 변수 설정
+    - {\*.\*}에 대한 모듈 및 변수 설정
 
 ## ✔️ Updates
 - [ ] Todo 1
@@ -20,3 +20,5 @@ assignees: ''
 
 ## ⚠️ ETC
 - 기타사항, To reviewers
+
+<!-- Commit Message에 #n이라고 작성 시(보통 Footter에 작성), 해당 Issue에 자동으로 Commit Message가 연결됩니다. -->
