@@ -1,6 +1,6 @@
 ---
-name: "\U0001F41EBUG"
-about: BUG 발생 시 작성
+name: "\U0001F41EBUG Template"
+about: 버그 리포트 템플릿입니다.
 title: "[BUG]"
 labels: bug
 assignees: ''

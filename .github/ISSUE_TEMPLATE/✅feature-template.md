@@ -1,6 +1,6 @@
 ---
-name: "✅FEATURE"
-about: Feature 작업 사항 작성
+name: "✅FEATURE Template"
+about: 기능, UI, 문서 개선 및 추가 요청을 취한 템플릿입니다.
 title: "[FEAT]"
 labels: enhancement
 assignees: ''
