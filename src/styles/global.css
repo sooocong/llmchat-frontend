@@ -17,4 +17,12 @@
   --spacing-base: 1.5rem; /* 24px */
   --spacing-lg: 2rem; /* 32px */
   --spacing-xl: 4rem; /* 64px */
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light-gray: #f5f5f5;
+  --color-normal-gray: #ebebeb;
+  --color-light-blue: #d9e3f6;
+  --color-normal-blue: #5f85c7;
+  --color-deep-blue: #003da5;
 }
