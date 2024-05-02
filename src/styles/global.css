@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'NotoSansKR-VariableFont_wght';
+  src: url(../fonts/NotoSansKR-VariableFont_wght.ttf);
+}
+
+:root {
+  --font-NotoSansKR: 'NotoSansKR-VariableFont_wght';
+
+  --font-xs: 0.75rem; /* 12px */
+  --font-sm: 0.875rem; /* 14px */
+  --font-base: 1rem; /* 16px */
+  --font-lg: 1.125rem; /* 18px */
+  --font-xl: 1.25rem; /* 20px */
+
+  --spacing-xs: 0.5rem; /* 8px */
+  --spacing-sm: 1rem; /* 16px */
+  --spacing-base: 1.5rem; /* 24px */
+  --spacing-lg: 2rem; /* 32px */
+  --spacing-xl: 4rem; /* 64px */
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light-gray: #f5f5f5;
+  --color-normal-gray: #ebebeb;
+  --color-light-blue: #d9e3f6;
+  --color-normal-blue: #5f85c7;
+  --color-deep-blue: #003da5;
+}
