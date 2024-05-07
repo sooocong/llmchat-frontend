@@ -1,0 +1,154 @@
+.answerBox {
+  width: 700px;
+  height: 70px;
+  padding: 11px;
+  margin-bottom: var(--spacing-base);
+  display: flex;
+  flex-direction: column;
+}
+
+.chatBox {
+  width: 700px;
+  height: 150px;
+  padding: 11px;
+  border-color: var(--color-chat-box);
+  border-style: solid;
+  border-width: 1px;
+  color: var(--color-black);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentBox {
+  display: flex; /* 이를 통해 자식 요소들을 가로로 정렬 */
+  width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
+  flex-grow: 1;
+}
+
+.leftBox,
+.rightBox {
+  flex-grow: 1;
+}
+
+.leftBox {
+  width: 15%;
+  text-align: center;
+}
+
+.rightBox {
+  width: 85%;
+  margin-top: 14px;
+}
+
+.topBox,
+.centerBox,
+.bottomBox {
+  display: flex;
+  width: 100%;
+}
+
+.topBox {
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  height: 20%;
+}
+
+.centerBox {
+  height: 60%;
+}
+
+.bottomBox {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  justify-content: space-between; /* 기존 아이콘들과 goodIcon, badIcon 사이에 공간을 분배 */
+}
+
+.iconGroupLeft {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.iconGroupRight {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽으로 정렬 */
+}
+
+.userrIcon {
+  width: 50px;
+  height: 50px;
+  background-image: url('/src/assets/User.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.answerIcon {
+  width: 52px;
+  height: 37px;
+  margin-top: var(--spacing-base);
+  background-image: url('/src/assets/answer.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.bookmarkIcon {
+  width: 24px;
+  height: 24px;
+  background-image: url('/src/assets/bookmark.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.speakerIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-image: url('/src/assets/speaker.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.copyIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-image: url('/src/assets/copy.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.reanswerIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-image: url('/src/assets/reanswer.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.shareIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0px;
+  background-image: url('/src/assets/share.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.goodIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-image: url('/src/assets/good.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.badIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0px;
+  background-image: url('/src/assets/bad.svg');
+  background-size: cover;
+  display: inline-block;
+}
