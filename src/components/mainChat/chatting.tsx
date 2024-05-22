@@ -3,10 +3,10 @@ import styles from './chatting.module.css';
 import IconGroupLeft from './iconGroup/iconGroupLeft'; // 경로는 실제 프로젝트 구조에 따라 달라질 수 있습니다.
 import IconGroupRight from './iconGroup/iconGroupRight'; // 경로는 실제 프로젝트 구조에 따라 달라질 수 있습니다.
 
-const Chating: React.FC = () => {
+const Chatting: React.FC = () => {
   return (
     <>
-      <div className={styles.answerBox}>
+      <div className={styles.questionBox}>
         <div className={styles.contentBox}>
           <div className={styles.leftBox}>
             <div className={styles.userrIcon}></div>
@@ -15,7 +15,7 @@ const Chating: React.FC = () => {
         </div>
       </div>
 
-      <div className={styles.chatBox}>
+      <div className={styles.answerBox}>
         <div className={styles.contentBox}>
           <div className={styles.leftBox}>
             <div className={styles.answerIcon}></div>
@@ -34,8 +34,17 @@ const Chating: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <div className={styles.chatInputBox}>
+        <input
+          type="text"
+          className={styles.inputField}
+          placeholder="질문해 보세요!"
+        />
+        <div className={styles.sendIcon}></div>
+      </div>
     </>
   );
 };
 
-export default Chating;
+export default Chatting;

@@ -1,12 +1,7 @@
 import React from 'react';
-import Chating from './components/mainChat/chating';
 
 function App() {
-  return (
-    <div>
-      <Chating />
-    </div>
-  );
+  return <div></div>;
 }
 
 export default App;
