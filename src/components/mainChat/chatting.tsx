@@ -9,7 +9,7 @@ const Chatting: React.FC = () => {
       <div className={styles.questionBox}>
         <div className={styles.contentBox}>
           <div className={styles.leftBox}>
-            <div className={styles.userrIcon}></div>
+            <div className={styles.userIcon}></div>
           </div>
           <div className={styles.rightBox}>안녕하세요. 저는 홍길동입니다.</div>
         </div>
