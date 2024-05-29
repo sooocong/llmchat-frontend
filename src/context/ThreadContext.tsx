@@ -1,5 +1,6 @@
 import React, { createContext, useRef, useState } from 'react';
 import { ThreadAPI } from '../apis/thread';
+import { useUpdateEffect } from '../hooks';
 
 interface ThreadContextType {
   threads: IThread[];
@@ -7,6 +8,7 @@ interface ThreadContextType {
   isLoading: boolean;
   isError: boolean;
   selectedThreadId: number;
+  sort: SortType;
   getInfiniteThreads: () => void;
   resetThread: (sortType: SortType) => void;
   deleteThread: (id: number) => void;
@@ -21,6 +23,7 @@ const defaultVlaue: ThreadContextType = {
   isLoading: false,
   isError: false,
   selectedThreadId: -1,
+  sort: 'desc',
   getInfiniteThreads: () => {
     throw new Error();
   },
@@ -56,7 +59,7 @@ export function ThreadContextProvider({
   const [isError, setIsError] = useState(false);
   const [selectedThreadId, setSelectedThreadId] = useState(-1);
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [sort, setSort] = useState<SortType>('asc');
+  const [sort, setSort] = useState<SortType>('desc');
 
   const pageRef = useRef(0);
   const isEndRef = useRef(false);
@@ -84,15 +87,18 @@ export function ThreadContextProvider({
   };
 
   // 쓰레드 새로고침
-  const resetThread = async (sortType: SortType = 'asc') => {
+  const resetThread = async (sortType: SortType = 'desc') => {
     pageRef.current = 0;
     isEndRef.current = false;
     setThreads([]);
     setIsLoading(false);
     setIsError(false);
     setSort(sortType);
-    getInfiniteThreads();
   };
+
+  useUpdateEffect(() => {
+    getInfiniteThreads();
+  }, [sort]);
 
   // 쓰레드 삭제
   const deleteThread = async (id: number) => {
@@ -158,7 +164,7 @@ export function ThreadContextProvider({
       console.log(error);
     } finally {
       // 스레드 업데이트
-      resetThread('asc');
+      resetThread('desc');
     }
   };
 
@@ -170,6 +176,7 @@ export function ThreadContextProvider({
         isError,
         selectedThreadId,
         messages,
+        sort,
         getInfiniteThreads,
         resetThread,
         deleteThread,

@@ -29,7 +29,7 @@ export class ThreadAPI {
       params: {
         size: this.QUERY_PER_PAGE,
         page: page,
-        sort: sort,
+        sort: `updatedAt,${sort}`,
       },
     });
 
