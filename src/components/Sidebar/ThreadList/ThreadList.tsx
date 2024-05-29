@@ -6,7 +6,6 @@ import { isSameDate, isoToCustomFormat } from '../../../utils';
 
 function ThreadList() {
   const { threads, getInfiniteThreads, isLoading, isError } = useThreads();
-
   const handleIntersection = () => {
     if (!isLoading) {
       getInfiniteThreads();
