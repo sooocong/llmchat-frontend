@@ -17,6 +17,11 @@ interface ThreadContextType {
   openThread: (id: number) => void;
   sendMessage: (sendMessage: string) => void;
   editMessage: (threadId: number, messageId: number, message: string) => void;
+  rateMessage: (
+    threadId: number,
+    messageId: number,
+    rating: 'GOOD' | 'BAD'
+  ) => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -45,6 +50,9 @@ const defaultVlaue: ThreadContextType = {
     throw new Error();
   },
   editMessage: () => {
+    throw new Error();
+  },
+  rateMessage: () => {
     throw new Error();
   },
 };
@@ -253,6 +261,7 @@ export function ThreadContextProvider({
     };
   };
 
+  // 메시지 수정 (sse)
   const editMessage = async (
     threadId: number,
     messageId: number,
@@ -300,10 +309,19 @@ export function ThreadContextProvider({
       console.error(error);
     }
   };
-  // 1. 편집 누르면 인풋으로 변경 ㅇ
-  // 2. 변경사항 제출하면 ㅇ
-  // 3. 최근 답변 사라지고 - 서버에서는 사라지니까 로컬에서 가장 최근의 메시지 삭제
-  // 4. 새로운 답변 추가
+
+  // 메시지 평가
+  const rateMessage = async (
+    threadId: number,
+    messageId: number,
+    rating: 'GOOD' | 'BAD'
+  ) => {
+    try {
+      await ThreadAPI.rateMessage(threadId, messageId, rating);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ThreadContext.Provider
@@ -321,6 +339,7 @@ export function ThreadContextProvider({
         openThread,
         sendMessage,
         editMessage,
+        rateMessage,
       }}
     >
       {children}

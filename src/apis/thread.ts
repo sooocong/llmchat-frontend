@@ -135,4 +135,19 @@ export class ThreadAPI {
 
     return eventSource;
   }
+
+  // 메시지 평가
+  static async rateMessage(
+    threadId: number,
+    messageId: number,
+    rating: 'GOOD' | 'BAD'
+  ) {
+    const response = await axiosInstance.post(
+      `${this.PATH_ISSUES}/${threadId}/message/${messageId}/rate`,
+      {
+        rating,
+      }
+    );
+    console.log(response);
+  }
 }

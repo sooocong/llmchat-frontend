@@ -7,7 +7,8 @@ const ChatComponent = () => {
   const [editInputValue, setEditInputValue] = useState('');
   const [editingIndex, setEditingIndex] = useState(-1);
 
-  const { messages, selectedThreadId, sendMessage, editMessage } = useThreads();
+  const { messages, selectedThreadId, sendMessage, editMessage, rateMessage } =
+    useThreads();
 
   useUpdateEffect(() => {
     setEditingIndex(-1);
@@ -16,6 +17,7 @@ const ChatComponent = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
+  
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditInputValue(e.target.value);
   };
@@ -45,6 +47,10 @@ const ChatComponent = () => {
   const handleCancelEdit = () => {
     setInputValue('');
     setEditingIndex(-1);
+  };
+
+  const handleRatingClick = (messageId: number, rating: 'GOOD' | 'BAD') => {
+    rateMessage(selectedThreadId, messageId, rating);
   };
 
   return (
@@ -81,10 +87,23 @@ const ChatComponent = () => {
                   ) : (
                     <>
                       {msg.content}
-                      {msg.role === 'USER' && (
+                      {msg.role === 'USER' ? (
                         <button onClick={() => handleEditClick(index)}>
                           Edit
                         </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleRatingClick(msg.id, 'GOOD')}
+                          >
+                            좋아요
+                          </button>
+                          <button
+                            onClick={() => handleRatingClick(msg.id, 'BAD')}
+                          >
+                            싫어요
+                          </button>
+                        </>
                       )}
                     </>
                   )}
