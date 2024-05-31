@@ -1,12 +1,12 @@
 import React from 'react';
-import NavigationTabs from './components/MyPage/NavigationTabs';
-
+import { Main } from './pages/Main';
+import { ThreadContextProvider } from './context';
 
 function App() {
   return (
-    <div className="App">
-        <NavigationTabs />
-    </div>
+    <ThreadContextProvider>
+      <Main />
+    </ThreadContextProvider>
   );
 }
 
