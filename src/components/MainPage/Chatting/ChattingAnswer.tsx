@@ -1,7 +1,11 @@
 import React, { useState, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 import styles from './Chatting.module.css';
 import IconGroupLeft from '../iconGroup/iconGroupLeft';
 import IconGroupRight from '../iconGroup/iconGroupRight';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 interface ChattingAnswerProps {
   message: string;
@@ -29,7 +33,16 @@ const ChattingAnswer: React.FC<ChattingAnswerProps> = ({ message }) => {
             ></div>
           </div>
           <div className={styles.centerBox} ref={centerBoxRef}>
-            {message}
+            <ReactMarkdown
+              rehypePlugins={[rehypeRaw]}
+              remarkPlugins={[remarkGfm]}
+              components={{
+                ol: ({ children }) => <ol className={styles.list}>{children}</ol>,
+                ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+              }}
+            >
+              {message}
+            </ReactMarkdown>
           </div>
           <div className={styles.bottomBox}>
             <IconGroupLeft centerBoxRef={centerBoxRef} />
