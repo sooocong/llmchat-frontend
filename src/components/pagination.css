@@ -1,0 +1,27 @@
+/* pagination */
+.pg-move-first, .pg-move-prev, .pg-move-next, .pg-move-last, .pg-item {
+    width: 28px;
+    height: 28px;
+    color:#888;
+    border: none;
+    background: none;
+    font-size: 16px;
+    margin: 0 7px;
+    cursor: pointer;
+}
+
+.pg-item.active {
+    color:#000000;
+    font-weight: bold;
+    position: relative;
+}
+
+.pg-item.active::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    right: 0;
+    bottom: 0;
+}

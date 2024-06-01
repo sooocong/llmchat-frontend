@@ -1,18 +1,24 @@
-/* src/components/MyPage/NavigationTabs.module.css */
+/* src/components/MyPage/NavigationTabs.css */
 .tab-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+
 }
 
 .tab {
-    padding: 10px 20px;
-    margin: 0 10px;
-    background-color: #f0f0f0;
+    flex: 1;
+    background: none;
+    color:black;
+    font-size: 23px;
+
+    padding: 30px 0;
     border: none;
-    border-radius: 5px;
+    border-bottom: 3px solid #D9E3F6;
+
+    transition: 0.3s;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+}
+
+.tab:not(.last-child) {
+    border-right: 1px solid #D9E3F6;
 }
 
 .tab:hover {
@@ -20,6 +26,7 @@
 }
 
 .active {
-    background-color: #007bff;
-    color: #ffffff;
+    background-color: #D9E3F6;
+    color: black;
+    font-weight: bold;
 }
