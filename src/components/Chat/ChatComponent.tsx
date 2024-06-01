@@ -4,6 +4,7 @@ import { useThreads, useUpdateEffect } from '../../hooks';
 import QuestionBox from '.././MainPage/Chatting/QuestionBox';
 import ChattingQuestion from '.././MainPage/Chatting/ChattingQuestion';
 import ChattingAnswer from '.././MainPage/Chatting/ChattingAnswer';
+import styles from '.././MainPage/Chatting/Chatting.module.css';
 
 const ChatComponent = () => {
   const [inputValue, setInputValue] = useState('');
@@ -59,7 +60,7 @@ const ChatComponent = () => {
               msg.role === 'USER' ? (
                 <ChattingQuestion key={index} message={msg.content} />
               ) : (
-                <ChattingAnswer key={index} message={msg.content} />
+                <ChattingAnswer key={index} message={msg.content} messageId={msg.id} />
               )
             )}
       </div>

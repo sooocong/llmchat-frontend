@@ -5,18 +5,27 @@ import remarkGfm from 'remark-gfm';
 import styles from './Chatting.module.css';
 import IconGroupLeft from '../iconGroup/iconGroupLeft';
 import IconGroupRight from '../iconGroup/iconGroupRight';
-import MarkdownPreview from '@uiw/react-markdown-preview';
+import { ThreadAPI } from '../../../apis/thread';
 
 interface ChattingAnswerProps {
   message: string;
+  messageId: number;
 }
 
-const ChattingAnswer: React.FC<ChattingAnswerProps> = ({ message }) => {
+const ChattingAnswer: React.FC<ChattingAnswerProps> = ({ message, messageId }) => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const centerBoxRef = useRef<HTMLDivElement>(null);
 
-  const handleBookmarkClick = () => {
+  const handleBookmarkClick = async () => {
     setIsBookmarkClicked(!isBookmarkClicked);
+    if (!isBookmarkClicked) {
+      try {
+        const bookmark = await ThreadAPI.createBookmark(messageId);
+        console.log('Bookmark created:', bookmark);
+      } catch (error) {
+        console.error('Error creating bookmark:', error);
+      }
+    }
   };
 
   return (

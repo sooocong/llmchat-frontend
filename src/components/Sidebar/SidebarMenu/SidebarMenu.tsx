@@ -9,7 +9,7 @@ import { SortOptions } from '../SortOptions';
 function SidebarMenu() {
   return (
     <div className={styles.container}>
-      <LogoIcon width="57px" />
+      <div className={styles.aerochatLogoIcon}></div>
       <SearchBar />
       <SortOptions />
       <ThreadList />
