@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import './ChatComponent.css';
 import { useThreads, useUpdateEffect } from '../../hooks';
+import QuestionBox from '.././MainPage/Chatting/QuestionBox';
+import ChattingQuestion from '.././MainPage/Chatting/ChattingQuestion';
+import ChattingAnswer from '.././MainPage/Chatting/ChattingAnswer';
 
 const ChatComponent = () => {
   const [inputValue, setInputValue] = useState('');
   const [editInputValue, setEditInputValue] = useState('');
   const [editingIndex, setEditingIndex] = useState(-1);
 
-  const { messages, selectedThreadId, sendMessage, editMessage, rateMessage } =
-    useThreads();
+  const { messages, selectedThreadId, sendMessage, editMessage, rateMessage } = useThreads();
 
   useUpdateEffect(() => {
     setEditingIndex(-1);
@@ -17,23 +19,18 @@ const ChatComponent = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  
+
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditInputValue(e.target.value);
   };
 
-  const handleMessageSend = () => {
-    sendMessage(inputValue);
+  const handleMessageSend = (message: string) => {
+    sendMessage(message);
     setInputValue('');
     setEditingIndex(-1);
   };
 
-  const handleMessageEdit = (
-    threadId: number,
-    messageId: number,
-    message: string
-  ) => {
-    // 수정 필요
+  const handleMessageEdit = (threadId: number, messageId: number, message: string) => {
     editMessage(threadId, messageId, message);
     setInputValue('');
     setEditingIndex(-1);
@@ -59,69 +56,15 @@ const ChatComponent = () => {
         {selectedThreadId === -1
           ? '대화를 시작하세요!'
           : [...messages].reverse().map((msg, index) =>
-              msg.content === '' ? null : (
-                <div key={index} className={`chat-message ${msg.role}`}>
-                  {editingIndex === index ? (
-                    <div className="input-container">
-                      <input
-                        type="text"
-                        value={editInputValue}
-                        onChange={handleEditInputChange}
-                        className="chat-input"
-                        placeholder="Type a message..."
-                      />
-                      <button onClick={handleCancelEdit}>Cancel</button>
-                      <button
-                        onClick={() => {
-                          console.log(msg);
-                          handleMessageEdit(
-                            selectedThreadId,
-                            msg.id,
-                            editInputValue
-                          );
-                        }}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      {msg.content}
-                      {msg.role === 'USER' ? (
-                        <button onClick={() => handleEditClick(index)}>
-                          Edit
-                        </button>
-                      ) : (
-                        <>
-                          <button
-                            onClick={() => handleRatingClick(msg.id, 'GOOD')}
-                          >
-                            좋아요
-                          </button>
-                          <button
-                            onClick={() => handleRatingClick(msg.id, 'BAD')}
-                          >
-                            싫어요
-                          </button>
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
+              msg.role === 'USER' ? (
+                <ChattingQuestion key={index} message={msg.content} />
+              ) : (
+                <ChattingAnswer key={index} message={msg.content} />
               )
             )}
       </div>
       <div className="chat-input-container">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          className="chat-input"
-          placeholder="Type a message..."
-        />
-        <button onClick={handleMessageSend} className="chat-send-button">
-          Send
-        </button>
+        <QuestionBox onSendMessage={handleMessageSend} />
       </div>
     </div>
   );

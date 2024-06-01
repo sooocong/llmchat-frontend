@@ -1,59 +1,60 @@
 .chat-container {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  box-sizing: border-box;
-  padding: 3rem;
+  width: 73.5%;
+  justify-content: flex-start; /* 위쪽부터 시작하도록 설정 */
+  align-items: center;
+  position: relative;
+  height: 91.3vh; /* 전체 높이를 100vh로 설정 */
 }
 
 .chat-messages {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   overflow-y: auto;
-  margin-bottom: 10px;
+  padding-bottom: 70px; /* QuestionBox 영역과 겹치지 않도록 여백 추가 */
+  box-sizing: border-box; /* 패딩을 포함하여 크기를 계산 */
+  margin-top: var(--spacing-base); /* 상단 여백 추가 */
 }
 
 .chat-message {
-  background-color: #e1e1e1;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-bottom: 5px;
-  max-width: 80%;
-  word-wrap: break-word;
+  margin-bottom: 10px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chat-input {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid var(--color-gray);
 }
 
 .chat-input-container {
   display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
-.chat-input {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.chat-send-button {
-  margin-left: 5px;
-  padding: 5px 10px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.chat-send-button:hover {
-  background-color: #0056b3;
-}
-
-.ASSISTANT {
-  margin-right: auto;
-}
-
-.USER {
-  margin-left: auto;
+.chatInputBox {
+  width: 700px;
+  height: 50px;
+  padding: 11px;
+  border-color: var(--color-gray);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: absolute;
+  bottom: 20px;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
 }

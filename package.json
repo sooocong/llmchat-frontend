@@ -14,8 +14,10 @@
     "event-source-polyfill": "^1.0.31",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -44,10 +46,9 @@
     ]
   },
   "devDependencies": {
-    "@types/event-source-polyfill": "^1.0.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/event-source-polyfill": "^1.0.5",
     "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
