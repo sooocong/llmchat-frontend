@@ -1,6 +1,6 @@
 // src/components/MyPage/ProfileHeader.tsx
 import React from 'react';
-import './ProfileHeader.module.css';
+import styles from './ProfileHeader.module.css';
 
 interface ProfileHeaderProps {
     username: string;
@@ -10,11 +10,11 @@ interface ProfileHeaderProps {
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ username, email, profileImageUrl }) => {
     return (
-        <div className="profile-header">
-            {profileImageUrl && <img src={profileImageUrl} alt="Profile" className="profile-image" />}
-            <div className="user-info">
-                <h1 className="username">{username}</h1>
-                <p className="email">{email}</p>
+        <div className={styles.profileHeader}>
+            <img src={profileImageUrl || '/assets/profile.png'} alt="Profile" className={styles.profileImage} />
+            <div className={styles.userInfo}>
+                <h1 className={styles.username}>{username}</h1>
+                <p className={styles.email}>{email}</p>
             </div>
         </div>
     );

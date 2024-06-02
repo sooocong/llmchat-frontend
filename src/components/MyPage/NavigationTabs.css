@@ -1,0 +1,32 @@
+/* src/components/MyPage/NavigationTabs.css */
+.tab-container {
+
+}
+
+.tab {
+    flex: 1;
+    background: none;
+    color:black;
+    font-size: 23px;
+
+    padding: 30px 0;
+    border: none;
+    border-bottom: 3px solid #D9E3F6;
+
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.tab:not(.last-child) {
+    border-right: 1px solid #D9E3F6;
+}
+
+.tab:hover {
+    background-color: #e0e0e0;
+}
+
+.active {
+    background-color: #D9E3F6;
+    color: black;
+    font-weight: bold;
+}
