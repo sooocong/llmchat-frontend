@@ -1,0 +1,207 @@
+@font-face {
+    font-family: 'Noto Sans KR';
+    src: url('../fonts/NotoSansKR-VariableFont_wght.ttf');
+}
+
+.modal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.closeModal {
+    display: none;
+}
+
+.signup_modal {
+    width: 844px;
+    height: 593px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.signup_top {
+    height: 90px;
+    display: flex;
+    position: relative;
+}
+
+.fasoo_icon {
+    width: 82px;
+    height: 20px;
+    position: absolute;
+    top: 35px;
+    left: 35px;
+
+}
+
+.signup_title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.signup_title_txt {
+    font-family: 'Noto Sans KR';
+    font-size: 20px;
+    font-weight: 400;
+    position: absolute;
+    top: 40px;
+}
+
+.btn_close {
+    width: 20px;
+    height: 20px;
+    color: #003DA5;
+    background-color: white;
+    border: 1px solid #003DA5;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    top: 26px;
+    right: 32px;
+}
+
+.signup_detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup_id, .signup_pw, .signup_chkpw, .signup_name, .signup_phone, .signup_email {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 35px;
+}
+
+.signup_id input {
+    margin-left: 110px;
+    margin-right: 15px;
+}
+
+.signup_info1 {
+    font-family: 'Noto Sans KR';
+    font-size: 13px;
+    position: absolute;
+    left: 155px;
+    font-weight: 600;
+}
+
+.signup_info2 {
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    position: absolute;
+    left: 155px;
+    font-weight: 600;
+}
+
+.signup_info1::after {
+    content: '*';
+    color: #ff0000;
+}
+
+.signup_input {
+    width: 315px;
+    height: 28px;    
+    border: 1px solid rgba(76, 87, 188, 0.4);
+    border-radius: 5px;
+    margin-left: 15px;
+}
+
+.signup_pw_input {
+    width: 315px;
+    height: 28px; 
+    border: 1px solid rgba(76, 87, 188, 0.4);
+    border-radius: 5px;
+    margin-left: 15px;
+    background: url(../assets/lock_icon.png) no-repeat center;
+    background-position: 290px;
+    background-size: 20px;
+}
+
+.btn_dup {
+    width: 80px;
+    height: 32px;
+    color: #003DA5;
+    background-color: white;
+    border: 1px solid #003DA5;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup_email_input {
+    width: 104px;
+    height: 28px;
+    border: 1px solid rgba(76, 87, 188, 0.4);
+    border-radius: 5px;
+    margin-left: 15px;
+}
+
+.signup_email_symbol {
+    font-size: 14px;
+    margin: 0 5px;
+}
+
+.signup_email_box {
+    width: 81px;
+    height: 28px;
+    border: 1px solid rgba(76, 87, 188, 0.4);
+    border-radius: 5px; 
+    margin-right: 10px; 
+}
+
+.signup_email_select {
+    width: 93px;
+    height: 32px;
+    border: 1px solid rgba(76, 87, 188, 0.4);
+    border-radius: 5px;
+}
+
+.btn_section {
+    display: flex;
+    justify-content: center;
+}
+
+.btn_signup {
+    width: 124px;
+    height: 30px;
+    font-family: 'Noto Sans KR';
+    font-weight: 300;
+    color: white;
+    background-color: #003DA5;
+    border: none;
+    border-radius: 5px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.msg_section {
+    display: flex;
+    position: relative;
+}
+
+.error_msg_none {
+    display: none;
+}
+
+.error_msg {
+    font-family: 'Noto Sans KR';
+    font-size: 10px;
+    color: red;
+    position: absolute;
+    left: 275px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
