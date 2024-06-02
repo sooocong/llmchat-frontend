@@ -59,6 +59,7 @@
 .leftBox {
   width: 15%;
   text-align: center;
+  margin-top: var(--spacing-sm);
 }
 
 .rightBox {
