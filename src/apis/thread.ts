@@ -150,6 +150,7 @@ export class ThreadAPI {
     );
     console.log(response);
   }
+  
   // 북마크 생성
   static async createBookmark(messageId: number): Promise<IBookmark> {
     const { data } = await axiosInstance.post('/bookmark', {
@@ -157,6 +158,11 @@ export class ThreadAPI {
     });
 
     return data;
+  }
+  
+  // 북마크 삭제
+  static async deleteBookmark(messageId: number): Promise<void> {
+    await axiosInstance.delete(`/bookmark/${messageId}`);
   }
 }
 

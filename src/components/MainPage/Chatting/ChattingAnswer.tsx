@@ -15,17 +15,30 @@ interface ChattingAnswerProps {
 
 const ChattingAnswer: React.FC<ChattingAnswerProps> = ({ message, messageId }) => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
+  const [bookmarkId, setBookmarkId] = useState<number | null>(null); // 북마크 ID 상태 추가
   const centerBoxRef = useRef<HTMLDivElement>(null);
   const { selectedThreadId } = useThreads(); // selectedThreadId를 가져옵니다
 
   const handleBookmarkClick = async () => {
-    setIsBookmarkClicked(!isBookmarkClicked);
     if (!isBookmarkClicked) {
       try {
         const bookmark = await ThreadAPI.createBookmark(messageId);
         console.log('Bookmark created:', bookmark);
+        setBookmarkId(bookmark.id); // 북마크 ID 저장
+        setIsBookmarkClicked(true);
       } catch (error) {
         console.error('Error creating bookmark:', error);
+      }
+    } else {
+      try {
+        if (bookmarkId !== null) {
+          await ThreadAPI.deleteBookmark(bookmarkId);
+          console.log('Bookmark deleted');
+          setBookmarkId(null);
+          setIsBookmarkClicked(false);
+        }
+      } catch (error) {
+        console.error('Error deleting bookmark:', error);
       }
     }
   };
