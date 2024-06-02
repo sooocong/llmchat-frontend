@@ -4,7 +4,7 @@ import ChatComponent from '../components/Chat/ChatComponent';
 
 function Main() {
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', height: '100vh' }}>
       <SidebarMenu />
       <ChatComponent />
     </div>
