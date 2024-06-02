@@ -1,0 +1,42 @@
+.confirm-pop {
+    width: 442px;
+    height: 157px;
+    position: absolute;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 5px rgba(0,0,0, .4);
+    z-index: 999;
+    padding: 10px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.message-box {
+    width: 100%;
+    flex: 0.8;
+}
+.message-box > * {
+    font-size: 25px;
+}
+
+.confirm-pop button {
+    width: 70px;
+    height: 37px;
+    border-radius: 5px;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+
+.confirm-pop button.submit {
+    background: #003DA5;
+    color: white;
+}
+
+.confirm-pop button.cancel {
+    background: white;
+    border: 1px solid #D9E3F6;
+
+}
