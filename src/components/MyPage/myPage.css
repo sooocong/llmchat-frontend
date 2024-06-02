@@ -1,0 +1,20 @@
+.profile {
+    margin-right: 24px;
+}
+.profile img{
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.text-box {
+    height: 48px;
+}
+
+.text-box .name {
+
+}
+
+
+.email {
+    text-decoration: underline;
+}

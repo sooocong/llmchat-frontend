@@ -1,0 +1,106 @@
+* {
+    box-sizing: border-box;
+}
+
+.trash-detail-container {
+    padding: 20px 7.5px;
+}
+
+/* button */
+.trash-btn {
+    width: 80px;
+    height: 26px;
+    background-color: #003DA5;
+    color:#ffffff;
+    font-size: 13px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+/* search */
+.search-container {
+    position: relative;
+}
+
+.trash-search {
+    width: 239.47px;
+    height: 41px;
+    padding-left: 12px;
+    border-radius: 10px;
+    border: 1px solid #A9A8A6;
+    outline: none;
+    font-size: 16px;
+}
+
+/*.trash-search::after {*/
+/*    content: "";*/
+/*    width: 50px;*/
+/*    height: 50px;*/
+/*    position: relative;*/
+/*    right: 10px;*/
+/*    top: 10px;*/
+/*    z-index: 99999;*/
+/*    background-image: url("../../../assets/icons/search-icon.png");*/
+/*}*/
+
+.search-button {
+    background: none;
+    position: absolute;
+
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    top: calc(50% - 8px);
+    right: 0;
+
+    transform: scale(0.6) translateY(-50%);
+    z-index: 9999;
+}
+
+
+/* table */
+.trash-table {
+    border-radius: 7px;
+    overflow: hidden;
+}
+.trash-table * {
+    font-size: 20px;
+}
+.trash-table thead {
+    text-align: center;
+}
+.trash-table thead th{
+    height: 46px;
+    line-height: 46px;
+    background-color: #003DA5;
+    color: #fff;
+}
+
+.trash-table tbody tr.selected {
+    background: #D9E3F6;
+}
+
+.trash-table tbody tr td:not(:nth-child(2)) {
+    text-align: center;
+}
+
+.trash-table tbody tr td {
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #D9E3F6;
+}
+
+.saveBtn {
+    margin-top: 50px;
+    width: 99px;
+    height: 30px;
+    background: #003DA5;
+    font-size: 13px;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+}
+
