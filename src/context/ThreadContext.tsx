@@ -17,6 +17,7 @@ interface ThreadContextType {
   openThread: (id: number) => void;
   sendMessage: (sendMessage: string) => void;
   editMessage: (threadId: number, messageId: number, message: string) => void;
+  refreshAnswer: (threadId: number, messageId: number, message: string) => void;
   rateMessage: (
     threadId: number,
     messageId: number,
@@ -51,6 +52,9 @@ const defaultVlaue: ThreadContextType = {
     throw new Error();
   },
   editMessage: () => {
+    throw new Error();
+  },
+  refreshAnswer: () => {
     throw new Error();
   },
   rateMessage: () => {
@@ -340,6 +344,52 @@ export function ThreadContextProvider({
     }
   };
 
+  // 메시지 수정 (sse)
+  const refreshAnswer = async (
+    threadId: number,
+    messageId: number,  // 질문의 인덱스
+    message: string
+  ) => {
+    try {
+      const eventSource = await ThreadAPI.editMessage(
+        threadId,
+        messageId,
+        message
+      );
+      eventSource.onmessage = (event) => {
+        const data = event.data.trim();
+        const { content, messageId, role } = JSON.parse(data);
+
+        // 1. 내 질문은 바로 반영
+        if (role === 'USER') {
+          setMessages((prev) => {
+            editIdxRef.current = prev.findIndex((msg) => msg.id === messageId);
+            return prev.map(
+              (msg, i) =>
+                i === editIdxRef.current - 1 ? { ...msg, content: '' } : msg // 응답은 ''로 변경
+            );
+          });
+        }
+        if (role === 'ASSISTANT') {
+          setMessages((prev) =>
+            prev.map((msg, i) =>
+              i === editIdxRef.current - 1
+                ? { ...msg, id: messageId, content: msg.content + content }
+                : msg
+            )
+          );
+        }
+      };
+
+      eventSource.onerror = (error) => {
+        eventSource.close();
+        console.log('close', error)
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <ThreadContext.Provider
       value={{
@@ -356,6 +406,7 @@ export function ThreadContextProvider({
         openThread,
         sendMessage,
         editMessage,
+        refreshAnswer,
         rateMessage,
         initChatting,
       }}

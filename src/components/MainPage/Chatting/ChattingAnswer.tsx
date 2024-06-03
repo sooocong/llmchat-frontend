@@ -13,7 +13,10 @@ interface ChattingAnswerProps {
   messageId: number; // messageId를 prop으로 받아옵니다.
 }
 
-const ChattingAnswer: React.FC<ChattingAnswerProps> = ({ message, messageId }) => {
+const ChattingAnswer: React.FC<ChattingAnswerProps> = ({
+  message,
+  messageId,
+}) => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [bookmarkId, setBookmarkId] = useState<number | null>(null); // 북마크 ID 상태 추가
   const centerBoxRef = useRef<HTMLDivElement>(null);
@@ -67,15 +70,19 @@ const ChattingAnswer: React.FC<ChattingAnswerProps> = ({ message, messageId }) =
               rehypePlugins={[rehypeRaw]}
               remarkPlugins={[remarkGfm]}
               components={{
-                ol: ({ children }) => <ol className={styles.list}>{children}</ol>,
-                ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+                ol: ({ children }) => (
+                  <ol className={styles.list}>{children}</ol>
+                ),
+                ul: ({ children }) => (
+                  <ul className={styles.list}>{children}</ul>
+                ),
               }}
             >
               {message}
             </ReactMarkdown>
           </div>
           <div className={styles.bottomBox}>
-            <IconGroupLeft centerBoxRef={centerBoxRef} />
+            <IconGroupLeft messageId={messageId} centerBoxRef={centerBoxRef} />
             <IconGroupRight
               messageId={messageId}
               handleRatingClick={handleRatingClick}
