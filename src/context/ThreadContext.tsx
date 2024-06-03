@@ -22,6 +22,7 @@ interface ThreadContextType {
     messageId: number,
     rating: 'GOOD' | 'BAD'
   ) => void;
+  initChatting: () => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -55,6 +56,9 @@ const defaultVlaue: ThreadContextType = {
   rateMessage: () => {
     throw new Error();
   },
+  initChatting: () => {
+    throw new Error();
+  },
 };
 
 interface ThreadContextProviderProps {
@@ -79,6 +83,7 @@ export function ThreadContextProvider({
   const currentRollRef = useRef('USER');
   const isFirstAnswer = useRef(true);
   const editIdxRef = useRef(-1);
+  const isNewChatRef = useRef(true);
 
   // 쓰레드 무한 스크롤
   const getInfiniteThreads = async () => {
@@ -118,6 +123,12 @@ export function ThreadContextProvider({
     setSort(sortType);
   };
 
+  const initChatting = () => {
+    setSelectedThreadId(-1);
+    setMessages([]);
+    isNewChatRef.current = true;
+  };
+
   useUpdateEffect(() => {
     getInfiniteThreads();
   }, [sort]);
@@ -130,8 +141,7 @@ export function ThreadContextProvider({
       setThreads(newThreads);
       if (id === selectedThreadId) {
         // 삭제한 스레드가 현재 채팅방이라면
-        setSelectedThreadId(-1);
-        setMessages([]);
+        initChatting();
       }
     } catch (error) {
       console.error(error);
@@ -172,16 +182,14 @@ export function ThreadContextProvider({
         // 2. 현재 스레드 변경
         setSelectedThreadId(response.id);
         // 3. 메시지 보내기
-        listenToMessegeSSE(response.id, message);
+        listenToMessegeSSE(response.id, message, response);
 
         if (sort === 'asc') {
           resetThread('desc');
           isFirstAnswer.current = false;
         }
-
-        // 4. 자동 이름 변경
-        listenToThreadSSE(response);
       } else {
+        isNewChatRef.current = false;
         // 메시지 보내기
         listenToMessegeSSE(selectedThreadId, message);
       }
@@ -191,7 +199,11 @@ export function ThreadContextProvider({
   };
 
   // 메시지 sse로 받기
-  const listenToMessegeSSE = async (threadId: number, message: string) => {
+  const listenToMessegeSSE = async (
+    threadId: number,
+    message: string,
+    ...thread: IThread[]
+  ) => {
     const eventSource = await ThreadAPI.sendMessage(threadId, message);
     eventSource.onmessage = (event) => {
       const data = event.data.trim();
@@ -225,6 +237,11 @@ export function ThreadContextProvider({
     };
 
     eventSource.onerror = () => {
+      if (isNewChatRef.current) {
+        // 4. 자동 이름 변경
+        listenToThreadSSE(thread[0]);
+        isNewChatRef.current = false;
+      }
       eventSource.close();
     };
   };
@@ -340,6 +357,7 @@ export function ThreadContextProvider({
         sendMessage,
         editMessage,
         rateMessage,
+        initChatting,
       }}
     >
       {children}

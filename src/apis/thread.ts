@@ -38,6 +38,18 @@ export class ThreadAPI {
 
     return data.content;
   }
+  // 쓰레드 목록 조회
+  static async getSearchedThreadList(query: string): Promise<IThread[]> {
+    const { data } = await axiosInstance.get(this.PATH_ISSUES, {
+      params: {
+        size: 10000,
+        page: 0,
+        query,
+      },
+    });
+
+    return data.content;
+  }
 
   // 쓰레드 생성
   static async createThread(): Promise<IThread> {
