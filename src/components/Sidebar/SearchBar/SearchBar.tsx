@@ -3,22 +3,14 @@ import styles from './SearchBar.module.css';
 import { ReactComponent as SearchIcon } from '../../../assets/search.svg';
 import { ReactComponent as HamburgerIcon } from '../../../assets/hamburger.svg';
 import _ from 'lodash';
-import { ThreadAPI } from '../../../apis';
+import { useThreads } from '../../../hooks';
 
 function SearchBar() {
   const [inputValue, setInputValue] = useState('');
-  const [searchedThreads, setSearchedThreads] = useState<IThread[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
-  const getSearchedThreads = async (query: string) => {
-    try {
-      const response = await ThreadAPI.getSearchedThreadList(query);
-      setSearchedThreads(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const { searchQuery, searchedThreads, getSearchedThreads, openThread } =
+    useThreads();
 
   const debouncedGetSearchedThreads = useCallback(
     _.debounce((query: string) => getSearchedThreads(query), 300),
@@ -38,15 +30,22 @@ function SearchBar() {
 
   const handleInputBlur = () => {
     setIsModalOpen(false);
+    setFocusedIndex(-1);
   };
 
   const handleInputFocus = () => {
     setIsModalOpen(true);
   };
 
+  const handleSearchResultClick = (id: number) => {
+    setIsModalOpen(false);
+    setInputValue('');
+    setFocusedIndex(-1);
+    openThread(id);
+  };
+
   const highlightMatch = (text: string, query: string) => {
     const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    console.log(parts);
     return parts.map((part: string, index: number) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <span key={index} className={styles.highlight}>
@@ -58,8 +57,41 @@ function SearchBar() {
     );
   };
 
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // 1. 검색 결과 저장
+    getSearchedThreads(inputValue);
+    setIsModalOpen(false);
+    setInputValue('');
+    // 2. 리다이렉트
+    console.log('redirect!', searchQuery);
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>
+  ) => {
+    if (searchedThreads.length > 0) {
+      console.log(focusedIndex);
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setFocusedIndex(
+          (prevIndex) => (prevIndex + 1) % searchedThreads.length
+        );
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocusedIndex(
+          (prevIndex) =>
+            (prevIndex - 1 + searchedThreads.length) % searchedThreads.length
+        );
+      } else if (e.key === 'Enter' && focusedIndex >= 0) {
+        e.preventDefault();
+        handleSearchResultClick(searchedThreads[focusedIndex].id);
+      }
+    }
+  };
+
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSearchSubmit}>
       <HamburgerIcon width="24" height="24" />
       <input
         className={styles.input}
@@ -67,15 +99,22 @@ function SearchBar() {
         placeholder="Hinted search text"
         value={inputValue}
         onChange={handleInputChange}
-        // onBlur={handleInputBlur}
+        onBlur={handleInputBlur}
         onFocus={handleInputFocus}
+        onKeyDown={handleKeyDown}
       />
       {isModalOpen && searchedThreads.length > 0 && (
         <ul className={styles.searchList}>
           {searchedThreads.map((thread: IThread, index) => (
-            <div key={index} className={styles.searchItem}>
+            <li
+              key={index}
+              className={`${styles.searchItem}${focusedIndex === index ? ' ' + styles.isActive : ''}`}
+              onMouseDown={() => {
+                handleSearchResultClick(thread.id);
+              }}
+            >
               {highlightMatch(thread.chatName, inputValue)}
-            </div>
+            </li>
           ))}
         </ul>
       )}

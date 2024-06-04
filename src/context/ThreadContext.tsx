@@ -10,6 +10,8 @@ interface ThreadContextType {
   isError: boolean;
   selectedThreadId: number;
   sort: SortType;
+  searchedThreads: IThread[];
+  searchQuery: string;
   getInfiniteThreads: () => void;
   resetThread: (sortType: SortType) => void;
   deleteThread: (id: number) => void;
@@ -24,6 +26,7 @@ interface ThreadContextType {
     rating: 'GOOD' | 'BAD'
   ) => void;
   initChatting: () => void;
+  getSearchedThreads: (query: string) => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -33,6 +36,8 @@ const defaultVlaue: ThreadContextType = {
   isError: false,
   selectedThreadId: -1,
   sort: 'desc',
+  searchedThreads: [],
+  searchQuery: '',
   getInfiniteThreads: () => {
     throw new Error();
   },
@@ -63,6 +68,9 @@ const defaultVlaue: ThreadContextType = {
   initChatting: () => {
     throw new Error();
   },
+  getSearchedThreads: () => {
+    throw new Error();
+  },
 };
 
 interface ThreadContextProviderProps {
@@ -81,6 +89,8 @@ export function ThreadContextProvider({
   const [selectedThreadId, setSelectedThreadId] = useState(-1);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [sort, setSort] = useState<SortType>('desc');
+  const [searchedThreads, setSearchedThreads] = useState<IThread[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const pageRef = useRef(0);
   const isEndRef = useRef(false);
@@ -171,6 +181,7 @@ export function ThreadContextProvider({
       setSelectedThreadId(id); // 쓰레드 id 변경
       const response = await ThreadAPI.getMessages(id, 0); // 메시지 불러오기
       setMessages(response); // 메시지 설정
+      setSearchedThreads([])
     } catch (error) {
       console.error(error);
     }
@@ -347,7 +358,7 @@ export function ThreadContextProvider({
   // 메시지 수정 (sse)
   const refreshAnswer = async (
     threadId: number,
-    messageId: number,  // 질문의 인덱스
+    messageId: number, // 질문의 인덱스
     message: string
   ) => {
     try {
@@ -381,10 +392,19 @@ export function ThreadContextProvider({
         }
       };
 
-      eventSource.onerror = (error) => {
+      eventSource.onerror = () => {
         eventSource.close();
-        console.log('close', error)
       };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getSearchedThreads = async (query: string) => {
+    try {
+      const response = await ThreadAPI.getSearchedThreadList(query);
+      setSearchedThreads(response);
+      setSearchQuery(query)
     } catch (error) {
       console.error(error);
     }
@@ -399,6 +419,8 @@ export function ThreadContextProvider({
         selectedThreadId,
         messages,
         sort,
+        searchedThreads,
+        searchQuery,
         getInfiniteThreads,
         resetThread,
         deleteThread,
@@ -409,6 +431,7 @@ export function ThreadContextProvider({
         refreshAnswer,
         rateMessage,
         initChatting,
+        getSearchedThreads,
       }}
     >
       {children}
