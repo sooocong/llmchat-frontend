@@ -1,13 +1,22 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 26.5%;
+  min-width: 300px;
+  max-width: 300px;
   height: 100vh;
-  padding: 16px;
+  padding: 0 16px 16px 16px;
   background-color: var(--color-light-gray);
   font-weight: bold;
+  transition: transform 0.3s ease;
+  position: absolute;
+}
+.hidden {
+  transform: translateX(-100%);
 }
 
+.visible {
+  transform: translateX(0);
+}
 .aerochatLogoIcon {
   width: 180px;
   height: 18px;
@@ -16,20 +25,16 @@
   display: inline-block;
 }
 
-.newChatButton {
+.buttonList {
+  height: 56px;
   display: flex;
   align-items: center;
-  gap: 18px;
-  width: 118px;
-  height: 46px;
-  padding: 11px 18px;
-  background-color: #ebebeb;
-  color: #b1b1b1;
+  justify-content: space-between;
+}
+.IconButton {
+  background: transparent;
   border: none;
-  border-radius: 28px;
-  font-size: 14px;
   cursor: pointer;
-  margin-top: 70px;
 }
 
 .plusIcon {

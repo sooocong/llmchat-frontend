@@ -4,8 +4,15 @@ import { useIntersectionObserver, useThreads } from '../../hooks';
 import QuestionBox from '.././MainPage/Chatting/QuestionBox';
 import ChattingQuestion from '.././MainPage/Chatting/ChattingQuestion';
 import ChattingAnswer from '.././MainPage/Chatting/ChattingAnswer';
+import { ReactComponent as AerochatLogo } from '../../assets/aerochatLogo.svg';
+import { ReactComponent as RightIcon } from '../../assets/right-arrow-button.svg';
+import { ReactComponent as CreateIcon } from '../../assets/create-button.svg';
 
-const ChatComponent = () => {
+interface IChatComponent {
+  isSidebarVisible: boolean;
+  onOpenSidebar: () => void;
+}
+const ChatComponent = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
   const chatRef: RefObject<HTMLDivElement> = useRef(null);
   const currentFirstChatIdRef = useRef(-1);
   const {
@@ -16,6 +23,7 @@ const ChatComponent = () => {
     isMsgLoading,
     isMsgError,
     isFirstMsgLoading,
+    initChatting,
   } = useThreads();
 
   const handleIntersection = () => {
@@ -23,7 +31,9 @@ const ChatComponent = () => {
       if (isFirstMsgLoading >= 1) {
         // 첫 로드 이후, 위로 스크롤 했을 때 발생한 로드면 messages에서 가장 마지막에 있는 요소의 id를 찾음
         currentFirstChatIdRef.current = messages[messages.length - 1].id;
+        console.log(1);
       }
+      console.log(2);
       getInfiniteMessages();
     }
   };
@@ -43,7 +53,9 @@ const ChatComponent = () => {
         const idx =
           messages.length -
           messages.findIndex((msg) => msg.id === currentFirstChatIdRef.current);
-        chatRef.current.children[idx].scrollIntoView({ behavior: 'auto' });
+        console.log(currentFirstChatIdRef.current);
+
+        chatRef.current.children[idx]?.scrollIntoView({ behavior: 'auto' });
         currentFirstChatIdRef.current = -1;
       } else {
         // 첫 로드 또는 메시지 입력에 의한 로드면
@@ -53,7 +65,23 @@ const ChatComponent = () => {
   }, [selectedThreadId, messages, isFirstMsgLoading]);
 
   return (
-    <div className="chat-container">
+    <div
+      className={`chat-container ${isSidebarVisible ? 'sidebarVisible' : 'sidebarHidden'}`}
+    >
+      <header className="chatHeader">
+        {!isSidebarVisible && (
+          <>
+            <button className="IconButton" onClick={onOpenSidebar}>
+              <RightIcon />
+            </button>
+            <button className="IconButton" onClick={initChatting}>
+              <CreateIcon />
+            </button>
+          </>
+        )}
+        <AerochatLogo />
+      </header>
+
       <div className="chat-messages" ref={chatRef}>
         {isMsgError ? '에러 발생' : <div ref={ref}></div>}
         {selectedThreadId === -1
