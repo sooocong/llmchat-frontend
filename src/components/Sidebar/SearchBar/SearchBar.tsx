@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './SearchBar.module.css';
 import { ReactComponent as SearchIcon } from '../../../assets/search.svg';
 import { ReactComponent as HamburgerIcon } from '../../../assets/hamburger.svg';
@@ -9,6 +9,8 @@ function SearchBar() {
   const [inputValue, setInputValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
+  const searchListRef = useRef<HTMLUListElement>(null);
+
   const { searchQuery, searchedThreads, getSearchedThreads, openThread } =
     useThreads();
 
@@ -90,6 +92,23 @@ function SearchBar() {
     }
   };
 
+  useEffect(() => {
+    if (focusedIndex >= 0 && searchListRef.current) {
+      const focusedItem = searchListRef.current.children[
+        focusedIndex
+      ] as HTMLElement;
+      const { offsetTop, offsetHeight } = focusedItem;
+      const { scrollTop, clientHeight } = searchListRef.current;
+
+      if (offsetTop < scrollTop) {
+        searchListRef.current.scrollTop = offsetTop;
+      } else if (offsetTop + offsetHeight > scrollTop + clientHeight) {
+        searchListRef.current.scrollTop =
+          offsetTop + offsetHeight - clientHeight;
+      }
+    }
+  }, [focusedIndex]);
+
   return (
     <form className={styles.form} onSubmit={handleSearchSubmit}>
       <HamburgerIcon width="24" height="24" />
@@ -104,7 +123,7 @@ function SearchBar() {
         onKeyDown={handleKeyDown}
       />
       {isModalOpen && searchedThreads.length > 0 && (
-        <ul className={styles.searchList}>
+        <ul className={styles.searchList} ref={searchListRef}>
           {searchedThreads.map((thread: IThread, index) => (
             <li
               key={index}
