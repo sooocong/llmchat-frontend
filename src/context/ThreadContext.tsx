@@ -1,13 +1,15 @@
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { ThreadAPI } from '../apis/thread';
 import { useUpdateEffect } from '../hooks';
-import { flushSync } from 'react-dom';
 
 interface ThreadContextType {
   threads: IThread[];
   messages: IMessage[];
   isLoading: boolean;
   isError: boolean;
+  isMsgLoading: boolean;
+  isMsgError: boolean;
+  isFirstMsgLoading: number;
   selectedThreadId: number;
   sort: SortType;
   searchedThreads: IThread[];
@@ -27,6 +29,7 @@ interface ThreadContextType {
   ) => void;
   initChatting: () => void;
   getSearchedThreads: (query: string) => void;
+  getInfiniteMessages: () => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -34,6 +37,9 @@ const defaultVlaue: ThreadContextType = {
   messages: [],
   isLoading: false,
   isError: false,
+  isMsgLoading: false,
+  isMsgError: false,
+  isFirstMsgLoading: 0,
   selectedThreadId: -1,
   sort: 'desc',
   searchedThreads: [],
@@ -71,6 +77,9 @@ const defaultVlaue: ThreadContextType = {
   getSearchedThreads: () => {
     throw new Error();
   },
+  getInfiniteMessages: () => {
+    throw new Error();
+  },
 };
 
 interface ThreadContextProviderProps {
@@ -86,6 +95,9 @@ export function ThreadContextProvider({
   const [threads, setThreads] = useState<IThread[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isMsgLoading, setIsMsgLoading] = useState(false);
+  const [isMsgError, setIsMsgError] = useState(false);
+  const [isFirstMsgLoading, setIsFirstMsgLoading] = useState(0); // 첫 로드를 했는지 판단하는 상태 (첫 로드 마치면 1 이상)
   const [selectedThreadId, setSelectedThreadId] = useState(-1);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [sort, setSort] = useState<SortType>('desc');
@@ -94,6 +106,8 @@ export function ThreadContextProvider({
 
   const pageRef = useRef(0);
   const isEndRef = useRef(false);
+  const pageMsgRef = useRef(0);
+  const isEndMsgRef = useRef(false);
   const currentRollRef = useRef('USER');
   const isFirstAnswer = useRef(true);
   const editIdxRef = useRef(-1);
@@ -141,6 +155,12 @@ export function ThreadContextProvider({
     setSelectedThreadId(-1);
     setMessages([]);
     isNewChatRef.current = true;
+    pageMsgRef.current = 0;
+    isEndMsgRef.current = false;
+    setIsFirstMsgLoading(0);
+    setIsMsgError(false);
+    setIsMsgLoading(false);
+    isNewChatRef.current = true;
   };
 
   useUpdateEffect(() => {
@@ -179,11 +199,48 @@ export function ThreadContextProvider({
   const openThread = async (id: number) => {
     try {
       setSelectedThreadId(id); // 쓰레드 id 변경
-      const response = await ThreadAPI.getMessages(id, 0); // 메시지 불러오기
-      setMessages(response); // 메시지 설정
-      setSearchedThreads([])
+      setMessages([]);
+      setSearchedThreads([]);
+      pageMsgRef.current = 0;
+      isEndMsgRef.current = false;
+      setIsFirstMsgLoading(0);
+      setIsMsgError(false);
+      setIsMsgLoading(false);
+      isNewChatRef.current = false;
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  // 메시지 무한 스크롤
+  const getInfiniteMessages = async () => {
+    if (isEndMsgRef.current) return;
+
+    setIsMsgLoading(true);
+    try {
+      const response = await ThreadAPI.getMessages(
+        selectedThreadId,
+        pageMsgRef.current
+      );
+      if (response.length === 0 || isNewChatRef.current) {
+        isEndMsgRef.current = true;
+        return;
+      }
+
+      setIsFirstMsgLoading((prev) => prev + 1);
+      pageMsgRef.current = pageMsgRef.current + 1;
+      setMessages((prev) => {
+        const mergedMessages = [...prev, ...response];
+        const uniqueMessages = Array.from(
+          new Map(mergedMessages.map((msg) => [msg.id, msg])).values()
+        );
+        return uniqueMessages;
+      });
+    } catch (error) {
+      setIsMsgError(true);
+      console.error(error);
+    } finally {
+      setIsMsgLoading(false);
     }
   };
 
@@ -351,7 +408,7 @@ export function ThreadContextProvider({
     try {
       await ThreadAPI.rateMessage(threadId, messageId, rating);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -404,7 +461,7 @@ export function ThreadContextProvider({
     try {
       const response = await ThreadAPI.getSearchedThreadList(query);
       setSearchedThreads(response);
-      setSearchQuery(query)
+      setSearchQuery(query);
     } catch (error) {
       console.error(error);
     }
@@ -416,6 +473,9 @@ export function ThreadContextProvider({
         threads,
         isLoading,
         isError,
+        isMsgLoading,
+        isMsgError,
+        isFirstMsgLoading,
         selectedThreadId,
         messages,
         sort,
@@ -432,6 +492,7 @@ export function ThreadContextProvider({
         rateMessage,
         initChatting,
         getSearchedThreads,
+        getInfiniteMessages,
       }}
     >
       {children}
