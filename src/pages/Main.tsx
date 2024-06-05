@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SidebarMenu } from '../components/Sidebar';
 import ChatComponent from '../components/Chat/ChatComponent';
 import { useThreads } from '../hooks';
 
 function Main() {
-  const {selectedThreadId} = useThreads()
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const { selectedThreadId } = useThreads();
+
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <SidebarMenu />
-      <ChatComponent key={selectedThreadId}/>
+    <div style={{  width: '100%', height: '100vh' }}>
+      <SidebarMenu
+        isSidebarVisible={isSidebarVisible}
+        onClose={toggleSidebar}
+      />
+      <ChatComponent
+        key={selectedThreadId}
+        isSidebarVisible={isSidebarVisible}
+        onOpenSidebar={toggleSidebar}
+      />
     </div>
   );
 }
