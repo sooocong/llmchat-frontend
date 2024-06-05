@@ -18,10 +18,9 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
 
   const handleRefreshClick = () => {
     const { content, id } = messages[findQuestionIndex()];
-    console.log(id, content);
     refreshAnswer(selectedThreadId, id, content);
   };
-  // 538, 537, 539, 481
+  
   const handleCopyClick = () => {
     if (centerBoxRef.current) {
       const textToCopy = centerBoxRef.current.innerText;
@@ -48,7 +47,9 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
     <div className={styles.iconGroupLeft}>
       <div className={styles.speakerIcon} onClick={handleSpeakerClick}></div>
       <div className={styles.copyIcon} onClick={handleCopyClick}></div>
-      <div className={styles.reanswerIcon} onClick={handleRefreshClick}></div>
+      {messages[0].id === messageId && (
+        <div className={styles.reanswerIcon} onClick={handleRefreshClick}></div>
+      )}
       <div className={styles.shareIcon}></div>
     </div>
   );
