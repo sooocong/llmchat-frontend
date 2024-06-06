@@ -1,18 +1,19 @@
 import React, { useRef, RefObject, useEffect } from 'react';
-import './ChatComponent.css';
-import { useIntersectionObserver, useThreads } from '../../hooks';
-import QuestionBox from '.././MainPage/Chatting/QuestionBox';
-import ChattingQuestion from '.././MainPage/Chatting/ChattingQuestion';
-import ChattingAnswer from '.././MainPage/Chatting/ChattingAnswer';
-import { ReactComponent as AerochatLogo } from '../../assets/aerochatLogo.svg';
-import { ReactComponent as RightIcon } from '../../assets/right-arrow-button.svg';
-import { ReactComponent as CreateIcon } from '../../assets/create-button.svg';
+import style from './Chat.module.css';
+import { useIntersectionObserver, useThreads } from '../../../hooks';
+import QuestionBox from '../../MainPage/Chatting/QuestionBox';
+import ChattingQuestion from '../../MainPage/Chatting/ChattingQuestion';
+import ChattingAnswer from '../../MainPage/Chatting/ChattingAnswer';
+import { RecommendedQuestions } from '../RecommendedQuestions';
+import { ReactComponent as AerochatLogo } from '../../../assets/aerochatLogo.svg';
+import { ReactComponent as RightIcon } from '../../../assets/right-arrow-button.svg';
+import { ReactComponent as CreateIcon } from '../../../assets/create-button.svg';
 
 interface IChatComponent {
   isSidebarVisible: boolean;
   onOpenSidebar: () => void;
 }
-const ChatComponent = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
+const Chat = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
   const chatRef: RefObject<HTMLDivElement> = useRef(null);
   const currentFirstChatIdRef = useRef(-1);
   const {
@@ -63,41 +64,43 @@ const ChatComponent = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
 
   return (
     <div
-      className={`chat-container ${isSidebarVisible ? 'sidebarVisible' : 'sidebarHidden'}`}
+      className={`${style.chatContainer} ${isSidebarVisible ? style.sidebarVisible : style.sidebarHidden}`}
     >
-      <header className="chatHeader">
-        <button className="IconButton" onClick={onOpenSidebar}>
+      <header className={style.chatHeader}>
+        <button className={style.IconButton} onClick={onOpenSidebar}>
           <RightIcon />
         </button>
-        <button className="IconButton" onClick={initChatting}>
+        <button className={style.IconButton} onClick={initChatting}>
           <CreateIcon />
         </button>
         <AerochatLogo />
       </header>
 
-      <div className="chat-messages" ref={chatRef}>
+      <div className={style.chatMessages} ref={chatRef}>
         {isMsgError ? '에러 발생' : <div ref={ref}></div>}
-        {selectedThreadId === -1
-          ? '대화를 시작하세요!'
-          : [...messages]
-              .reverse()
-              .map((msg, index) =>
-                msg.role === 'USER' ? (
-                  <ChattingQuestion key={index} message={msg.content} />
-                ) : (
-                  <ChattingAnswer
-                    key={index}
-                    message={msg.content}
-                    messageId={msg.id}
-                  />
-                )
-              )}
+        {selectedThreadId === -1 ? (
+          <RecommendedQuestions isSidebarVisible={isSidebarVisible} />
+        ) : (
+          [...messages]
+            .reverse()
+            .map((msg, index) =>
+              msg.role === 'USER' ? (
+                <ChattingQuestion key={index} message={msg.content} />
+              ) : (
+                <ChattingAnswer
+                  key={index}
+                  message={msg.content}
+                  messageId={msg.id}
+                />
+              )
+            )
+        )}
       </div>
-      <div className="chat-input-container">
+      <div className={style.chatInputContainer}>
         <QuestionBox onSendMessage={sendMessage} />
       </div>
     </div>
   );
 };
 
-export default ChatComponent;
+export { Chat };

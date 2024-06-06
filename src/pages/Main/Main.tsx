@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SidebarMenu } from '../../components/Sidebar';
-import ChatComponent from '../../components/Chat/ChatComponent';
+import { Chat } from '../../components/Chat';
 import { useThreads } from '../../hooks';
 import style from './Main.module.css';
 import {
@@ -60,7 +60,7 @@ const Main = () => {
         isSidebarVisible={isSidebarVisible}
         onClose={toggleSidebar}
       />
-      <ChatComponent
+      <Chat
         key={selectedThreadId}
         isSidebarVisible={isSidebarVisible}
         onOpenSidebar={toggleSidebar}
