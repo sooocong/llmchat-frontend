@@ -31,9 +31,7 @@ const ChatComponent = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
       if (isFirstMsgLoading >= 1) {
         // 첫 로드 이후, 위로 스크롤 했을 때 발생한 로드면 messages에서 가장 마지막에 있는 요소의 id를 찾음
         currentFirstChatIdRef.current = messages[messages.length - 1].id;
-        console.log(1);
       }
-      console.log(2);
       getInfiniteMessages();
     }
   };
@@ -53,7 +51,6 @@ const ChatComponent = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
         const idx =
           messages.length -
           messages.findIndex((msg) => msg.id === currentFirstChatIdRef.current);
-        console.log(currentFirstChatIdRef.current);
 
         chatRef.current.children[idx]?.scrollIntoView({ behavior: 'auto' });
         currentFirstChatIdRef.current = -1;
@@ -69,16 +66,12 @@ const ChatComponent = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
       className={`chat-container ${isSidebarVisible ? 'sidebarVisible' : 'sidebarHidden'}`}
     >
       <header className="chatHeader">
-        {!isSidebarVisible && (
-          <>
-            <button className="IconButton" onClick={onOpenSidebar}>
-              <RightIcon />
-            </button>
-            <button className="IconButton" onClick={initChatting}>
-              <CreateIcon />
-            </button>
-          </>
-        )}
+        <button className="IconButton" onClick={onOpenSidebar}>
+          <RightIcon />
+        </button>
+        <button className="IconButton" onClick={initChatting}>
+          <CreateIcon />
+        </button>
         <AerochatLogo />
       </header>
 

@@ -16,7 +16,7 @@
   justify-content: flex-start; /* 위쪽부터 시작하도록 설정 */
   align-items: center;
   position: relative;
-  height: 91.3vh; /* 전체 높이를 100vh로 설정 */
+  height: 100vh; /* 전체 높이를 100vh로 설정 */
   margin: 0 auto; /* 가운데 정렬 */
   flex: 1;
   transition: margin-left 0.3s ease;
@@ -30,48 +30,14 @@
   overflow-y: auto;
   padding-bottom: 70px; /* QuestionBox 영역과 겹치지 않도록 여백 추가 */
   box-sizing: border-box; /* 패딩을 포함하여 크기를 계산 */
-  /* margin-top: 56px; 상단 여백 추가 */
   flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
-}
-
-.chat-message {
-  margin-bottom: 10px;
-}
-
-.input-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.chat-input {
-  flex-grow: 1;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid var(--color-gray);
 }
 
 .chat-input-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  position: fixed; /* 화면에 고정 */
-  bottom: 20px;
-}
-
-.chatInputBox {
-  width: 700px;
-  height: 50px;
-  padding: 11px;
-  border-color: var(--color-gray);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin: 1rem 0;
 }
 
 /* 커스텀 스크롤바 스타일링 */
@@ -133,4 +99,35 @@
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+.sidebarVisible .IconButton {
+  display: none;
+}
+.sidebarHidden .IconButton {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .chatHeader {
+    width: 85%;
+    justify-content: space-between;
+    padding-left: 0;
+    gap: 0;
+  }
+
+  .chatHeader > :nth-child(2) {
+    order: 3;
+  }
+  .chatHeader > :nth-child(3) {
+    order: 2;
+  }
+
+  .sidebarVisible {
+    margin-left: 0;
+  }
+
+  .sidebarVisible .IconButton {
+    display: block;
+  }
 }

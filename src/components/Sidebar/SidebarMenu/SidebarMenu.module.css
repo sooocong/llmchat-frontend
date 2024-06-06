@@ -9,6 +9,7 @@
   font-weight: bold;
   transition: transform 0.3s ease;
   position: absolute;
+  z-index: 100;
 }
 .hidden {
   transform: translateX(-100%);
@@ -64,4 +65,27 @@
   top: 50%;
   left: 0;
   transform: translateY(-50%);
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    max-width: 300px;
+    height: 100vh;
+    padding: 0 16px 16px 16px;
+    background-color: var(--color-light-gray);
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    position: absolute;
+  }
+
+  .hidden {
+    transform: translateX(-100%);
+  }
+
+  .visible {
+    transform: translateX(0);
+  }
 }
