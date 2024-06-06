@@ -12,3 +12,16 @@ export const setAccessToken = (accessToken: string) => {
 export const removeAccessToken = () => {
   localStorage.removeItem(TOKEN);
 };
+
+export const getIsSidebarOpen = (): boolean => {
+  const isSidebarOpen = localStorage.getItem('isSidebarOpen');
+  return JSON.parse(isSidebarOpen as string);
+};
+
+export const setIsSidebarOpen = (isSidebarOpen: boolean) => {
+  localStorage.setItem('isSidebarOpen', JSON.stringify(isSidebarOpen));
+};
+
+export const removeIsSidebarOpen = () => {
+  localStorage.removeItem('isSidebarOpen');
+};
