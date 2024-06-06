@@ -3,7 +3,11 @@ import { SidebarMenu } from '../../components/Sidebar';
 import ChatComponent from '../../components/Chat/ChatComponent';
 import { useThreads } from '../../hooks';
 import style from './Main.module.css';
-import { getIsSidebarOpen, setIsSidebarOpen } from '../../utils';
+import {
+  getIsSidebarOpen,
+  setIsSidebarOpen,
+  getCurrentThreadId,
+} from '../../utils';
 
 const Main = () => {
   const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -15,7 +19,7 @@ const Main = () => {
   const [isSidebarVisible, setIsSidebarVisible] =
     useState(initIsSidebarVisible);
   const [isOverlayed, setIsOverlayed] = useState(mediaQuery.matches);
-  const { selectedThreadId } = useThreads();
+  const { selectedThreadId, initChatting, openThread } = useThreads();
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -26,6 +30,11 @@ const Main = () => {
   };
 
   useEffect(() => {
+    const currentThreadId = getCurrentThreadId();
+    currentThreadId === -1 || currentThreadId === null
+      ? initChatting()
+      : openThread(currentThreadId);
+
     const handleResize = (event: MediaQueryListEvent) => {
       if (event.matches) {
         setIsSidebarVisible(false);

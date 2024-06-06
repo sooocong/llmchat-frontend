@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { ThreadAPI } from '../apis/thread';
 import { useUpdateEffect } from '../hooks';
-
+import { setCurrentThreadId } from '../utils';
 interface ThreadContextType {
   threads: IThread[];
   messages: IMessage[];
@@ -167,6 +167,9 @@ export function ThreadContextProvider({
     getInfiniteThreads();
   }, [sort]);
 
+  useEffect(() => {
+    setCurrentThreadId(selectedThreadId);
+  }, [selectedThreadId]);
   // 쓰레드 삭제
   const deleteThread = async (id: number) => {
     try {
