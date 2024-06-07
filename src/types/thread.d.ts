@@ -15,3 +15,11 @@ interface IMessage {
   createdAt: string;
   updatedAt: string;
 }
+
+interface ISearch {
+  id: number;
+  chatName: string;
+  matchHighlight: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -12,7 +12,7 @@ interface ThreadContextType {
   isFirstMsgLoading: number;
   selectedThreadId: number;
   sort: SortType;
-  searchedThreads: IThread[];
+  searchedThreads: ISearch[];
   searchQuery: string;
   getInfiniteThreads: () => void;
   resetThread: (sortType: SortType) => void;
@@ -101,7 +101,7 @@ export function ThreadContextProvider({
   const [selectedThreadId, setSelectedThreadId] = useState(-1);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [sort, setSort] = useState<SortType>('desc');
-  const [searchedThreads, setSearchedThreads] = useState<IThread[]>([]);
+  const [searchedThreads, setSearchedThreads] = useState<ISearch[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   const pageRef = useRef(0);

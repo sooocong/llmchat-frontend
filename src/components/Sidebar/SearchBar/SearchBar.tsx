@@ -47,16 +47,36 @@ function SearchBar() {
   };
 
   const highlightMatch = (text: string, query: string) => {
-    const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    return parts.map((part: string, index: number) =>
-      part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} className={styles.highlight}>
-          {part}
-        </span>
-      ) : (
-        part
-      )
-    );
+    const markdownPatterns = [
+      '\\*\\*', // bold
+      '\\*', // italic
+      '__', // bold
+      '_', // italic
+      '`', // inline code
+      '\\[.*?\\]\\(.*?\\)', // link
+      '!\\[.*?\\]\\(.*?\\)', // image
+      '#+', // header
+      '>+', // blockquote
+      '[-*+]', // unordered list
+      '\\d+\\.', // ordered list
+      '---', // horizontal rule
+    ];
+    const patterns = [query, ...markdownPatterns];
+    const regexPattern = patterns.join('|');
+    const parts = text.split(new RegExp(`(${regexPattern})`, 'gi'));
+    return parts.map((part: string, index: number) => {
+      if (new RegExp(markdownPatterns.join('|')).test(part)) {
+        return '';
+      }
+      if (part.toLowerCase() === query.toLowerCase()) {
+        return (
+          <span key={index} className={styles.highlight}>
+            {part}
+          </span>
+        );
+      }
+      return part;
+    });
   };
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,7 +93,6 @@ function SearchBar() {
     e: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>
   ) => {
     if (searchedThreads.length > 0) {
-      console.log(focusedIndex);
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         setFocusedIndex(
@@ -124,15 +143,17 @@ function SearchBar() {
       />
       {isModalOpen && searchedThreads.length > 0 && (
         <ul className={styles.searchList} ref={searchListRef}>
-          {searchedThreads.map((thread: IThread, index) => (
+          {searchedThreads.map((thread: ISearch, index) => (
             <li
               key={index}
               className={`${styles.searchItem}${focusedIndex === index ? ' ' + styles.isActive : ''}`}
               onMouseDown={() => {
                 handleSearchResultClick(thread.id);
+                console.log('thread.id ', thread.id);
               }}
             >
-              {highlightMatch(thread.chatName, inputValue)}
+              <div>{highlightMatch(thread.chatName, inputValue)}</div>
+              <div>{highlightMatch(thread.matchHighlight, inputValue)}</div>
             </li>
           ))}
         </ul>
