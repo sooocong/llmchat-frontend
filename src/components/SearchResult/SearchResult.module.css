@@ -1,0 +1,83 @@
+/* YourComponent.css */
+
+.container {
+  position: relative;
+  margin-top: 56px;
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+
+.topBar {
+  position: sticky;
+  max-width: 85%;
+  margin: 0 auto;
+  top: 0;
+  background: white;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+.topBar > :nth-child(1) {
+  margin-top: 0;
+  border: 1px solid #b1b1b1;
+  margin-bottom: 1rem;
+}
+
+.topBar > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.resultCount {
+  font-size: 16px;
+}
+.itemContainer {
+  width: 85%;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.itemContainer:hover {
+  background-color: #e0e0e0;
+}
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.content {
+  font-size: 14px;
+}
+.highlight {
+  font-weight: 800;
+  color: #003da5;
+}
+
+/* 커스텀 스크롤바 스타일링 */
+.container::-webkit-scrollbar {
+  width: 8px; /* 스크롤바의 너비 */
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: rgba(122, 122, 122, 0.36); /* 스크롤바의 색상 */
+  border-radius: 1rem; /* 스크롤바의 라운드 */
+}
+
+.container::-webkit-scrollbar-track {
+  background: transparent; /* 트랙 배경을 투명하게 */
+}
+
+.container::-webkit-scrollbar-button {
+  display: none; /* 스크롤바 화살표 제거 */
+}

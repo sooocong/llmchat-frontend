@@ -4,15 +4,15 @@ import { ReactComponent as SearchIcon } from '../../../assets/search.svg';
 import { ReactComponent as HamburgerIcon } from '../../../assets/hamburger.svg';
 import _ from 'lodash';
 import { useThreads } from '../../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar() {
   const [inputValue, setInputValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const searchListRef = useRef<HTMLUListElement>(null);
-
-  const { searchQuery, searchedThreads, getSearchedThreads, openThread } =
-    useThreads();
+  const navigation = useNavigate();
+  const { searchedThreads, getSearchedThreads, openThread } = useThreads();
 
   const debouncedGetSearchedThreads = useCallback(
     _.debounce((query: string) => getSearchedThreads(query), 300),
@@ -81,12 +81,9 @@ function SearchBar() {
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 1. 검색 결과 저장
-    getSearchedThreads(inputValue);
     setIsModalOpen(false);
     setInputValue('');
-    // 2. 리다이렉트
-    console.log('redirect!', searchQuery);
+    navigation(`/search/${inputValue}`);
   };
 
   const handleKeyDown = (

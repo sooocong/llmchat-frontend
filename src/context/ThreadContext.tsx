@@ -13,7 +13,6 @@ interface ThreadContextType {
   selectedThreadId: number;
   sort: SortType;
   searchedThreads: ISearch[];
-  searchQuery: string;
   getInfiniteThreads: () => void;
   resetThread: (sortType: SortType) => void;
   deleteThread: (id: number) => void;
@@ -43,7 +42,6 @@ const defaultVlaue: ThreadContextType = {
   selectedThreadId: -1,
   sort: 'desc',
   searchedThreads: [],
-  searchQuery: '',
   getInfiniteThreads: () => {
     throw new Error();
   },
@@ -102,7 +100,6 @@ export function ThreadContextProvider({
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [sort, setSort] = useState<SortType>('desc');
   const [searchedThreads, setSearchedThreads] = useState<ISearch[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const pageRef = useRef(0);
   const isEndRef = useRef(false);
@@ -464,7 +461,6 @@ export function ThreadContextProvider({
     try {
       const response = await ThreadAPI.getSearchedThreadList(query);
       setSearchedThreads(response);
-      setSearchQuery(query);
     } catch (error) {
       console.error(error);
     }
@@ -483,7 +479,6 @@ export function ThreadContextProvider({
         messages,
         sort,
         searchedThreads,
-        searchQuery,
         getInfiniteThreads,
         resetThread,
         deleteThread,

@@ -4,15 +4,23 @@ import App from './App';
 import './styles/index.css';
 import {
   createBrowserRouter,
+  Params,
   redirect,
   RouterProvider,
 } from 'react-router-dom';
-import { MainPage, LoginPage, MyPage, SignupPage, ErrorPage } from './pages';
-import { getAccessToken } from './utils/storage';
+import {
+  MainPage,
+  LoginPage,
+  MyPage,
+  SignupPage,
+  ErrorPage,
+  SearchPage,
+} from './pages';
 import GoogleRedirect from './components/Login/GoogleRedirect';
 import KakaoRedirect from './components/Login/KakaoRedirect';
 import NaverRedirect from './components/Login/NaverRedirect';
-import { UserAPI } from './apis';
+import { getAccessToken } from './utils';
+import { UserAPI, ThreadAPI } from './apis';
 
 const notAuthLoader = async () => {
   const token = getAccessToken();
@@ -29,6 +37,18 @@ const authLoader = async () => {
     throw redirect('/');
   }
   return { token };
+};
+const searchLoader = async ({ params }: { params: Params }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw redirect('/login');
+  }
+  const user = await UserAPI.getUserProfile();
+  const searchedThreads = await ThreadAPI.getSearchedThreadList(
+    params.query as string
+  );
+
+  return { user, searchedThreads, query: params.query };
 };
 
 const router = createBrowserRouter([
@@ -67,6 +87,11 @@ const router = createBrowserRouter([
         path: '/mypage',
         element: <MyPage />,
         loader: notAuthLoader,
+      },
+      {
+        path: '/search/:query',
+        element: <SearchPage />,
+        loader: searchLoader,
       },
     ],
   },
