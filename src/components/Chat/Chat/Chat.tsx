@@ -5,15 +5,9 @@ import QuestionBox from '../../MainPage/Chatting/QuestionBox';
 import ChattingQuestion from '../../MainPage/Chatting/ChattingQuestion';
 import ChattingAnswer from '../../MainPage/Chatting/ChattingAnswer';
 import { RecommendedQuestions } from '../RecommendedQuestions';
-import { ReactComponent as AerochatLogo } from '../../../assets/aerochatLogo.svg';
-import { ReactComponent as RightIcon } from '../../../assets/right-arrow-button.svg';
-import { ReactComponent as CreateIcon } from '../../../assets/create-button.svg';
 
-interface IChatComponent {
-  isSidebarVisible: boolean;
-  onOpenSidebar: () => void;
-}
-const Chat = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
+
+const Chat = () => {
   const chatRef: RefObject<HTMLDivElement> = useRef(null);
   const currentFirstChatIdRef = useRef(-1);
   const {
@@ -24,7 +18,6 @@ const Chat = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
     isMsgLoading,
     isMsgError,
     isFirstMsgLoading,
-    initChatting,
   } = useThreads();
 
   const handleIntersection = () => {
@@ -64,22 +57,12 @@ const Chat = ({ isSidebarVisible, onOpenSidebar }: IChatComponent) => {
 
   return (
     <div
-      className={`${style.chatContainer} ${isSidebarVisible ? style.sidebarVisible : style.sidebarHidden}`}
+      className={style.chatContainer}
     >
-      <header className={style.chatHeader}>
-        <button className={style.IconButton} onClick={onOpenSidebar}>
-          <RightIcon />
-        </button>
-        <button className={style.IconButton} onClick={initChatting}>
-          <CreateIcon />
-        </button>
-        <AerochatLogo />
-      </header>
-
       <div className={style.chatMessages} ref={chatRef}>
         {isMsgError ? '에러 발생' : <div ref={ref}></div>}
         {selectedThreadId === -1 ? (
-          <RecommendedQuestions isSidebarVisible={isSidebarVisible} />
+          <RecommendedQuestions />
         ) : (
           [...messages]
             .reverse()

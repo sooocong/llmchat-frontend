@@ -2,12 +2,11 @@ import React from 'react';
 import style from './RecommendedQuestions.module.css';
 import { useThreads } from '../../../hooks';
 import { ReactComponent as AerochatIcon } from '../../../assets/aerochatIcon.svg';
+import { getIsSidebarOpen } from '../../../utils';
 
-interface IRecommendedQuestions {
-  isSidebarVisible: boolean;
-}
-const RecommendedQuestions = ({ isSidebarVisible }: IRecommendedQuestions) => {
+const RecommendedQuestions = () => {
   const { sendMessage } = useThreads();
+  const isSidebarOpen =  getIsSidebarOpen()
   const QUESTIONS = [
     `유치원생에게 '노스탤지어' 설명하기`,
     '고대 문명 퀴즈',
@@ -16,7 +15,7 @@ const RecommendedQuestions = ({ isSidebarVisible }: IRecommendedQuestions) => {
   ];
   return (
     <div
-      className={`${style.recQuestionContainer} ${isSidebarVisible ? style.sidebarVisible : style.sidebarHidden}`}
+      className={`${style.recQuestionContainer} ${isSidebarOpen ? style.sidebarVisible : style.sidebarHidden}`}
     >
       <div className={style.recQuestionLogo}>
         <AerochatIcon />
