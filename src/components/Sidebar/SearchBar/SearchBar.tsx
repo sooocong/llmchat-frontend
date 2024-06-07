@@ -44,6 +44,7 @@ function SearchBar() {
     setInputValue('');
     setFocusedIndex(-1);
     openThread(id);
+    navigation('/');
   };
 
   const highlightMatch = (text: string, query: string) => {
@@ -81,6 +82,10 @@ function SearchBar() {
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const trimmedInput = inputValue.trim();
+    if (trimmedInput === '') {
+      return;
+    }
     setIsModalOpen(false);
     setInputValue('');
     navigation(`/search/${inputValue}`);

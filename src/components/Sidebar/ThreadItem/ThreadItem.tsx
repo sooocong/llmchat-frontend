@@ -4,6 +4,7 @@ import { ReactComponent as OptionIcon } from '../../../assets/option.svg';
 import { ReactComponent as DeleteIcon } from '../../../assets/delete.svg';
 import { ReactComponent as EditIcon } from '../../../assets/edit.svg';
 import { useHideByClickOutside, useThreads } from '../../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 function ThreadItem({ history }: { history: IThread }) {
   const [inputValue, setInputValue] = useState('');
@@ -11,6 +12,7 @@ function ThreadItem({ history }: { history: IThread }) {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const { selectedThreadId, openThread, deleteThread, editThreadName } =
     useThreads();
+  const navigation = useNavigate();
 
   const modalRef = useHideByClickOutside(() => {
     setIsOptionOpen(false);
@@ -51,6 +53,7 @@ function ThreadItem({ history }: { history: IThread }) {
     const target = e.target as HTMLElement;
     if (target.closest('button')) return;
     openThread(history.id);
+    navigation('/');
   };
 
   return (
