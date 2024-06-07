@@ -10,9 +10,14 @@ import { ReactComponent as CreateIcon } from '../../../assets/create-button.svg'
 interface ISidebarMenu {
   isSidebarVisible: boolean;
   onClose: () => void;
+  onOpenSettings: () => void;
 }
 
-function SidebarMenu({ isSidebarVisible, onClose }: ISidebarMenu) {
+function SidebarMenu({
+  isSidebarVisible,
+  onClose,
+  onOpenSettings,
+}: ISidebarMenu) {
   const { initChatting } = useThreads();
   return (
     <div
@@ -29,7 +34,7 @@ function SidebarMenu({ isSidebarVisible, onClose }: ISidebarMenu) {
       <SearchBar />
       <SortOptions />
       <ThreadList />
-      <ButtonList />
+      <ButtonList onOpenSettings={onOpenSettings} />
     </div>
   );
 }

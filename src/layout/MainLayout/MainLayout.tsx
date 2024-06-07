@@ -3,7 +3,11 @@ import { Chat, SidebarMenu, Header } from '../../components';
 import style from './MainLayout.module.css';
 import { getIsSidebarOpen, setIsSidebarOpen } from '../../utils';
 
-const MainLayout = ({ children }: { children: ReactNode }) => {
+interface IMainLayout {
+  onOpenSettings: () => void;
+  children: ReactNode;
+}
+const MainLayout = ({ onOpenSettings, children }: IMainLayout) => {
   const mediaQuery = window.matchMedia('(max-width: 768px)');
   const initIsSidebarVisible = mediaQuery.matches
     ? !mediaQuery.matches
@@ -47,6 +51,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
       <SidebarMenu
         isSidebarVisible={isSidebarVisible}
         onClose={toggleSidebar}
+        onOpenSettings={onOpenSettings}
       />
       <Header
         isSidebarVisible={isSidebarVisible}
