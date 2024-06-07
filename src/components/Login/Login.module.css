@@ -1,7 +1,7 @@
-@font-face {
+/* @font-face {
     font-family: 'Noto Sans KR';
     src: url('../fonts/NotoSansKR-VariableFont_wght.ttf');
-}
+} */
 
 .modal {
     width: 100%;
@@ -207,7 +207,7 @@
     border: 1px solid rgb(130, 138, 175);
     border-radius: 30px;
     margin-top: 15px;
-    background: url(../assets/lock_icon.png) no-repeat center;
+    background: url(../../assets/lock_icon.png) no-repeat center;
     background-position: 220px;
     background-size: 20px;
 }
@@ -218,7 +218,7 @@
     border: 1px solid red;
     border-radius: 30px;
     margin-top: 15px;
-    background: url(../assets/login_fail_icon.png) no-repeat center;
+    background: url(../../assets/login_fail_icon.png) no-repeat center;
     background-position: 220px;
     background-size: 20px;
 }
@@ -252,7 +252,7 @@
     top: 2px;
     right: 5px;
     cursor: pointer;
-    background-image: url(../assets/check_gray.png);
+    background-image: url(../../assets/check_gray.png);
     background-size: 70%;
     background-repeat: no-repeat;
     background-position: center;
@@ -261,7 +261,7 @@
 #chk:checked + .circle {
     background-color: #003DA5;
     border-color: #003DA5;
-    background-image: url(../assets/check_white.png);
+    background-image: url(../../assets/check_white.png);
 }
 
 #chk {
