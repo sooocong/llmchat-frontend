@@ -7,7 +7,7 @@ import {
   redirect,
   RouterProvider,
 } from 'react-router-dom';
-import { MainPage, LoginPage, MyPage, SignupPage } from './pages';
+import { MainPage, LoginPage, MyPage, SignupPage, ErrorPage } from './pages';
 import { getAccessToken } from './utils/storage';
 import GoogleRedirect from './components/Login/GoogleRedirect';
 import KakaoRedirect from './components/Login/KakaoRedirect';
@@ -35,6 +35,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <MainPage />, loader: notAuthLoader },
       {
