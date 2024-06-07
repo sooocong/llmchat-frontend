@@ -3,7 +3,6 @@ import styles from './ThreadItem.module.css';
 import { ReactComponent as OptionIcon } from '../../../assets/option.svg';
 import { ReactComponent as DeleteIcon } from '../../../assets/delete.svg';
 import { ReactComponent as EditIcon } from '../../../assets/edit.svg';
-import { ReactComponent as UploadIcon } from '../../../assets/upload.svg';
 import { useHideByClickOutside, useThreads } from '../../../hooks';
 
 function ThreadItem({ history }: { history: IThread }) {
@@ -82,10 +81,6 @@ function ThreadItem({ history }: { history: IThread }) {
 
       {isOptionOpen && (
         <ul ref={modalRef} className={styles.historyOptionList}>
-          <li className={styles.historyOptionItem}>
-            <UploadIcon width="17" height="17" />
-            공유
-          </li>
           <li className={styles.historyOptionItem} onClick={handleEditClick}>
             <EditIcon width="17" height="17" />
             편집
