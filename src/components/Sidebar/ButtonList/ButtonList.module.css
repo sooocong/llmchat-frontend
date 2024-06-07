@@ -18,3 +18,11 @@
 .sbutton:hover {
   background: #ebebeb;
 }
+
+.userImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+}

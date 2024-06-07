@@ -12,16 +12,19 @@ import { getAccessToken } from './utils/storage';
 import GoogleRedirect from './components/Login/GoogleRedirect';
 import KakaoRedirect from './components/Login/KakaoRedirect';
 import NaverRedirect from './components/Login/NaverRedirect';
+import { UserAPI } from './apis';
+
 const notAuthLoader = async () => {
   const token = getAccessToken();
   if (!token) {
     throw redirect('/login');
   }
-  return { token };
+  const user = await UserAPI.getUserProfile();
+
+  return { user };
 };
 const authLoader = async () => {
   const token = getAccessToken();
-  console.log(1, token);
   if (token) {
     throw redirect('/');
   }
