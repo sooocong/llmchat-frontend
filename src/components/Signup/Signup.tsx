@@ -18,7 +18,7 @@ function Signup() {
   const [phone, setPhone] = useState<string | null>('');
   const [emailId, setEmailId] = useState<string | null>('');
   const [domain, setDomain] = useState<string | null>('');
-  const emailRef = useRef<any>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const onChangeId = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,13 +60,15 @@ function Signup() {
   );
 
   const setEmail = (e: { target: { value: string } }) => {
-    if (e.target.value !== 'write') {
-      emailRef.current.value = e.target.value;
-      emailRef.current.disabled = true;
-      setDomain(e.target.value);
-    } else {
-      emailRef.current.value = '';
-      emailRef.current.disabled = false;
+    if (emailRef.current) {
+      if (e.target.value !== 'write') {
+        emailRef.current.value = e.target.value;
+        emailRef.current.disabled = true;
+        setDomain(e.target.value);
+      } else {
+        emailRef.current.value = '';
+        emailRef.current.disabled = false;
+      }
     }
   };
 
