@@ -51,7 +51,7 @@
   top: 40px;
 }
 
-.btn_close {
+/* .btn_close {
   width: 20px;
   height: 20px;
   color: #003da5;
@@ -65,7 +65,7 @@
   position: absolute;
   top: 26px;
   right: 32px;
-}
+} */
 
 .signup_detail {
   display: flex;
@@ -140,6 +140,11 @@
   cursor: pointer;
 }
 
+.email_section {
+  display: flex;
+  align-items: center;
+}
+
 .signup_email_input {
   width: 104px;
   height: 28px;
@@ -203,4 +208,82 @@
   left: 275px;
   margin-top: 5px;
   margin-bottom: 0px;
+}
+
+.mobile_logo {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .modal {
+    background-color: white;
+  }
+
+  .signup_modal {
+    justify-content: center;
+  }
+
+  .mobile_logo {
+    display: inline-block;
+  }
+
+  .signup_title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fasoo_icon {
+    display: none;
+  }
+
+  .signup_title_txt {
+    position: inherit;
+    margin-top: 20px;
+  }
+
+  .signup_detail {
+    align-items: center;
+  }
+
+  .signup_id,
+  .signup_pw,
+  .signup_chkpw,
+  .signup_name,
+  .signup_phone,
+  .signup_email {
+    width: 315px;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 30px;
+    position: relative;
+  }
+
+  .signup_info1,
+  .signup_info2 {
+    position: static;
+    margin-bottom: 5px;
+  }
+
+  .signup_input,
+  .signup_id input,
+  .signup_pw_input,
+  .signup_email_input {
+    margin: 0px;
+  }
+
+  .signup_id input {
+    width: 215px;
+    margin-right: 20px;
+  }
+
+  .msg_section {
+    width: 315px;
+    position: relative;
+  }
+
+  .error_msg {
+    position: absolute;
+    left: 0;
+  }
 }

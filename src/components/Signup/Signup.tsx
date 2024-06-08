@@ -1,18 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import styles from './Signup.module.css';
 import fasoo_icon from '../../assets/fasoo_icon.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ReactComponent as AerochatLogo } from '../../assets/aerochatLogo.svg';
 
-function Signup({
-  openLogin,
-  openSignup,
-  closeSignup,
-}: {
-  openLogin: () => void;
-  openSignup: boolean;
-  closeSignup: () => void;
-}) {
+function Signup() {
   const url = 'https://api.aero-chat.com';
   const [id, setId] = useState<string | null>('');
   const [pw, setPw] = useState<string | null>('');
@@ -25,6 +18,7 @@ function Signup({
   const [phone, setPhone] = useState<string | null>('');
   const [emailId, setEmailId] = useState<string | null>('');
   const [domain, setDomain] = useState<string | null>('');
+  const emailRef = useRef<any>(null);
   const navigate = useNavigate();
 
   const onChangeId = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,16 +60,13 @@ function Signup({
   );
 
   const setEmail = (e: { target: { value: string } }) => {
-    const emailTxt: HTMLInputElement = document.querySelector(
-      '#email_txt'
-    ) as HTMLInputElement;
     if (e.target.value !== 'write') {
-      emailTxt.value = e.target.value;
-      emailTxt.disabled = true;
+      emailRef.current.value = e.target.value;
+      emailRef.current.disabled = true;
       setDomain(e.target.value);
     } else {
-      emailTxt.value = '';
-      emailTxt.disabled = false;
+      emailRef.current.value = '';
+      emailRef.current.disabled = false;
     }
   };
 
@@ -124,30 +115,30 @@ function Signup({
   };
 
   return (
-    <div className={openSignup ? styles.modal : styles.closeModal}>
+    <div className={styles.modal}>
       <div className={styles.signup_modal}>
         <div className={styles.signup_top}>
           <img className={styles.fasoo_icon} src={fasoo_icon} alt="fasoo" />
           <div className={styles.signup_title}>
+            <AerochatLogo className={styles.mobile_logo} />
             <h1 className={styles.signup_title_txt}>회원가입</h1>
           </div>
-          <button className={styles.btn_close} onClick={closeSignup}>
-            X
-          </button>
         </div>
         <div className={styles.signup_detail}>
           <div className={styles.signup_id}>
             <h1 className={styles.signup_info1}>아이디</h1>
-            <input
-              className={styles.signup_input}
-              required
-              type="text"
-              placeholder="아이디 입력(6~20자)"
-              onChange={onChangeId}
-            />
-            <button className={styles.btn_dup} onClick={chkDup}>
-              중복 확인
-            </button>
+            <div>
+              <input
+                className={styles.signup_input}
+                required
+                type="text"
+                placeholder="아이디 입력(6~20자)"
+                onChange={onChangeId}
+              />
+              <button className={styles.btn_dup} onClick={chkDup}>
+                중복 확인
+              </button>
+            </div>
           </div>
           <div className={styles.msg_section}>
             <p className={idError ? styles.error_msg : styles.error_msg_none}>
@@ -206,29 +197,37 @@ function Signup({
           </div>
           <div className={styles.signup_email}>
             <h1 className={styles.signup_info2}>이메일</h1>
-            <input
-              className={styles.signup_email_input}
-              type="text"
-              placeholder="이메일 주소"
-              onChange={(e) => setEmailId(e.target.value)}
-            />
-            <p className={styles.signup_email_symbol}>@</p>
-            <input
-              className={styles.signup_email_box}
-              id="email_txt"
-              type="text"
-              onChange={(e) => setDomain(e.target.value)}
-            />
-            <select
-              className={styles.signup_email_select}
-              id="email_list"
-              onChange={setEmail}
-            >
-              <option hidden>선택</option>
-              <option value="google.com">google.com</option>
-              <option value="naver.com">naver.com</option>
-              <option value="write">직접 입력</option>
-            </select>
+
+            <div className={styles.email_section}>
+              <input
+                className={styles.signup_email_input}
+                type="text"
+                placeholder="이메일 주소"
+                onChange={(e) => setEmailId(e.target.value)}
+              />
+              <p className={styles.signup_email_symbol}>@</p>
+              <input
+                className={styles.signup_email_box}
+                ref={emailRef}
+                type="text"
+                onChange={(e) => setDomain(e.target.value)}
+              />
+              <select
+                className={styles.signup_email_select}
+                id="email_list"
+                onChange={setEmail}
+              >
+                <option hidden>선택</option>
+                <option value="google.com">google.com</option>
+                <option value="naver.com">naver.com</option>
+                <option value="write">직접 입력</option>
+              </select>
+            </div>
+
+
+
+
+
           </div>
           <div className={styles.btn_section}>
             <button className={styles.btn_signup} onClick={register}>
