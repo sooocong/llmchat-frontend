@@ -3,8 +3,8 @@ import styles from './ThreadItem.module.css';
 import { ReactComponent as OptionIcon } from '../../../assets/option.svg';
 import { ReactComponent as DeleteIcon } from '../../../assets/delete.svg';
 import { ReactComponent as EditIcon } from '../../../assets/edit.svg';
-import { ReactComponent as UploadIcon } from '../../../assets/upload.svg';
 import { useHideByClickOutside, useThreads } from '../../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 function ThreadItem({ history }: { history: IThread }) {
   const [inputValue, setInputValue] = useState('');
@@ -12,6 +12,7 @@ function ThreadItem({ history }: { history: IThread }) {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const { selectedThreadId, openThread, deleteThread, editThreadName } =
     useThreads();
+  const navigation = useNavigate();
 
   const modalRef = useHideByClickOutside(() => {
     setIsOptionOpen(false);
@@ -52,6 +53,7 @@ function ThreadItem({ history }: { history: IThread }) {
     const target = e.target as HTMLElement;
     if (target.closest('button')) return;
     openThread(history.id);
+    navigation('/');
   };
 
   return (
@@ -82,10 +84,6 @@ function ThreadItem({ history }: { history: IThread }) {
 
       {isOptionOpen && (
         <ul ref={modalRef} className={styles.historyOptionList}>
-          <li className={styles.historyOptionItem}>
-            <UploadIcon width="17" height="17" />
-            공유
-          </li>
           <li className={styles.historyOptionItem} onClick={handleEditClick}>
             <EditIcon width="17" height="17" />
             편집

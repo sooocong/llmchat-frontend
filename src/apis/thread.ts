@@ -38,6 +38,16 @@ export class ThreadAPI {
 
     return data.content;
   }
+  // 쓰레드 검색
+  static async getSearchedThreadList(query: string): Promise<ISearch[]> {
+    const { data } = await axiosInstance.get(`${this.PATH_ISSUES}/search`, {
+      params: {
+        query: query,
+      },
+    });
+
+    return data;
+  }
 
   // 쓰레드 생성
   static async createThread(): Promise<IThread> {
@@ -87,9 +97,6 @@ export class ThreadAPI {
 
   // 쓰레드 자동 이름 변경
   static async editNameByAuto(threadId: number) {
-    // sse 해결되기 전 임시
-    // await axiosInstance.put(`${this.PATH_ISSUES}/${threadId}/auto-rename`);
-
     const ACCESS_TOKEN = getAccessToken();
 
     const eventSource = new EventSourcePolyfill(
@@ -150,7 +157,7 @@ export class ThreadAPI {
     );
     console.log(response);
   }
-  
+
   // 북마크 생성
   static async createBookmark(messageId: number): Promise<IBookmark> {
     const { data } = await axiosInstance.post('/bookmark', {
@@ -159,7 +166,7 @@ export class ThreadAPI {
 
     return data;
   }
-  
+
   // 북마크 삭제
   static async deleteBookmark(messageId: number): Promise<void> {
     await axiosInstance.delete(`/bookmark/${messageId}`);

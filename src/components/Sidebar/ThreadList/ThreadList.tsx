@@ -34,8 +34,11 @@ function ThreadList() {
           );
         else return <ThreadItem key={data.id} history={data} />;
       })}
-      {isLoading && '로딩중...'}
-      {isError ? '에러 발생' : <li ref={ref}></li>}
+      {isError ? (
+        '에러 발생'
+      ) : (
+        <li style={{ minHeight: '10px' }} ref={ref}></li>
+      )}
     </ul>
   );
 }

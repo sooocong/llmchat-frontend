@@ -60,7 +60,8 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     setIsListening(true);
   };
 
-  const handleSendClick = () => {
+  const handleSendClick = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (inputText.trim()) {
       onSendMessage(inputText);
       setInputText('');
@@ -69,7 +70,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
 
   return (
     <>
-      <div className={styles.chatInputBox}>
+      <form className={styles.chatInputBox} onSubmit={handleSendClick}>
         <input
           type="text"
           className={styles.inputField}
@@ -78,8 +79,8 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
           onChange={(e) => setInputText(e.target.value)}
         />
         <div className={styles.voiceIcon} onClick={handleVoiceInput}></div>
-        <div className={styles.sendIcon} onClick={handleSendClick}></div>
-      </div>
+        <button type="submit" className={styles.sendIcon}></button>
+      </form>
 
       {isListening && (
         <div className={styles.listeningOverlay}>

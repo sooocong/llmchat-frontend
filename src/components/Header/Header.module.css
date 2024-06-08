@@ -1,0 +1,58 @@
+.chatHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  width: 100%;
+  min-height: 56px;
+  position: fixed;
+  padding-left: 20px;
+  gap: 8px;
+  transition: margin-left 0.3s ease;
+  z-index: 98;
+  background: white;
+}
+
+.sidebarVisible {
+  margin-left: 300px;
+}
+
+.sidebarHidden {
+  margin-left: 0;
+}
+
+.IconButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebarVisible .IconButton {
+  display: none;
+}
+.sidebarHidden .IconButton {
+  display: block;
+}
+
+@media only screen and (max-width: 768px) {
+  /*모바일*/
+  .chatHeader {
+    padding: 0 7.5%;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .chatHeader > :nth-child(2) {
+    order: 3;
+  }
+  .chatHeader > :nth-child(3) {
+    order: 2;
+  }
+
+  .sidebarVisible {
+    margin-left: 0;
+  }
+
+  .sidebarVisible .IconButton {
+    display: block;
+  }
+}

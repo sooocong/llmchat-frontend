@@ -1,15 +1,18 @@
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { ThreadAPI } from '../apis/thread';
 import { useUpdateEffect } from '../hooks';
-import { flushSync } from 'react-dom';
-
+import { setCurrentThreadId } from '../utils';
 interface ThreadContextType {
   threads: IThread[];
   messages: IMessage[];
   isLoading: boolean;
   isError: boolean;
+  isMsgLoading: boolean;
+  isMsgError: boolean;
+  isFirstMsgLoading: number;
   selectedThreadId: number;
   sort: SortType;
+  searchedThreads: ISearch[];
   getInfiniteThreads: () => void;
   resetThread: (sortType: SortType) => void;
   deleteThread: (id: number) => void;
@@ -17,11 +20,15 @@ interface ThreadContextType {
   openThread: (id: number) => void;
   sendMessage: (sendMessage: string) => void;
   editMessage: (threadId: number, messageId: number, message: string) => void;
+  refreshAnswer: (threadId: number, messageId: number, message: string) => void;
   rateMessage: (
     threadId: number,
     messageId: number,
     rating: 'GOOD' | 'BAD'
   ) => void;
+  initChatting: () => void;
+  getSearchedThreads: (query: string) => void;
+  getInfiniteMessages: () => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -29,8 +36,12 @@ const defaultVlaue: ThreadContextType = {
   messages: [],
   isLoading: false,
   isError: false,
+  isMsgLoading: false,
+  isMsgError: false,
+  isFirstMsgLoading: 0,
   selectedThreadId: -1,
   sort: 'desc',
+  searchedThreads: [],
   getInfiniteThreads: () => {
     throw new Error();
   },
@@ -52,7 +63,19 @@ const defaultVlaue: ThreadContextType = {
   editMessage: () => {
     throw new Error();
   },
+  refreshAnswer: () => {
+    throw new Error();
+  },
   rateMessage: () => {
+    throw new Error();
+  },
+  initChatting: () => {
+    throw new Error();
+  },
+  getSearchedThreads: () => {
+    throw new Error();
+  },
+  getInfiniteMessages: () => {
     throw new Error();
   },
 };
@@ -70,15 +93,22 @@ export function ThreadContextProvider({
   const [threads, setThreads] = useState<IThread[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isMsgLoading, setIsMsgLoading] = useState(false);
+  const [isMsgError, setIsMsgError] = useState(false);
+  const [isFirstMsgLoading, setIsFirstMsgLoading] = useState(0); // 첫 로드를 했는지 판단하는 상태 (첫 로드 마치면 1 이상)
   const [selectedThreadId, setSelectedThreadId] = useState(-1);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [sort, setSort] = useState<SortType>('desc');
+  const [searchedThreads, setSearchedThreads] = useState<ISearch[]>([]);
 
   const pageRef = useRef(0);
   const isEndRef = useRef(false);
+  const pageMsgRef = useRef(0);
+  const isEndMsgRef = useRef(false);
   const currentRollRef = useRef('USER');
   const isFirstAnswer = useRef(true);
   const editIdxRef = useRef(-1);
+  const isNewChatRef = useRef(true);
 
   // 쓰레드 무한 스크롤
   const getInfiniteThreads = async () => {
@@ -118,10 +148,25 @@ export function ThreadContextProvider({
     setSort(sortType);
   };
 
+  const initChatting = () => {
+    setSelectedThreadId(-1);
+    setMessages([]);
+    isNewChatRef.current = true;
+    pageMsgRef.current = 0;
+    isEndMsgRef.current = false;
+    setIsFirstMsgLoading(0);
+    setIsMsgError(false);
+    setIsMsgLoading(false);
+    isNewChatRef.current = true;
+  };
+
   useUpdateEffect(() => {
     getInfiniteThreads();
   }, [sort]);
 
+  useEffect(() => {
+    setCurrentThreadId(selectedThreadId);
+  }, [selectedThreadId]);
   // 쓰레드 삭제
   const deleteThread = async (id: number) => {
     try {
@@ -130,8 +175,7 @@ export function ThreadContextProvider({
       setThreads(newThreads);
       if (id === selectedThreadId) {
         // 삭제한 스레드가 현재 채팅방이라면
-        setSelectedThreadId(-1);
-        setMessages([]);
+        initChatting();
       }
     } catch (error) {
       console.error(error);
@@ -155,10 +199,48 @@ export function ThreadContextProvider({
   const openThread = async (id: number) => {
     try {
       setSelectedThreadId(id); // 쓰레드 id 변경
-      const response = await ThreadAPI.getMessages(id, 0); // 메시지 불러오기
-      setMessages(response); // 메시지 설정
+      setMessages([]);
+      setSearchedThreads([]);
+      pageMsgRef.current = 0;
+      isEndMsgRef.current = false;
+      setIsFirstMsgLoading(0);
+      setIsMsgError(false);
+      setIsMsgLoading(false);
+      isNewChatRef.current = false;
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  // 메시지 무한 스크롤
+  const getInfiniteMessages = async () => {
+    if (isEndMsgRef.current) return;
+
+    setIsMsgLoading(true);
+    try {
+      const response = await ThreadAPI.getMessages(
+        selectedThreadId,
+        pageMsgRef.current
+      );
+      if (response.length === 0 || isNewChatRef.current) {
+        isEndMsgRef.current = true;
+        return;
+      }
+
+      setIsFirstMsgLoading((prev) => prev + 1);
+      pageMsgRef.current = pageMsgRef.current + 1;
+      setMessages((prev) => {
+        const mergedMessages = [...prev, ...response];
+        const uniqueMessages = Array.from(
+          new Map(mergedMessages.map((msg) => [msg.id, msg])).values()
+        );
+        return uniqueMessages;
+      });
+    } catch (error) {
+      setIsMsgError(true);
+      console.error(error);
+    } finally {
+      setIsMsgLoading(false);
     }
   };
 
@@ -172,16 +254,14 @@ export function ThreadContextProvider({
         // 2. 현재 스레드 변경
         setSelectedThreadId(response.id);
         // 3. 메시지 보내기
-        listenToMessegeSSE(response.id, message);
+        listenToMessegeSSE(response.id, message, response);
 
         if (sort === 'asc') {
           resetThread('desc');
           isFirstAnswer.current = false;
         }
-
-        // 4. 자동 이름 변경
-        listenToThreadSSE(response);
       } else {
+        isNewChatRef.current = false;
         // 메시지 보내기
         listenToMessegeSSE(selectedThreadId, message);
       }
@@ -191,7 +271,11 @@ export function ThreadContextProvider({
   };
 
   // 메시지 sse로 받기
-  const listenToMessegeSSE = async (threadId: number, message: string) => {
+  const listenToMessegeSSE = async (
+    threadId: number,
+    message: string,
+    ...thread: IThread[]
+  ) => {
     const eventSource = await ThreadAPI.sendMessage(threadId, message);
     eventSource.onmessage = (event) => {
       const data = event.data.trim();
@@ -225,6 +309,11 @@ export function ThreadContextProvider({
     };
 
     eventSource.onerror = () => {
+      if (isNewChatRef.current) {
+        // 4. 자동 이름 변경
+        listenToThreadSSE(thread[0]);
+        isNewChatRef.current = false;
+      }
       eventSource.close();
     };
   };
@@ -319,7 +408,61 @@ export function ThreadContextProvider({
     try {
       await ThreadAPI.rateMessage(threadId, messageId, rating);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    }
+  };
+
+  // 메시지 수정 (sse)
+  const refreshAnswer = async (
+    threadId: number,
+    messageId: number, // 질문의 인덱스
+    message: string
+  ) => {
+    try {
+      const eventSource = await ThreadAPI.editMessage(
+        threadId,
+        messageId,
+        message
+      );
+      eventSource.onmessage = (event) => {
+        const data = event.data.trim();
+        const { content, messageId, role } = JSON.parse(data);
+
+        // 1. 내 질문은 바로 반영
+        if (role === 'USER') {
+          setMessages((prev) => {
+            editIdxRef.current = prev.findIndex((msg) => msg.id === messageId);
+            return prev.map(
+              (msg, i) =>
+                i === editIdxRef.current - 1 ? { ...msg, content: '' } : msg // 응답은 ''로 변경
+            );
+          });
+        }
+        if (role === 'ASSISTANT') {
+          setMessages((prev) =>
+            prev.map((msg, i) =>
+              i === editIdxRef.current - 1
+                ? { ...msg, id: messageId, content: msg.content + content }
+                : msg
+            )
+          );
+        }
+      };
+
+      eventSource.onerror = () => {
+        eventSource.close();
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getSearchedThreads = async (query: string) => {
+    try {
+      const response = await ThreadAPI.getSearchedThreadList(query);
+      setSearchedThreads(response);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -329,9 +472,13 @@ export function ThreadContextProvider({
         threads,
         isLoading,
         isError,
+        isMsgLoading,
+        isMsgError,
+        isFirstMsgLoading,
         selectedThreadId,
         messages,
         sort,
+        searchedThreads,
         getInfiniteThreads,
         resetThread,
         deleteThread,
@@ -339,7 +486,11 @@ export function ThreadContextProvider({
         openThread,
         sendMessage,
         editMessage,
+        refreshAnswer,
         rateMessage,
+        initChatting,
+        getSearchedThreads,
+        getInfiniteMessages,
       }}
     >
       {children}

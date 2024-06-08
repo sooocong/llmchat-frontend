@@ -1,328 +1,324 @@
-@font-face {
-    font-family: 'Noto Sans KR';
-    src: url('../fonts/NotoSansKR-VariableFont_wght.ttf');
-}
-
 .modal {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
 .closeModal {
-    display: none;
+  display: none;
 }
 
 .settings_modal {
-    width: 842px;
-    height: 593px;
-    background-color: white;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Noto Sans KR';
+  width: 842px;
+  height: 593px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Noto Sans KR';
 }
 
 .settings_top {
-    height: 125px;
-    display: flex;
-    position: relative;
-    border-bottom: 1px solid #D9D9D9;
+  height: 125px;
+  display: flex;
+  position: relative;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 .settings_icon {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 37px;
-    left: 40px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 37px;
+  left: 40px;
 }
 
 .settings_title {
-    width: 100%;
-    display: flex;
+  width: 100%;
+  display: flex;
 }
 
 .settings_title_txt {
-    font-size: 20px;
-    font-weight: 600;
-    position: absolute;
-    left: 90px;
-    top: 28px;
+  font-size: 20px;
+  font-weight: 600;
+  position: absolute;
+  left: 90px;
+  top: 28px;
 }
 
 .btn_close {
-    width: 20px;
-    height: 20px;
-    color: #003DA5;
-    background-color: white;
-    border: 1.5px solid #003DA5;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: absolute;
-    top: 26px;
-    right: 32px;
+  width: 20px;
+  height: 20px;
+  color: #003da5;
+  background-color: white;
+  border: 1.5px solid #003da5;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  top: 26px;
+  right: 32px;
 }
 
 .settings_detail {
-    display: flex;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
 .settings_tab {
-    width: 244px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 40px;
+  width: 244px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
 }
 
 .settings_tab_menu {
-    display: flex;
-    align-items: center;
-    width: 158px;
-    height: 40px;
-    margin-bottom: 12px;
-    border-radius: 10px;
-    padding: 0 20px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 158px;
+  height: 40px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  padding: 0 20px;
+  cursor: pointer;
 }
 
 .settings_tab_menu_active {
-    display: flex;
-    align-items: center;
-    width: 158px;
-    height: 40px;
-    margin-bottom: 12px;
-    border-radius: 10px;
-    padding: 0 20px; 
-    background-color: #ECECEC;
+  display: flex;
+  align-items: center;
+  width: 158px;
+  height: 40px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  padding: 0 20px;
+  background-color: #ececec;
 }
 
 .settings_tab_txt {
-    font-size: 16px;
-    font-weight: 400;
-    margin-left: 15px;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 15px;
 }
 
 .settings_content {
-    width: 530px;
-    padding: 0 30px;
-    padding-top: 20px;
+  width: 530px;
+  padding: 0 30px;
+  padding-top: 20px;
 }
 
 .settings_basic {
-    width: 21px;
-    height: 21px;
+  width: 21px;
+  height: 21px;
 }
 
 .settings_content_detail {
-    width: 100%;
-    height: 100%;
-    display: none;
+  width: 100%;
+  height: 100%;
+  display: none;
 }
 
 .settings_content_active {
-    display: block;
+  display: block;
 }
 
 .settings_option {
-    position: relative;
-    border-bottom: 1px solid #D9D9D9;
+  position: relative;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 .settings_theme {
-    width: 165px;
-    height: 65px;
-    background-color: white;
-    border: 1px solid #B7BCD1;
-    border-radius: 5px;
-    position: absolute;
-    z-index: auto;
-    top: -5px;
-    right: -175px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-weight: 300;
-    padding: 10px 0;
+  width: 165px;
+  height: 65px;
+  background-color: white;
+  border: 1px solid #b7bcd1;
+  border-radius: 5px;
+  position: absolute;
+  z-index: auto;
+  top: -5px;
+  right: -175px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 300;
+  padding: 10px 0;
 }
 
 .select_list {
-    position: absolute;
-    top: 4px;
-    right: 0px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
+  position: absolute;
+  top: 4px;
+  right: 0px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .btn_option {
-    position: absolute;
-    height: 36px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    top: -6px;
-    right: 0px;
+  position: absolute;
+  height: 36px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  top: -6px;
+  right: 0px;
 }
 
 .btn_option:hover {
-    background-color: #ECECEC;
-    border-radius: 10px;
+  background-color: #ececec;
+  border-radius: 10px;
 }
 
 .selected_option {
-    font-size: 16px;
-    margin-right: 5px;
+  font-size: 16px;
+  margin-right: 5px;
 }
 
 .select_arrow {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .select_arrow_icon {
-    width: 13px;
+  width: 13px;
 }
 
 .settings_language {
-    width: 165px;
-    height: 338px;
-    background-color: white;
-    border: 1px solid #B7BCD1;
-    border-radius: 5px;
-    position: absolute;
-    z-index: auto;
-    top: -5px;
-    right: -175px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-weight: 300;
+  width: 165px;
+  height: 338px;
+  background-color: white;
+  border: 1px solid #b7bcd1;
+  border-radius: 5px;
+  position: absolute;
+  z-index: auto;
+  top: -5px;
+  right: -175px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 300;
 }
 
 .selected_language {
-    width: 140px;
-    height: 43px;
-    border-bottom: 1px solid #D9D9D9;
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
+  width: 140px;
+  height: 43px;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
 }
 
 .language_option {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .option_box {
-    width: 140px;
-    height: 32px;
-    display: flex;
-    align-items: center;
+  width: 140px;
+  height: 32px;
+  display: flex;
+  align-items: center;
 }
 
 .option_box:hover {
-    background-color: #ECECEC;
-    border-radius: 10px;
-    cursor: pointer;
+  background-color: #ececec;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .btn_delete {
-    position: absolute;
-    width: 84px;
-    height: 33px;
-    text-align: center;
-    font-size: 16px;
-    color: white;
-    background-color: #D10404;
-    border: none;
-    border-radius: 10px;
-    bottom: 10.5px;
-    right: 0px;
-    cursor: pointer;
+  position: absolute;
+  width: 84px;
+  height: 33px;
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  background-color: #d10404;
+  border: none;
+  border-radius: 10px;
+  bottom: 10.5px;
+  right: 0px;
+  cursor: pointer;
 }
 
 .settings_personal_txt {
-    font-size: 13px;
-    margin-bottom: 5px;
+  font-size: 13px;
+  margin-bottom: 5px;
 }
 
 .settings_personal_txtarea {
-    width: 500px;
-    height: 135px;
-    resize: none;
-    border: 1px solid #B7BCD1;
-    border-radius: 5px;
+  width: 500px;
+  height: 135px;
+  resize: none;
+  border: 1px solid #b7bcd1;
+  border-radius: 5px;
 }
 
 .settings_personal_txtarea_cnt {
-    color: #888888;
-    font-size: 10px;
-    margin: 0 auto;
+  color: #888888;
+  font-size: 10px;
+  margin: 0 auto;
 }
 
 .settings_personal_chk_txt {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 .settings_personal_section {
-    display: flex;
-    position: relative;
-    align-items: center;
-    margin-top: 5px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-top: 5px;
 }
 
 .settings_version {
-    width: 252px;
-    height: 181px;
-    background-color: white;
-    border: 1px solid #B7BCD1;
-    border-radius: 5px;
-    position: absolute;
-    z-index: auto;
-    top: -5px;
-    right: -260px;
-    display: flex;
-    flex-direction: column;
-    font-weight: 300;
+  width: 252px;
+  height: 181px;
+  background-color: white;
+  border: 1px solid #b7bcd1;
+  border-radius: 5px;
+  position: absolute;
+  z-index: auto;
+  top: -5px;
+  right: -260px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 300;
 }
 
 .version_option {
-    width: 252px;
-    height: 90px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 252px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .version_option p {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 .version_option:hover {
-    background-color: #ECECEC;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #ececec;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .version_desc_txt {
-    font-size: 14px;
-    color: #888888;
+  font-size: 14px;
+  color: #888888;
 }

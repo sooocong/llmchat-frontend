@@ -1,25 +1,18 @@
 import React from 'react';
-import NavigationTabs from './components/MyPage/NavigationTabs';
-import MyProfilePRovider from './provider/myProfileProvider';
+import { Outlet } from 'react-router-dom';
 import MyProfileProvider from './provider/myProfileProvider';
-import MyPageView from './components/MyPage/MyPageView';
-import MyPageProfile from './components/MyPage/MyPageProfile';
 import PopupProvider from './provider/popupProvider';
-
+import { ThreadContextProvider } from './context';
 
 function App() {
   return (
-    <div className="App flex justify-content-center">
+    <ThreadContextProvider>
       <MyProfileProvider>
         <PopupProvider>
-          <div className={'w-full w-m-1440'}>
-            <MyPageProfile />
-            <NavigationTabs />
-            <MyPageView />
-          </div>
+          <Outlet />
         </PopupProvider>
       </MyProfileProvider>
-    </div>
+    </ThreadContextProvider>
   );
 }
 
