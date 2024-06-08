@@ -97,12 +97,26 @@ function Login() {
                 type="text"
                 placeholder="아이디"
                 onChange={(e) => setId(e.target.value)}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      login(e);
+                    }
+                  }
+                }
               />
               <input
                 className={loginFail ? styles.pw_input_fail : styles.pw_input}
                 type="password"
                 placeholder="비밀번호"
                 onChange={(e) => setPw(e.target.value)}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      login(e);
+                    }
+                  }
+                }
               />
               <p
                 className={

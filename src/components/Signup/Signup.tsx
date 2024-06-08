@@ -134,6 +134,13 @@ function Signup() {
                 type="text"
                 placeholder="아이디 입력(6~20자)"
                 onChange={onChangeId}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      register(e);
+                    }
+                  }
+                }
               />
               <button className={styles.btn_dup} onClick={chkDup}>
                 중복 확인
@@ -152,6 +159,13 @@ function Signup() {
               type="password"
               placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8~20자)"
               onChange={onChangePw}
+              onKeyDown={
+                (e) => {
+                  if (e.key === 'Enter') {
+                    register(e);
+                  }
+                }
+              }
             />
           </div>
           <div className={styles.msg_section}>
@@ -166,6 +180,13 @@ function Signup() {
               type="password"
               placeholder="비밀번호 재입력"
               onChange={onChangeValidPw}
+              onKeyDown={
+                (e) => {
+                  if (e.key === 'Enter') {
+                    register(e);
+                  }
+                }
+              }
             />
           </div>
           <div className={styles.msg_section}>
@@ -184,6 +205,13 @@ function Signup() {
               type="text"
               placeholder="이름을 입력해주세요"
               onChange={(e) => setName(e.target.value)}
+              onKeyDown={
+                (e) => {
+                  if (e.key === 'Enter') {
+                    register(e);
+                  }
+                }
+              }
             />
           </div>
           <div className={styles.signup_phone}>
@@ -193,6 +221,13 @@ function Signup() {
               type="text"
               placeholder="휴대폰 번호를 입력('-'제외 11자리 입력)"
               onChange={(e) => setPhone(e.target.value)}
+              onKeyDown={
+                (e) => {
+                  if (e.key === 'Enter') {
+                    register(e);
+                  }
+                }
+              }
             />
           </div>
           <div className={styles.signup_email}>
@@ -204,6 +239,13 @@ function Signup() {
                 type="text"
                 placeholder="이메일 주소"
                 onChange={(e) => setEmailId(e.target.value)}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      register(e);
+                    }
+                  }
+                }
               />
               <p className={styles.signup_email_symbol}>@</p>
               <input
@@ -211,6 +253,13 @@ function Signup() {
                 ref={emailRef}
                 type="text"
                 onChange={(e) => setDomain(e.target.value)}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      register(e);
+                    }
+                  }
+                }
               />
               <select
                 className={styles.signup_email_select}
