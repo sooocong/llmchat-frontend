@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './Chatting.module.css';
 
 type SpeechRecognition = {
@@ -29,6 +29,8 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   const [inputText, setInputText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<InstanceType<SpeechRecognition> | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const chatInputBoxRef = useRef<HTMLFormElement | null>(null);
 
   const handleVoiceInput = () => {
     if (!recognitionRef.current) {
@@ -41,7 +43,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
 
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        setInputText(transcript);
+        setInputText((prevText) => prevText + transcript);
         setIsListening(false);
       };
 
@@ -68,15 +70,35 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputText(e.target.value);
+  };
+
+  useEffect(() => {
+    if (textareaRef.current && chatInputBoxRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + 'px';
+      chatInputBoxRef.current.style.height =
+        textareaRef.current.scrollHeight + 22 + 'px'; // padding 추가
+    }
+  }, [inputText]);
+
   return (
     <>
-      <form className={styles.chatInputBox} onSubmit={handleSendClick}>
-        <input
-          type="text"
+      <form
+        className={styles.chatInputBox}
+        onSubmit={handleSendClick}
+        ref={chatInputBoxRef}
+      >
+        <textarea
+          ref={textareaRef}
           className={styles.inputField}
           placeholder="질문해 보세요!"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={handleChange}
+          rows={1}
+          style={{ maxHeight: '150px' }} // 최대 높이를 설정
         />
         <div className={styles.voiceIcon} onClick={handleVoiceInput}></div>
         <button type="submit" className={styles.sendIcon}></button>

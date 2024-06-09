@@ -27,7 +27,6 @@
   width: 85%;
   max-width: 700px;
   min-width: 306px;
-  height: 50px;
   padding: 11px;
   border-color: var(--color-gray);
   border-style: solid;
@@ -37,6 +36,7 @@
   justify-content: flex-end; /* 오른쪽 정렬 */
   align-items: center; /* 가운데 정렬 */
   box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
+  position: relative;
 }
 
 .inputField {
@@ -46,8 +46,10 @@
   padding: 10px 0 10px 10px; /* 여백 추가 */
   font-size: 16px; /* 글자 크기 설정 */
   border-radius: 20px; /* 경계선 둥글게 */
+  resize: none; /* 사용자가 크기를 조절하지 못하도록 */
+  overflow: hidden; /* 내용이 넘칠 때 숨기기 */
+  max-height: 150px; /* 최대 높이 설정 */
 }
-
 .contentBox {
   display: flex; /* 이를 통해 자식 요소들을 가로로 정렬 */
   width: 100%;
@@ -158,6 +160,21 @@
   cursor: pointer;
 }
 
+.speakStopIcon {
+  width: 23px;
+  height: 23px;
+  margin-right: 10px;
+  background-image: url('/src/assets/speakStop.svg');
+  background-size: cover;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.speakerIcon,
+.speakStopIcon {
+  transition: background-image 0.3s ease-in-out;
+}
+
 .copyIcon {
   width: 24px;
   height: 24px;
@@ -228,10 +245,16 @@
   cursor: pointer;
 }
 
+.voiceIcon,
+.sendIcon {
+  position: absolute;
+  bottom: 15px; /* 하단에서 아이콘을 고정 */
+}
+
 .voiceIcon {
+  right: 60px;
   width: 38px;
   height: 38px;
-  margin-right: 5px;
   background-image: url('/src/assets/voice.svg');
   background-size: cover;
   display: inline-block;
@@ -239,9 +262,9 @@
 }
 
 .sendIcon {
+  right: 20px;
   width: 35px;
   height: 35px;
-  margin-right: 5px;
   border: none;
   background-color: transparent;
   background-image: url('/src/assets/send.svg');
