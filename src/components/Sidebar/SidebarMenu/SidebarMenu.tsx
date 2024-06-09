@@ -7,6 +7,7 @@ import { SortOptions } from '../SortOptions';
 import { useThreads } from '../../../hooks';
 import { ReactComponent as LeftIcon } from '../../../assets/left-arrow-button.svg';
 import { ReactComponent as CreateIcon } from '../../../assets/create-button.svg';
+import { useNavigate } from 'react-router-dom';
 interface ISidebarMenu {
   isSidebarVisible: boolean;
   onClose: () => void;
@@ -19,6 +20,13 @@ function SidebarMenu({
   onOpenSettings,
 }: ISidebarMenu) {
   const { initChatting } = useThreads();
+  const navigation = useNavigate();
+
+  const handleCreateClick = () => {
+    initChatting();
+    navigation('/');
+  };
+
   return (
     <div
       className={`${styles.container} ${isSidebarVisible ? styles.visible : styles.hidden}`}
@@ -27,7 +35,7 @@ function SidebarMenu({
         <button className={styles.IconButton} onClick={onClose}>
           <LeftIcon />
         </button>
-        <button className={styles.IconButton} onClick={initChatting}>
+        <button className={styles.IconButton} onClick={handleCreateClick}>
           <CreateIcon />
         </button>
       </div>
