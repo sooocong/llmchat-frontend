@@ -1,3 +1,7 @@
+type IShare = {
+  sharedKey: string;
+  sharedAt: string;
+};
 interface ISharedThread {
   id: number;
   threadId: number;
@@ -7,11 +11,6 @@ interface ISharedThread {
   sharedKey: string;
   sharedAt: string;
 }
-
-type IShare = {
-  sharedKey: string;
-  sharedAt: string;
-};
 
 interface ISharedMessage {
   id: number;

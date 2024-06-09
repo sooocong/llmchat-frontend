@@ -15,6 +15,8 @@ import {
   SignupPage,
   ErrorPage,
   SearchPage,
+  SharePage,
+  shareLoader,
 } from './pages';
 import GoogleRedirect from './components/Login/GoogleRedirect';
 import KakaoRedirect from './components/Login/KakaoRedirect';
@@ -92,6 +94,11 @@ const router = createBrowserRouter([
         path: '/search/:query',
         element: <SearchPage />,
         loader: searchLoader,
+      },
+      {
+        path: '/share/:shareKey',
+        element: <SharePage />,
+        loader: shareLoader,
       },
     ],
   },

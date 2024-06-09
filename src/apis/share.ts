@@ -49,7 +49,12 @@ export class ShareAPI {
     sharedKey: string
   ): Promise<ISharedThread> {
     const { data } = await axiosInstance.get(
-      `${this.PATH_ISSUES}/shared-thread/${sharedKey}/message`
+      `${this.PATH_ISSUES}/shared-thread/${sharedKey}/message`,
+      {
+        params: {
+          size: 10000,
+        },
+      }
     );
 
     return data.content;

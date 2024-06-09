@@ -25,7 +25,7 @@ const ShareModal = ({ onCloseModal, threadId, messageId }: IShareModal) => {
       const newURL = `http://localhost:3000/share/${sharedKey}`;
       setInputValue(newURL);
       setButtonText('링크 복사하기');
-      setTitle('공개 링크 생성');
+      setTitle('공개 링크 생성 완료');
 
       setIsSubmitting(false);
       navigator.clipboard.writeText(newURL);
