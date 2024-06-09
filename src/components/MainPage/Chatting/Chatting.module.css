@@ -33,10 +33,12 @@
   border-width: 1px;
   border-radius: 20px;
   display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  align-items: center; /* 가운데 정렬 */
+  justify-content: space-between; /* 좌우 정렬 */
+  align-items: flex-end; /* 하단 정렬 */
   box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
   position: relative;
+  min-height: 72px;
+  max-height: 172px;
 }
 
 .inputField {
@@ -49,6 +51,9 @@
   resize: none; /* 사용자가 크기를 조절하지 못하도록 */
   overflow: hidden; /* 내용이 넘칠 때 숨기기 */
   max-height: 150px; /* 최대 높이 설정 */
+  max-width: calc(
+    100% - 90px
+  ); /* 아이콘 영역을 침범하지 않도록 최대 너비 설정 */
 }
 .contentBox {
   display: flex; /* 이를 통해 자식 요소들을 가로로 정렬 */
@@ -96,7 +101,7 @@
 .questionTextBox {
   display: flex;
   width: 100%;
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
 }
 
 .bottomBox {

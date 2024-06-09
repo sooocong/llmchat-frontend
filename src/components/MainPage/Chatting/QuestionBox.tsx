@@ -77,10 +77,10 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   useEffect(() => {
     if (textareaRef.current && chatInputBoxRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + 'px';
-      chatInputBoxRef.current.style.height =
-        textareaRef.current.scrollHeight + 22 + 'px'; // padding 추가
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const maxHeight = 150; // 최대 높이 150px (약 7줄)
+      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
+      chatInputBoxRef.current.style.height = `${Math.min(scrollHeight, maxHeight) + 22}px`; // padding 추가
     }
   }, [inputText]);
 
