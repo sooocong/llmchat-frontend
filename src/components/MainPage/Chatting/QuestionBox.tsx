@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './Chatting.module.css';
 
 type SpeechRecognition = {
@@ -29,6 +29,8 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   const [inputText, setInputText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<InstanceType<SpeechRecognition> | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const chatInputBoxRef = useRef<HTMLFormElement | null>(null);
 
   const handleVoiceInput = () => {
     if (!recognitionRef.current) {
@@ -41,7 +43,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
 
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        setInputText(transcript);
+        setInputText((prevText) => prevText + transcript);
         setIsListening(false);
       };
 
@@ -63,20 +65,57 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   const handleSendClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputText.trim()) {
-      onSendMessage(inputText);
+      onSendMessage(inputText.replace(/\n/g, '<br />')); // 줄바꿈을 <br />로 변환
       setInputText('');
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputText(e.target.value);
+  };
+
+  useEffect(() => {
+    const handlePaste = (event: ClipboardEvent) => {
+      const pasteText = event.clipboardData?.getData('text') || '';
+      setInputText((prevText) => prevText + pasteText);
+    };
+
+    if (textareaRef.current) {
+      textareaRef.current.addEventListener('paste', handlePaste);
+    }
+
+    return () => {
+      if (textareaRef.current) {
+        textareaRef.current.removeEventListener('paste', handlePaste);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (textareaRef.current && chatInputBoxRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const maxHeight = 150; // 최대 높이 150px (약 7줄)
+      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
+      chatInputBoxRef.current.style.height = `${Math.min(scrollHeight, maxHeight) + 22}px`; // padding 추가
+    }
+  }, [inputText]);
+
   return (
     <>
-      <form className={styles.chatInputBox} onSubmit={handleSendClick}>
-        <input
-          type="text"
+      <form
+        className={styles.chatInputBox}
+        onSubmit={handleSendClick}
+        ref={chatInputBoxRef}
+      >
+        <textarea
+          ref={textareaRef}
           className={styles.inputField}
           placeholder="질문해 보세요!"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={handleChange}
+          rows={1}
+          style={{ maxHeight: '150px' }} // 최대 높이를 설정
         />
         <div className={styles.voiceIcon} onClick={handleVoiceInput}></div>
         <button type="submit" className={styles.sendIcon}></button>

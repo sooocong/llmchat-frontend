@@ -69,9 +69,12 @@ export const SearchResult = () => {
           handleThreadOpen(item.id);
         }}
       >
-        <div className={style.title}>{item.chatName}</div>
-        <div className={style.content}>
-          {highlightMatch(item.matchHighlight, query)}
+        <div className={style.answerIcon}></div>
+        <div className={style.itemContent}>
+          <div className={style.title}>{item.chatName}</div>
+          <div className={style.content}>
+            {highlightMatch(item.matchHighlight, query)}
+          </div>
         </div>
       </div>
     ));
