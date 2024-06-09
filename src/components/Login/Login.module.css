@@ -258,7 +258,7 @@
     background-position: center;
 }
 
-#chk:checked + .circle {
+#chk:checked+.circle {
     background-color: #003DA5;
     border-color: #003DA5;
     background-image: url(../../assets/check_white.png);
@@ -316,4 +316,37 @@
 
 .icon_social {
     width: 30px;
+}
+
+.mobile_logo {
+    display: none;
+}
+
+@media (max-width:1279px) {
+    .desc_container {
+        display: none;
+    }
+
+    .modal {
+        background-color: white;
+    }
+
+    .login_title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .login_title h1 {
+        margin-top: 40px;
+    }
+
+    .mobile_logo {
+        display: inline-block;
+    }
+
+    .login_modal {
+        height: 100%;
+        align-items: center;
+    }
 }

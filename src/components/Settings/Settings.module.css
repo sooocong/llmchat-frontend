@@ -26,18 +26,18 @@
 }
 
 .settings_top {
-  height: 125px;
+  height: 100px;
   display: flex;
+  align-items: center;
   position: relative;
   border-bottom: 1px solid #d9d9d9;
+  padding: 40px;
 }
 
 .settings_icon {
   width: 40px;
   height: 40px;
-  position: absolute;
-  top: 37px;
-  left: 40px;
+
 }
 
 .settings_title {
@@ -48,9 +48,7 @@
 .settings_title_txt {
   font-size: 20px;
   font-weight: 600;
-  position: absolute;
-  left: 90px;
-  top: 28px;
+  margin-left: 10px;
 }
 
 .btn_close {
@@ -115,7 +113,7 @@
 .settings_content {
   width: 530px;
   padding: 0 30px;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .settings_basic {
@@ -134,13 +132,17 @@
 }
 
 .settings_option {
+  height: 40px;
+  display: flex;
+  align-items: center;
   position: relative;
   border-bottom: 1px solid #d9d9d9;
+  margin-bottom: 10px;
 }
 
 .settings_theme {
   width: 165px;
-  height: 65px;
+  height: 85px;
   background-color: white;
   border: 1px solid #b7bcd1;
   border-radius: 5px;
@@ -151,7 +153,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: 300;
   padding: 10px 0;
 }
 
@@ -173,7 +174,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  top: -6px;
+  top: 0px;
   right: 0px;
 }
 
@@ -209,7 +210,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: 300;
 }
 
 .selected_language {
@@ -251,6 +251,7 @@
   border: none;
   border-radius: 10px;
   bottom: 10.5px;
+  top: 0px;
   right: 0px;
   cursor: pointer;
 }
@@ -297,7 +298,6 @@
   right: -260px;
   display: flex;
   flex-direction: column;
-  font-weight: 300;
 }
 
 .version_option {

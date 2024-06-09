@@ -183,7 +183,6 @@ function Settings({
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log(response);
           window.localStorage.setItem('theme', response.data.uiTheme);
           window.localStorage.setItem('language', response.data.uiLanguageCode);
           window.localStorage.setItem('voice', response.data.speechVoice);

@@ -10,16 +10,8 @@ import desc_img2 from '../../assets/desc_img2.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken, removeAccessToken } from '../../utils';
-import Signup from './../Signup/Signup';
-function Login({
-  openLogin,
-  closeLogin,
-  openSignup,
-}: {
-  openLogin: boolean;
-  closeLogin: () => void;
-  openSignup: () => void;
-}) {
+import { ReactComponent as AerochatLogo } from '../../assets/aerochatLogo.svg';
+function Login() {
   const url = 'https://api.aero-chat.com';
   const googleUrl =
     'https://accounts.google.com/o/oauth2/auth?client_id=374896040124-3usn6g5to8tugcd0qdsi925klr0f2ac9.apps.googleusercontent.com&redirect_uri=http://localhost:3000/login/google/callback&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile';
@@ -60,7 +52,7 @@ function Login({
   };
 
   return (
-    <div className={openLogin ? styles.modal : styles.closeModal}>
+    <div className={styles.modal}>
       <div className={styles.login_modal}>
         <div className={styles.desc_container}>
           <div className={styles.desc_title}>
@@ -94,12 +86,8 @@ function Login({
           </div>
         </div>
         <div className={styles.login_container}>
-          <div className={styles.login_close}>
-            <button className={styles.btn_close} onClick={closeLogin}>
-              X
-            </button>
-          </div>
           <div className={styles.login_title}>
+            <AerochatLogo className={styles.mobile_logo}/>
             <h1>로그인</h1>
           </div>
           <div className={styles.login_detail}>
@@ -109,12 +97,26 @@ function Login({
                 type="text"
                 placeholder="아이디"
                 onChange={(e) => setId(e.target.value)}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      login(e);
+                    }
+                  }
+                }
               />
               <input
                 className={loginFail ? styles.pw_input_fail : styles.pw_input}
                 type="password"
                 placeholder="비밀번호"
                 onChange={(e) => setPw(e.target.value)}
+                onKeyDown={
+                  (e) => {
+                    if (e.key === 'Enter') {
+                      login(e);
+                    }
+                  }
+                }
               />
               <p
                 className={
