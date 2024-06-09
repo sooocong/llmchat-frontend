@@ -5,11 +5,13 @@ import { useThreads } from '../../../hooks';
 interface IconGroupLeftProps {
   centerBoxRef: React.RefObject<HTMLDivElement>;
   messageId: number;
+  handleShareClick: () => void;
 }
 
 const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
   centerBoxRef,
   messageId,
+  handleShareClick,
 }) => {
   const { selectedThreadId, messages, refreshAnswer } = useThreads();
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -93,7 +95,7 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
           <div className={styles.reanswerIcon}></div>
         </div>
       )}
-      <div className={styles.icon}>
+      <div className={styles.icon} onClick={handleShareClick}>
         <div className={styles.shareIcon}></div>
       </div>
     </div>
