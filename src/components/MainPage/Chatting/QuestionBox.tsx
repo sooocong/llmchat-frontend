@@ -65,7 +65,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   const handleSendClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputText.trim()) {
-      onSendMessage(inputText);
+      onSendMessage(inputText.replace(/\n/g, '<br />')); // 줄바꿈을 <br />로 변환
       setInputText('');
     }
   };
@@ -73,6 +73,23 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
+
+  useEffect(() => {
+    const handlePaste = (event: ClipboardEvent) => {
+      const pasteText = event.clipboardData?.getData('text') || '';
+      setInputText((prevText) => prevText + pasteText);
+    };
+
+    if (textareaRef.current) {
+      textareaRef.current.addEventListener('paste', handlePaste);
+    }
+
+    return () => {
+      if (textareaRef.current) {
+        textareaRef.current.removeEventListener('paste', handlePaste);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (textareaRef.current && chatInputBoxRef.current) {
