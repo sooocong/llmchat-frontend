@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import style from './SearchResult.module.css';
 import { SearchBar } from '..';
 import { useThreads } from '../../hooks';
+import { highlightMatch } from '../../utils';
 
 export const SearchResult = () => {
   const [sortBy, setSortBy] = useState<'recent' | 'oldest'>('recent');
@@ -10,43 +11,10 @@ export const SearchResult = () => {
     setSortBy(e.target.value as 'recent' | 'oldest');
   };
   const navigation = useNavigate();
-  const { openThread } = useThreads();
+  const { openThread, searchMessage } = useThreads();
   const { searchedThreads, query } = useLoaderData() as {
     searchedThreads: ISearch[];
     query: string;
-  };
-
-  const highlightMatch = (text: string, query: string) => {
-    const markdownPatterns = [
-      '\\*\\*', // bold
-      '\\*', // italic
-      '__', // bold
-      '_', // italic
-      '`', // inline code
-      '\\[.*?\\]\\(.*?\\)', // link
-      '!\\[.*?\\]\\(.*?\\)', // image
-      '#+', // header
-      '>+', // blockquote
-      '[-*+]', // unordered list
-      '\\d+\\.', // ordered list
-      '---', // horizontal rule
-    ];
-    const patterns = [query, ...markdownPatterns];
-    const regexPattern = patterns.join('|');
-    const parts = text.split(new RegExp(`(${regexPattern})`, 'gi'));
-    return parts.map((part: string, index: number) => {
-      if (new RegExp(markdownPatterns.join('|')).test(part)) {
-        return '';
-      }
-      if (part.toLowerCase() === query.toLowerCase()) {
-        return (
-          <span key={index} className={style.highlight}>
-            {part}
-          </span>
-        );
-      }
-      return part;
-    });
   };
 
   const renderSearchItems = () => {
@@ -66,22 +34,30 @@ export const SearchResult = () => {
         key={item.id}
         className={style.itemContainer}
         onClick={() => {
-          handleThreadOpen(item.id);
+          handleThreadOpen(item.id, item.messageIdIndex);
         }}
       >
         <div className={style.answerIcon}></div>
         <div className={style.itemContent}>
-          <div className={style.title}>{item.chatName}</div>
+          <div className={style.title}>
+            {item.messageId === null
+              ? highlightMatch(item.chatName, query, style.highlight)
+              : item.chatName}
+          </div>
           <div className={style.content}>
-            {highlightMatch(item.matchHighlight, query)}
+            {highlightMatch(item.matchHighlight, query, style.highlight)}
           </div>
         </div>
       </div>
     ));
   };
 
-  const handleThreadOpen = (threadId: number) => {
+  const handleThreadOpen = (
+    threadId: number,
+    messageIdIndex: number | null
+  ) => {
     openThread(threadId);
+    searchMessage(messageIdIndex);
     navigation('/');
   };
 

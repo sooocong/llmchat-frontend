@@ -46,10 +46,12 @@ const searchLoader = async ({ params }: { params: Params }) => {
     throw redirect('/login');
   }
   const user = await UserAPI.getUserProfile();
-  const searchedThreads = await ThreadAPI.getSearchedThreadList(
-    params.query as string
+  const data = await ThreadAPI.getSearchedThreadList(params.query as string);
+  const searchedThreads = data.map((msg: ISearch) =>
+    msg.messageId === null
+      ? { ...msg, matchHighlight: '검색 결과가 쓰레드 제목과 일치합니다.' }
+      : msg
   );
-
   return { user, searchedThreads, query: params.query };
 };
 

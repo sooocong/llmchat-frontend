@@ -5,6 +5,7 @@ import { ReactComponent as HamburgerIcon } from '../../../assets/hamburger.svg';
 import _ from 'lodash';
 import { useThreads } from '../../../hooks';
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils';
 
 function SearchBar() {
   const [inputValue, setInputValue] = useState('');
@@ -12,7 +13,8 @@ function SearchBar() {
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const searchListRef = useRef<HTMLUListElement>(null);
   const navigation = useNavigate();
-  const { searchedThreads, getSearchedThreads, openThread } = useThreads();
+  const { searchedThreads, getSearchedThreads, openThread, searchMessage } =
+    useThreads();
 
   const debouncedGetSearchedThreads = useCallback(
     _.debounce((query: string) => getSearchedThreads(query), 300),
@@ -39,45 +41,16 @@ function SearchBar() {
     setIsModalOpen(true);
   };
 
-  const handleSearchResultClick = (id: number) => {
+  const handleSearchResultClick = (
+    threadId: number,
+    messageIdIndex: number | null
+  ) => {
     setIsModalOpen(false);
     setInputValue('');
     setFocusedIndex(-1);
-    openThread(id);
+    openThread(threadId);
     navigation('/');
-  };
-
-  const highlightMatch = (text: string, query: string) => {
-    const markdownPatterns = [
-      '\\*\\*', // bold
-      '\\*', // italic
-      '__', // bold
-      '_', // italic
-      '`', // inline code
-      '\\[.*?\\]\\(.*?\\)', // link
-      '!\\[.*?\\]\\(.*?\\)', // image
-      '#+', // header
-      '>+', // blockquote
-      '[-*+]', // unordered list
-      '\\d+\\.', // ordered list
-      '---', // horizontal rule
-    ];
-    const patterns = [query, ...markdownPatterns];
-    const regexPattern = patterns.join('|');
-    const parts = text.split(new RegExp(`(${regexPattern})`, 'gi'));
-    return parts.map((part: string, index: number) => {
-      if (new RegExp(markdownPatterns.join('|')).test(part)) {
-        return '';
-      }
-      if (part.toLowerCase() === query.toLowerCase()) {
-        return (
-          <span key={index} className={styles.highlight}>
-            {part}
-          </span>
-        );
-      }
-      return part;
-    });
+    searchMessage(messageIdIndex);
   };
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,7 +81,10 @@ function SearchBar() {
         );
       } else if (e.key === 'Enter' && focusedIndex >= 0) {
         e.preventDefault();
-        handleSearchResultClick(searchedThreads[focusedIndex].id);
+        handleSearchResultClick(
+          searchedThreads[focusedIndex].id,
+          searchedThreads[focusedIndex].messageIdIndex
+        );
       }
     }
   };
@@ -150,12 +126,20 @@ function SearchBar() {
               key={index}
               className={`${styles.searchItem}${focusedIndex === index ? ' ' + styles.isActive : ''}`}
               onMouseDown={() => {
-                handleSearchResultClick(thread.id);
-                console.log('thread.id ', thread.id);
+                handleSearchResultClick(thread.id, thread.messageIdIndex);
+                console.log('사이드바에서 검색 결과 클릭');
               }}
             >
-              <div>{highlightMatch(thread.chatName, inputValue)}</div>
-              <div>{highlightMatch(thread.matchHighlight, inputValue)}</div>
+              <div>
+                {highlightMatch(thread.chatName, inputValue, styles.highlight)}
+              </div>
+              <div>
+                {highlightMatch(
+                  thread.matchHighlight,
+                  inputValue,
+                  styles.highlight
+                )}
+              </div>
             </li>
           ))}
         </ul>

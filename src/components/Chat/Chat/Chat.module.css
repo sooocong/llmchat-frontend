@@ -45,3 +45,19 @@
 .chatMessages::-webkit-scrollbar-button {
   display: none; /* 스크롤바 화살표 제거 */
 }
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blinkAnimation {
+  animation: blink 1s ease-in-out;
+}

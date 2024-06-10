@@ -13,6 +13,7 @@ interface ThreadContextType {
   selectedThreadId: number;
   sort: SortType;
   searchedThreads: ISearch[];
+  searchedMessageIdIndex: number | null;
   getInfiniteThreads: () => void;
   resetThread: (sortType: SortType) => void;
   deleteThread: (id: number) => void;
@@ -29,6 +30,7 @@ interface ThreadContextType {
   initChatting: () => void;
   getSearchedThreads: (query: string) => void;
   getInfiniteMessages: () => void;
+  searchMessage: (messageId: number | null) => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -42,6 +44,7 @@ const defaultVlaue: ThreadContextType = {
   selectedThreadId: -1,
   sort: 'desc',
   searchedThreads: [],
+  searchedMessageIdIndex: null,
   getInfiniteThreads: () => {
     throw new Error();
   },
@@ -78,6 +81,9 @@ const defaultVlaue: ThreadContextType = {
   getInfiniteMessages: () => {
     throw new Error();
   },
+  searchMessage: () => {
+    throw new Error();
+  },
 };
 
 interface ThreadContextProviderProps {
@@ -100,6 +106,9 @@ export function ThreadContextProvider({
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [sort, setSort] = useState<SortType>('desc');
   const [searchedThreads, setSearchedThreads] = useState<ISearch[]>([]);
+  const [searchedMessageIdIndex, setSearchedMessageIdIndex] = useState<
+    number | null
+  >(null);
 
   const pageRef = useRef(0);
   const isEndRef = useRef(false);
@@ -212,23 +221,50 @@ export function ThreadContextProvider({
     }
   };
 
+  const searchMessage = (messageIdIndex: number | null) => {
+    setSearchedMessageIdIndex(messageIdIndex);
+  };
+
+  const calculateSizeAndPage = (index: number, defaultSize = 20) => {
+    const size = Math.ceil((index + 1) / defaultSize) * defaultSize;
+
+    const page = Math.ceil(index / defaultSize);
+
+    return { size, page };
+  };
+
   // 메시지 무한 스크롤
   const getInfiniteMessages = async () => {
     if (isEndMsgRef.current) return;
 
     setIsMsgLoading(true);
     try {
+      let nextPage;
+      let size;
+
+      if (searchedMessageIdIndex !== null) {
+        const calculatedValues = calculateSizeAndPage(searchedMessageIdIndex);
+        nextPage = calculatedValues.page;
+        size = calculatedValues.size + '';
+        console.log('getInfiniteMessages 메시지 로드!', searchedMessageIdIndex);
+      } else
+        console.log('getInfiniteMessages 메시지 로드!', searchedMessageIdIndex);
+
       const response = await ThreadAPI.getMessages(
         selectedThreadId,
-        pageMsgRef.current
+        pageMsgRef.current,
+        size ? size : undefined
       );
+
       if (response.length === 0 || isNewChatRef.current) {
         isEndMsgRef.current = true;
         return;
       }
 
       setIsFirstMsgLoading((prev) => prev + 1);
-      pageMsgRef.current = pageMsgRef.current + 1;
+      pageMsgRef.current =
+        nextPage !== undefined ? nextPage : pageMsgRef.current + 1;
+
       setMessages((prev) => {
         const mergedMessages = [...prev, ...response];
         const uniqueMessages = Array.from(
@@ -460,7 +496,13 @@ export function ThreadContextProvider({
   const getSearchedThreads = async (query: string) => {
     try {
       const response = await ThreadAPI.getSearchedThreadList(query);
-      setSearchedThreads(response);
+      const searchedData = response.map((msg: ISearch) =>
+        msg.messageId === null
+          ? { ...msg, matchHighlight: '검색 결과가 쓰레드 제목과 일치합니다.' }
+          : msg
+      );
+      console.log(searchedData);
+      setSearchedThreads(searchedData);
     } catch (error) {
       console.error(error);
     }
@@ -479,6 +521,7 @@ export function ThreadContextProvider({
         messages,
         sort,
         searchedThreads,
+        searchedMessageIdIndex,
         getInfiniteThreads,
         resetThread,
         deleteThread,
@@ -491,6 +534,7 @@ export function ThreadContextProvider({
         initChatting,
         getSearchedThreads,
         getInfiniteMessages,
+        searchMessage,
       }}
     >
       {children}

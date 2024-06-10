@@ -79,13 +79,14 @@ export class ThreadAPI {
   static async getMessages(
     threadId: number,
     page: number,
-    sort: SortType = 'desc'
+    size = this.QUERY_PER_PAGE,
+    sort: SortType = 'desc',
   ): Promise<IMessage[]> {
     const { data } = await axiosInstance.get(
       `${this.PATH_ISSUES}/${threadId}/message`,
       {
         params: {
-          size: this.QUERY_PER_PAGE,
+          size,
           page,
           sort,
         },
