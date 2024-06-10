@@ -6,7 +6,6 @@ import ChattingQuestion from '../../MainPage/Chatting/ChattingQuestion';
 import ChattingAnswer from '../../MainPage/Chatting/ChattingAnswer';
 import { RecommendedQuestions } from '../RecommendedQuestions';
 
-
 const Chat = () => {
   const chatRef: RefObject<HTMLDivElement> = useRef(null);
   const currentFirstChatIdRef = useRef(-1);
@@ -18,6 +17,8 @@ const Chat = () => {
     isMsgLoading,
     isMsgError,
     isFirstMsgLoading,
+    searchMessage,
+    searchedMessageIdIndex,
   } = useThreads();
 
   const handleIntersection = () => {
@@ -49,16 +50,39 @@ const Chat = () => {
         chatRef.current.children[idx]?.scrollIntoView({ behavior: 'auto' });
         currentFirstChatIdRef.current = -1;
       } else {
-        // 첫 로드 또는 메시지 입력에 의한 로드면
-        chatRef.current.scrollTop = chatRef.current.scrollHeight;
+        if (searchedMessageIdIndex !== null) {
+          // 검색에 의한 로드 : 검색 결과가 내용과 일치할 경우
+          if (messages.length !== 0) {
+            const idx = messages.length - searchedMessageIdIndex;
+            const targetIdx =
+              messages[searchedMessageIdIndex].role === 'USER' ? idx : idx - 1;
+            searchMessage(null);
+            chatRef.current.children[targetIdx]?.scrollIntoView({
+              behavior: 'auto',
+            });
+
+            // 검색 결과 블링크 적용
+            const targetElement = chatRef.current.children[idx];
+            targetElement.classList.add(style.blinkAnimation);
+            const onAnimationEnd = () => {
+              targetElement.classList.remove(style.blinkAnimation);
+            };
+            targetElement.addEventListener('animationend', onAnimationEnd);
+
+            return () => {
+              targetElement.removeEventListener('animationend', onAnimationEnd);
+            };
+          }
+        } else {
+          // 첫 로드 or 검색 결과가 쓰레드 제목과 일치할 경우 or 메시지 입력에 의한 로드
+          chatRef.current.scrollTop = chatRef.current.scrollHeight;
+        }
       }
     }
   }, [selectedThreadId, messages, isFirstMsgLoading]);
 
   return (
-    <div
-      className={style.chatContainer}
-    >
+    <div className={style.chatContainer}>
       <div className={style.chatMessages} ref={chatRef}>
         {isMsgError ? '에러 발생' : <div ref={ref}></div>}
         {selectedThreadId === -1 ? (

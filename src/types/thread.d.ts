@@ -20,6 +20,8 @@ interface ISearch {
   id: number;
   chatName: string;
   matchHighlight: string;
+  messageId: null | number;
+  messageIdIndex: null | number;
   createdAt: string;
   updatedAt: string;
 }
