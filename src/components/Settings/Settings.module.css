@@ -114,6 +114,7 @@
   width: 530px;
   padding: 0 30px;
   padding-top: 40px;
+  position: relative;
 }
 
 .settings_basic {
@@ -140,7 +141,7 @@
   margin-bottom: 10px;
 }
 
-.settings_theme {
+.settings_theme, .settings_voice {
   width: 165px;
   height: 85px;
   background-color: white;
@@ -272,7 +273,7 @@
 .settings_personal_txtarea_cnt {
   color: #888888;
   font-size: 10px;
-  margin: 0 auto;
+  margin-bottom: 10px;
 }
 
 .settings_personal_chk_txt {
@@ -321,4 +322,116 @@
 .version_desc_txt {
   font-size: 14px;
   color: #888888;
+}
+
+.btn_save {
+  width: 60px;
+  height: 30px;
+  text-align: center;
+  font-size: 15px;
+  color: white;
+  background-color: #003da5;
+  border: none;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 25px;
+  right: 0px;
+  cursor: pointer;
+}
+
+@media (max-width:1023px) {
+  .settings_modal {
+    width: 360px;
+    height: 600px;
+  }
+
+  .settings_top {
+    height: 85px;
+  }
+
+  .settings_tab {
+    width: 100px;
+  }
+
+  .settings_basic {
+    width: 15px;
+    height: 15px;
+  }
+
+  .settings_tab_menu {
+    width: 100px;
+    height: 40px;
+  }
+
+  .settings_tab_menu_active {
+    width: 100px;
+    height: 40px;
+  }
+
+  .settings_tab_txt {
+    font-size: 14px;
+  }
+
+  .settings_option {
+    font-size: 14px;
+  }
+
+  .selected_option {
+    font-size: 14px;
+  }
+
+  .settings_content {
+    width: 260px;
+  }
+
+  .btn_delete {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .settings_theme {
+    width: 165px;
+    height: 85px;
+    z-index: 1000;
+    right: 100px;
+  }
+
+  .settings_language {
+    width: 165px;
+    height: 338px;
+    z-index: 1000;
+    right: 75px;
+  }
+
+  .settings_voice {
+    width: 165px;
+    height: 85px;
+    z-index: 1000;
+    right: 60px;
+  }
+
+  .settings_personal_txt {
+    font-size: 10px;
+  }
+
+  .settings_personal_txtarea {
+    width: 200px;
+    height: 120px;
+    resize: none;
+    border: 1px solid #b7bcd1;
+    border-radius: 5px;
+    font-size: 10px;
+  }
+
+  .settings_version {
+    right: 60px;
+  }
+
+  .btn_save {
+    width: 50px;
+    height: 30px;
+    font-size: 12px;
+    right: 30px;
+  }
 }
