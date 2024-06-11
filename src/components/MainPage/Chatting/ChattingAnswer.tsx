@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'; // 스타일을 지정
 import { useThreads } from '../../../../src/hooks';
 import styles from './Chatting.module.css';
 import IconGroupLeft from '../iconGroup/iconGroupLeft';
@@ -11,7 +13,7 @@ import { ThreadAPI } from '../../../apis/thread';
 
 interface ChattingAnswerProps {
   message: string;
-  messageId: number; // messageId를 prop으로 받아옵니다.
+  messageId: number;
 }
 
 const ChattingAnswer: React.FC<ChattingAnswerProps> = ({
@@ -19,10 +21,10 @@ const ChattingAnswer: React.FC<ChattingAnswerProps> = ({
   messageId,
 }) => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
-  const [bookmarkId, setBookmarkId] = useState<number | null>(null); // 북마크 ID 상태 추가
+  const [bookmarkId, setBookmarkId] = useState<number | null>(null);
   const centerBoxRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { selectedThreadId } = useThreads(); // selectedThreadId를 가져옵니다
+  const { selectedThreadId } = useThreads();
 
   const closeModal = () => setIsModalOpen(false);
   const openModal = () => setIsModalOpen(true);
@@ -32,7 +34,7 @@ const ChattingAnswer: React.FC<ChattingAnswerProps> = ({
       try {
         const bookmark = await ThreadAPI.createBookmark(messageId);
         console.log('Bookmark created:', bookmark);
-        setBookmarkId(bookmark.id); // 북마크 ID 저장
+        setBookmarkId(bookmark.id);
         setIsBookmarkClicked(true);
       } catch (error) {
         console.error('Error creating bookmark:', error);
@@ -53,7 +55,7 @@ const ChattingAnswer: React.FC<ChattingAnswerProps> = ({
 
   const handleRatingClick = (messageId: number, rating: 'GOOD' | 'BAD') => {
     if (selectedThreadId !== undefined) {
-      ThreadAPI.rateMessage(selectedThreadId, messageId, rating); // threadId와 messageId를 함께 전달합니다
+      ThreadAPI.rateMessage(selectedThreadId, messageId, rating);
     }
   };
 
@@ -76,6 +78,22 @@ const ChattingAnswer: React.FC<ChattingAnswerProps> = ({
                 rehypePlugins={[rehypeRaw]}
                 remarkPlugins={[remarkGfm]}
                 components={{
+                  code({ node, className, children, style, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    return match ? (
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={match[1]}
+                        PreTag="div"
+                      >
+                        {String(children).replace(/\n$/, '')}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
                   ol: ({ children }) => (
                     <ol className={styles.list}>{children}</ol>
                   ),

@@ -68,8 +68,9 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
           voices.find(
             (v) =>
               (voice === 'MALE'
-                ? v.name.includes('Male')
-                : v.name.includes('Female')) && v.lang.includes(language)
+                ? v.name.toLowerCase().includes('male')
+                : v.name.toLowerCase().includes('female')) &&
+              v.lang.includes(language)
           ) || null; // 기본값 설정
 
         utterance.voice = selectedVoice;
