@@ -43,7 +43,7 @@
 }
 
 .inputWrapper {
-  width: 85%; /* 전체의 80% 차지 */
+  width: 80%; /* 전체의 80% 차지 */
   display: flex;
   align-items: center;
 }
