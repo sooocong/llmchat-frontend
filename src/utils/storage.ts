@@ -44,3 +44,8 @@ export const setCurrentThreadId = (currentThreadId: number) => {
 export const removeCurrentThreadId = () => {
   sessionStorage.removeItem('currentThreadId');
 };
+
+export const clearStorage = () => {
+  localStorage.clear();
+  sessionStorage.clear();
+};
