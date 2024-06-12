@@ -31,6 +31,7 @@ interface ThreadContextType {
   getSearchedThreads: (query: string) => void;
   getInfiniteMessages: () => void;
   searchMessage: (messageId: number | null) => void;
+  initProject: () => void;
 }
 
 const defaultVlaue: ThreadContextType = {
@@ -84,6 +85,9 @@ const defaultVlaue: ThreadContextType = {
   searchMessage: () => {
     throw new Error();
   },
+  initProject: () => {
+    throw new Error();
+  },
 };
 
 interface ThreadContextProviderProps {
@@ -118,6 +122,28 @@ export function ThreadContextProvider({
   const isFirstAnswer = useRef(true);
   const editIdxRef = useRef(-1);
   const isNewChatRef = useRef(true);
+
+  const initProject = () => {
+    setThreads([]);
+    setIsLoading(false);
+    setIsError(false);
+    setIsMsgLoading(false);
+    setIsMsgError(false);
+    setIsFirstMsgLoading(0);
+    setSelectedThreadId(-1);
+    setMessages([]);
+    setSort('desc');
+    setSearchedThreads([]);
+    setSearchedMessageIdIndex(null);
+    pageRef.current = 0;
+    isEndRef.current = false;
+    pageMsgRef.current = 0;
+    isEndMsgRef.current = false;
+    currentRollRef.current = 'USER';
+    isFirstAnswer.current = true;
+    editIdxRef.current = -1;
+    isNewChatRef.current = true;
+  };
 
   // 쓰레드 무한 스크롤
   const getInfiniteThreads = async () => {
@@ -532,6 +558,7 @@ export function ThreadContextProvider({
         getSearchedThreads,
         getInfiniteMessages,
         searchMessage,
+        initProject,
       }}
     >
       {children}
