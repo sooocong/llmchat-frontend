@@ -246,9 +246,7 @@ export function ThreadContextProvider({
         const calculatedValues = calculateSizeAndPage(searchedMessageIdIndex);
         nextPage = calculatedValues.page;
         size = calculatedValues.size + '';
-        console.log('getInfiniteMessages 메시지 로드!', searchedMessageIdIndex);
-      } else
-        console.log('getInfiniteMessages 메시지 로드!', searchedMessageIdIndex);
+      }
 
       const response = await ThreadAPI.getMessages(
         selectedThreadId,
@@ -501,7 +499,6 @@ export function ThreadContextProvider({
           ? { ...msg, matchHighlight: '검색 결과가 쓰레드 제목과 일치합니다.' }
           : msg
       );
-      console.log(searchedData);
       setSearchedThreads(searchedData);
     } catch (error) {
       console.error(error);
