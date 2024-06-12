@@ -5,14 +5,15 @@ import { ReactComponent as SettingIcon } from '../../../assets/setting_icon.svg'
 import { ReactComponent as UserInfoIcon } from '../../../assets/user_info.svg';
 import { ReactComponent as LogoutIcon } from '../../../assets/logout.svg';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { useHideByClickOutside } from '../../../hooks';
-import { removeAccessToken } from '../../../utils';
+import { useHideByClickOutside, useThreads } from '../../../hooks';
+import { clearStorage, removeAccessToken } from '../../../utils';
 
 interface IButtonList {
   onOpenSettings: () => void;
 }
 function ButtonList({ onOpenSettings }: IButtonList) {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
+  const { initProject } = useThreads();
   const navigation = useNavigate();
   const { user } = useLoaderData() as { user: IUser };
   const { name, profileImage } = user;
@@ -26,6 +27,8 @@ function ButtonList({ onOpenSettings }: IButtonList) {
   const logout = () => {
     removeAccessToken();
     navigation('/login');
+    initProject();
+    clearStorage();
   };
   return (
     <>

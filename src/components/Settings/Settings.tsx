@@ -177,6 +177,10 @@ function Settings({
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const token =
+      window.localStorage.getItem('token') ||
+      window.sessionStorage.getItem('token');
+
     axios
       .get(`${url}/api/v1/user/preference`, {
         headers: {
@@ -201,7 +205,9 @@ function Settings({
       });
     setUserMessage(window.localStorage.getItem('userMsg') || '');
     setModelMessage(window.localStorage.getItem('modelMsg') || '');
+  }, []);
 
+  useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
       if (
@@ -218,7 +224,7 @@ function Settings({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [token, openSettings, closeSettings]);
+  }, [openSettings, closeSettings]);
 
   return (
     <div className={openSettings ? styles.modal : styles.closeModal}>
@@ -587,7 +593,9 @@ function Settings({
                 </div>
               </div>
             </div>
-            <button className={styles.btn_save} onClick={saveSettings}>저장</button>
+            <button className={styles.btn_save} onClick={saveSettings}>
+              저장
+            </button>
           </div>
         </div>
       </div>
