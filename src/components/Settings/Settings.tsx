@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Settings.module.css';
 import settings_icon from '../../assets/settings_icon.png';
 import settings_basic from '../../assets/settings_basic.png';
@@ -174,6 +174,8 @@ function Settings({
       });
   };
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     axios
       .get(`${url}/api/v1/user/preference`, {
@@ -199,11 +201,28 @@ function Settings({
       });
     setUserMessage(window.localStorage.getItem('userMsg') || '');
     setModelMessage(window.localStorage.getItem('modelMsg') || '');
-  }, [token]);
+
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      if (
+        openSettings &&
+        modalRef.current &&
+        !modalRef.current.contains(target)
+      ) {
+        closeSettings();
+        setActiveModal(null);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [token, openSettings, closeSettings]);
 
   return (
     <div className={openSettings ? styles.modal : styles.closeModal}>
-      <div className={styles.settings_modal}>
+      <div className={styles.settings_modal} ref={modalRef}>
         <div className={styles.settings_top}>
           <img
             className={styles.settings_icon}
@@ -213,7 +232,7 @@ function Settings({
           <div className={styles.settings_title}>
             <h1 className={styles.settings_title_txt}>설정</h1>
           </div>
-          <button className={styles.btn_close} onClick={saveSettings}>
+          <button className={styles.btn_close} onClick={closeSettings}>
             X
           </button>
         </div>
@@ -421,7 +440,7 @@ function Settings({
                 <div
                   className={
                     activeModal === 'voice'
-                      ? styles.settings_theme
+                      ? styles.settings_voice
                       : styles.closeModal
                   }
                 >
@@ -568,6 +587,7 @@ function Settings({
                 </div>
               </div>
             </div>
+            <button className={styles.btn_save} onClick={saveSettings}>저장</button>
           </div>
         </div>
       </div>

@@ -78,6 +78,13 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     const handlePaste = (event: ClipboardEvent) => {
       const pasteText = event.clipboardData?.getData('text') || '';
       setInputText((prevText) => prevText + pasteText);
+
+      // 상태를 업데이트 후 handleChange 호출
+      if (textareaRef.current) {
+        handleChange({
+          target: textareaRef.current,
+        } as React.ChangeEvent<HTMLTextAreaElement>);
+      }
     };
 
     if (textareaRef.current) {
@@ -95,9 +102,10 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     if (textareaRef.current && chatInputBoxRef.current) {
       textareaRef.current.style.height = 'auto';
       const scrollHeight = textareaRef.current.scrollHeight;
-      const maxHeight = 150; // 최대 높이 150px (약 7줄)
-      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
-      chatInputBoxRef.current.style.height = `${Math.min(scrollHeight, maxHeight) + 22}px`; // padding 추가
+      const maxHeight = 150; // 최대 높이 150px
+      const newHeight = Math.min(scrollHeight, maxHeight);
+      textareaRef.current.style.height = `${newHeight}px`;
+      chatInputBoxRef.current.style.height = `${newHeight + 22}px`; // padding 추가
     }
   }, [inputText]);
 
@@ -108,15 +116,17 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
         onSubmit={handleSendClick}
         ref={chatInputBoxRef}
       >
-        <textarea
-          ref={textareaRef}
-          className={styles.inputField}
-          placeholder="질문해 보세요!"
-          value={inputText}
-          onChange={handleChange}
-          rows={1}
-          style={{ maxHeight: '150px' }} // 최대 높이를 설정
-        />
+        <div className={styles.inputWrapper}>
+          <textarea
+            ref={textareaRef}
+            className={styles.inputField}
+            placeholder="질문해 보세요!"
+            value={inputText}
+            onChange={handleChange}
+            rows={1}
+            style={{ minHeight: '38px', maxHeight: '150px' }} // 최소 및 최대 높이 설정
+          />
+        </div>
         <div className={styles.voiceIcon} onClick={handleVoiceInput}></div>
         <button type="submit" className={styles.sendIcon}></button>
       </form>
