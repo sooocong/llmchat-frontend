@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import styles from './SortOptions.module.css';
 import { ReactComponent as ArrowDownIcon } from '../../../assets/arrow-down.svg';
 import { useHideByClickOutside, useThreads } from '../../../hooks';
-
-function SortOptions() {
-  const SELECT_OPTIONS = { desc: '최근순', asc: '오래된 순' };
-  const { resetThread, sort } = useThreads();
+interface ISortOptions {
+  cb: (sort: SortType) => void;
+}
+function SortOptions({ cb }: ISortOptions) {
+  const SELECT_OPTIONS = { desc: '최신순', asc: '오래된 순' };
   const [isOpen, setIsOpen] = useState(false);
+  const [option, setOption] = useState('최신순');
 
   const modalRef = useHideByClickOutside(() => {
     setIsOpen(false);
@@ -17,14 +19,15 @@ function SortOptions() {
   };
 
   const selectSort = (sort: SortType = 'desc') => {
-    resetThread(sort);
+    setOption(SELECT_OPTIONS[sort]);
+    cb(sort);
     setIsOpen(!isOpen);
   };
 
   return (
     <div className={styles.selectBox}>
       <button className={styles.label} onClick={openOption}>
-        {SELECT_OPTIONS[sort]}
+        {option}
         <ArrowDownIcon width="7.29" height="3.9" />
       </button>
       {isOpen && (
