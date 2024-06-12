@@ -1,0 +1,54 @@
+.selectBox {
+  margin-top: 18px;
+  margin-left: auto;
+  position: relative;
+}
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 89px;
+  height: 32px;
+  padding: 5px 9.35px 5px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.optionList {
+  z-index: 1000;
+  position: absolute;
+  bottom: -70px;
+  width: 89px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: none;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px;
+}
+
+.optionItem {
+  width: 100%;
+  text-align: center;
+  padding: 6px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 8px;
+}
+.optionItem:hover {
+  background-color: #ebebeb;
+}

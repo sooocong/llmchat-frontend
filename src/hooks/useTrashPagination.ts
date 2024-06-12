@@ -21,7 +21,11 @@ export default function useTrashPagination() {
     page: 1,
     pagePerLength: 10, // 한 페이지당 보여줄 아이템,
     searchValue: '',
+<<<<<<< HEAD
     paginationLength: 10,
+=======
+    paginationLength: 6,
+>>>>>>> ea18b396e5ae9996731714964db9bb61ac3416bf
   })
 
   const pagination = (newPaginationInfo: any) => {
@@ -37,7 +41,14 @@ export default function useTrashPagination() {
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     console.log('get trash data');
+=======
+    (async () => {
+      const list = await getList();
+      // ...
+    })
+>>>>>>> ea18b396e5ae9996731714964db9bb61ac3416bf
   }, [paginationInfo]);
 
   return {

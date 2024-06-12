@@ -1,0 +1,97 @@
+.container {
+  position: relative;
+  margin-top: 56px;
+  width: 95%;
+  max-width: 700px;
+  min-width: 306px; /* 최소 너비 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+  max-height: calc(100vh - 56px); /* 화면 높이에 맞추기 */
+  overflow-y: auto; /* 세로 스크롤 허용 */
+}
+
+.topBar {
+  position: sticky;
+  width: 85%;
+  max-width: 700px;
+  margin: 0 auto;
+  top: 0;
+  background: white;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+.topBar > :nth-child(1) {
+  margin-top: 0;
+  border: 1px solid #b1b1b1;
+  margin-bottom: 1rem;
+}
+
+.topBar > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.resultCount {
+  font-size: 16px;
+}
+
+.itemContainer {
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 수직 가운데 정렬 */
+  width: 85%; /* 전체 너비의 85%만 차지하도록 설정 */
+  max-width: 700px;
+  min-width: 306px; /* 최소 너비 설정 */
+  margin: 0 auto;
+  margin-bottom: 10px;
+  padding: var(--spacing-base) var(--spacing-sm);
+  border: 1px solid var(--color-chat-box);
+  border-radius: 15px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  word-wrap: break-word; /* 긴 단어 줄바꿈 */
+}
+
+.answerIcon {
+  width: 55px;
+  height: 37px;
+  background-image: url('/src/assets/answer.svg');
+  background-size: cover;
+  display: inline-block;
+  margin-right: 16px;
+  flex-shrink: 0; /* 아이콘의 크기가 줄어들지 않도록 설정 */
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column; /* 수직으로 배치 */
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  word-break: break-word; /* 긴 단어 줄바꿈 */
+}
+
+.itemContainer:hover {
+  background-color: #e0e0e0;
+}
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.content {
+  font-size: 14px;
+}
+.highlight {
+  font-weight: 800;
+  color: #003da5;
+}
+
+/* 커스텀 스크롤바 스타일링 제거 */
+.container::-webkit-scrollbar {
+  display: none; /* 스크롤바 숨기기 */
+}

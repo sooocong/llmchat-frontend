@@ -16,11 +16,14 @@
     width: 100%;
     flex: 0.8;
 }
+<<<<<<< HEAD
 
 .message-box.common {
     text-align: center;
     line-height: 35px;
 }
+=======
+>>>>>>> ea18b396e5ae9996731714964db9bb61ac3416bf
 .message-box > * {
     font-size: 25px;
 }
@@ -45,6 +48,7 @@
     border: 1px solid #D9E3F6;
 
 }
+<<<<<<< HEAD
 
 .common-close {
     width: 20px !important;
@@ -59,3 +63,5 @@
     width: 100%;
     height: 100%;
 }
+=======
+>>>>>>> ea18b396e5ae9996731714964db9bb61ac3416bf
