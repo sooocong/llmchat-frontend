@@ -10,7 +10,7 @@ interface IShareModal {
 }
 const ShareModal = ({ onCloseModal, threadId, messageId }: IShareModal) => {
   const [inputValue, setInputValue] = useState(
-    'http://localhost:3000/share/...'
+    `${process.env.REACT_APP_AEROCHAT_URL}/share/...`
   );
   const [buttonText, setButtonText] = useState('링크 만들기');
   const [title, setTitle] = useState('채팅의 공개 링크 공유');
@@ -22,7 +22,7 @@ const ShareModal = ({ onCloseModal, threadId, messageId }: IShareModal) => {
     setButtonText('복사중');
     try {
       const { sharedKey } = await ShareAPI.shareThread(threadId, messageId);
-      const newURL = `http://localhost:3000/share/${sharedKey}`;
+      const newURL = `${process.env.REACT_APP_AEROCHAT_URL}/share/${sharedKey}`;
       setInputValue(newURL);
       setButtonText('링크 복사하기');
       setTitle('공개 링크 생성 완료');
