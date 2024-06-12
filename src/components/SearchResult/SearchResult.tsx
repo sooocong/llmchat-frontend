@@ -4,11 +4,12 @@ import style from './SearchResult.module.css';
 import { SearchBar } from '..';
 import { useThreads } from '../../hooks';
 import { highlightMatch } from '../../utils';
+import { SortOptions } from '../Sidebar';
 
 export const SearchResult = () => {
   const [sortBy, setSortBy] = useState<'recent' | 'oldest'>('recent');
-  const handleSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(e.target.value as 'recent' | 'oldest');
+  const handleSortByChange = (sort: SortType) => {
+    setSortBy(sort === 'desc' ? 'recent' : 'oldest');
   };
   const navigation = useNavigate();
   const { openThread, searchMessage } = useThreads();
@@ -70,14 +71,7 @@ export const SearchResult = () => {
             <div className={style.resultCount}>
               검색 결과: {searchedThreads.length}개
             </div>
-            <select
-              value={sortBy}
-              onChange={handleSortByChange}
-              className={style.select}
-            >
-              <option value="recent">최신순</option>
-              <option value="oldest">오래된순</option>
-            </select>
+            <SortOptions cb={handleSortByChange} />
           </div>
         </div>
 

@@ -127,7 +127,6 @@ function SearchBar() {
               className={`${styles.searchItem}${focusedIndex === index ? ' ' + styles.isActive : ''}`}
               onMouseDown={() => {
                 handleSearchResultClick(thread.id, thread.messageIdIndex);
-                console.log('사이드바에서 검색 결과 클릭');
               }}
             >
               <div>

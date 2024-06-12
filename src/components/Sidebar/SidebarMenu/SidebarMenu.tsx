@@ -19,7 +19,7 @@ function SidebarMenu({
   onClose,
   onOpenSettings,
 }: ISidebarMenu) {
-  const { initChatting } = useThreads();
+  const { initChatting, resetThread } = useThreads();
   const navigation = useNavigate();
 
   const handleCreateClick = () => {
@@ -40,7 +40,7 @@ function SidebarMenu({
         </button>
       </div>
       <SearchBar />
-      <SortOptions />
+      <SortOptions cb={resetThread} />
       <ThreadList />
       <ButtonList onOpenSettings={onOpenSettings} />
     </div>

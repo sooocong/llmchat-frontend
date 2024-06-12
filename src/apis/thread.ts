@@ -156,7 +156,6 @@ export class ThreadAPI {
         rating,
       }
     );
-    console.log(response);
   }
 
   // 북마크 생성
