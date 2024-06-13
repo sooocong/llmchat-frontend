@@ -24,7 +24,7 @@ const SharePage = () => {
     messages: ISharedMessage[];
   };
   const messageRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const targetIndex =
@@ -33,6 +33,7 @@ const SharePage = () => {
       messages[targetIndex].id + ''
     );
     const targetAnswerElement = messageRefs.current.get(thread.messageId + '');
+
     if (targetQuestionElement && targetAnswerElement) {
       targetQuestionElement.scrollIntoView({ behavior: 'auto' });
 
@@ -48,7 +49,7 @@ const SharePage = () => {
         targetAnswerElement.removeEventListener('animationend', onAnimationEnd);
       };
     }
-  }, []);
+  }, [messages, thread.messageId]);
 
   return (
     <>
@@ -61,45 +62,54 @@ const SharePage = () => {
           <div
             key={msg.id}
             ref={(el) => messageRefs.current.set(msg.id + '', el)}
-            className={`${styles.itemContainer} ${msg.role === 'USER' ? styles.userContainer : ''}`}
+            className={`${styles.itemContainer} ${msg.role === 'USER' ? styles.userContainer : styles.answerBox}`}
           >
-            <div
-              className={
-                msg.role === 'USER' ? styles.userIcon : styles.answerIcon
-              }
-            />
-            <div className={styles.itemContent}>
-              <div className={styles.content}>
-                <ReactMarkdown
-                  rehypePlugins={[rehypeRaw]}
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    code({ node, className, children, style, ...props }) {
-                      const match = /language-(\w+)/.exec(className || '');
-                      return match ? (
-                        <SyntaxHighlighter
-                          style={vscDarkPlus}
-                          language={match[1]}
-                          PreTag="div"
-                        >
-                          {String(children).replace(/\n$/, '')}
-                        </SyntaxHighlighter>
-                      ) : (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    },
-                    ol: ({ children }) => (
-                      <ol className={styles.list}>{children}</ol>
-                    ),
-                    ul: ({ children }) => (
-                      <ul className={styles.list}>{children}</ul>
-                    ),
-                  }}
-                >
-                  {msg.content}
-                </ReactMarkdown>
+            <div className={styles.contentBox}>
+              <div className={styles.leftBox}>
+                <div
+                  className={
+                    msg.role === 'USER' ? styles.userIcon : styles.answerIcon
+                  }
+                ></div>
+              </div>
+              <div className={styles.rightBox}>
+                <div className={styles.centerBox}>
+                  <ReactMarkdown
+                    rehypePlugins={[rehypeRaw]}
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ node, className, children, style, ...props }) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        return match ? (
+                          <SyntaxHighlighter
+                            style={vscDarkPlus}
+                            language={match[1]}
+                            PreTag="div"
+                          >
+                            {String(children).replace(/\n$/, '')}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                      ol: ({ children }) => (
+                        <ol className={styles.list}>{children}</ol>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className={styles.list}>{children}</ul>
+                      ),
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
+                {msg.role === 'ASSISTANT' && (
+                  <div className={styles.bottomBox}>
+                    {/* 아이콘 그룹 등을 여기에 추가할 수 있습니다. */}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -109,7 +119,7 @@ const SharePage = () => {
         <button
           className={styles.fixedButton}
           onClick={() => {
-            navigation('/');
+            navigate('/');
           }}
         >
           AeroChat 시작하기
