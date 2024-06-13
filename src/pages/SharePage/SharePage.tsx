@@ -4,6 +4,8 @@ import { ShareAPI } from '../../apis';
 import { Params, useLoaderData, useNavigate } from 'react-router-dom';
 import { isoToCustomFormat } from '../../utils';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 
@@ -68,24 +70,36 @@ const SharePage = () => {
             />
             <div className={styles.itemContent}>
               <div className={styles.content}>
-                {msg.role === 'USER' ? (
-                  msg.content
-                ) : (
-                  <ReactMarkdown
-                    rehypePlugins={[rehypeRaw]}
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      ol: ({ children }) => (
-                        <ol className={styles.list}>{children}</ol>
-                      ),
-                      ul: ({ children }) => (
-                        <ul className={styles.list}>{children}</ul>
-                      ),
-                    }}
-                  >
-                    {msg.content}
-                  </ReactMarkdown>
-                )}
+                <ReactMarkdown
+                  rehypePlugins={[rehypeRaw]}
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    code({ node, className, children, style, ...props }) {
+                      const match = /language-(\w+)/.exec(className || '');
+                      return match ? (
+                        <SyntaxHighlighter
+                          style={vscDarkPlus}
+                          language={match[1]}
+                          PreTag="div"
+                        >
+                          {String(children).replace(/\n$/, '')}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                    ol: ({ children }) => (
+                      <ol className={styles.list}>{children}</ol>
+                    ),
+                    ul: ({ children }) => (
+                      <ul className={styles.list}>{children}</ul>
+                    ),
+                  }}
+                >
+                  {msg.content}
+                </ReactMarkdown>
               </div>
             </div>
           </div>
