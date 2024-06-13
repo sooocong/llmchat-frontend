@@ -4,12 +4,16 @@ import "./BookmarkDetail.css";
 import menuImg from '../../../assets/menu.png';
 import Pagination from '../../Pagination';
 import { PopupContext } from '../../../provider/popupProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function BookmarkDetailPage() {
   const { showConfirmPop } = useContext(PopupContext);
   const { list, setList, pagination, paginationInfo: { paginationLength, page } } = useBookmarkPagination();
   const bookmarkListRef = useRef(null);
   const [modifyValue, setModifyValue] = useState("");
+
+  const navigate = useNavigate();
+
   const handleClickPopMenu = (item: any) => {
     setList((prevState) => {
       const idx = prevState.findIndex(listItem => listItem.type === item.type);
@@ -71,6 +75,15 @@ export default function BookmarkDetailPage() {
     })
   }
 
+  const moveBookmarkInfo = (item:any) => {
+    console.log('item', item);
+    navigate("/bookmark-info", {
+      state: {
+        uuid: item.uuid,
+      }
+    })
+  }
+
   return (
     <div className={'bookmark-cover'}>
       <ul className={'bookmark-table w-full mb10'} ref={bookmarkListRef}>
@@ -85,7 +98,9 @@ export default function BookmarkDetailPage() {
                 <p>{item.type}</p>
               </div>
               <div className={'flex flex-direction-column justify-content-center'}>
-                {item?.modify ? <input type="text" className={'modify-input non-click'} value={modifyValue} onInput={(e: any) => setModifyValue(e.target.value)} placeholder={'새로운 이름을 입력하세요.'} /> : <p>{item.name}</p>}
+                {item?.modify ?
+                  <input type="text" className={'modify-input non-click'} value={modifyValue} onInput={(e: any) => setModifyValue(e.target.value)} placeholder={'새로운 이름을 입력하세요.'} />
+                  : <p className={'non-click'} onClick={() => moveBookmarkInfo(item)}>{item.name}</p>}
               </div>
               <div className={'flex flex-direction-column justify-content-center align-items-center'}>
                 <p>{item.createDate}</p>
@@ -110,7 +125,7 @@ export default function BookmarkDetailPage() {
       <div className={'flex justify-content-end align-items-center'}>
         <button className={'all-selected-btn'} onClick={() => selectAll()}>전체 선택</button>
       </div>
-      <Pagination paginationLength={paginationLength} page={page} className={'mt30'} />
+      <Pagination paginationLength={paginationLength} page={page} className={'mt30'} pagination={pagination} />
     </div>
   );
 }

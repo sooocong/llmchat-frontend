@@ -2,8 +2,9 @@ import React, { createContext, useMemo, useState } from 'react';
 import ConfirmPoop from '../components/ConfirmPop';
 
 import "../components/popup.css";
+import CommonPoop from '../components/CommonPop';
 
-type IPopType = 'confirm';
+type IPopType = 'confirm' | 'common';
 interface IPopupState {
   type: IPopType;
   message: string;
@@ -13,6 +14,7 @@ interface IPopupState {
 interface IPopupProvider {
   popState: IPopupState;
   showConfirmPop: (message: string, callback: any) => any;
+  showCommonPop: (message: string, callback: any) => any;
 }
 
 export type {
@@ -27,7 +29,8 @@ const PopupContext = createContext<IPopupProvider>({
     type: 'confirm',
     callback: null
   },
-  showConfirmPop: (message: string) => null
+  showConfirmPop: (message: string) => null,
+  showCommonPop: (message: string) => null
 });
 
 export { PopupContext }
@@ -51,6 +54,15 @@ export default function PopupProvider(props: any) {
     });
   }
 
+  const showCommonPop = (message: string, callback: any) => {
+    setPopState({
+      type: 'common',
+      active: true,
+      message,
+      callback
+    });
+  }
+
   const close = () => {
     setPopState({
       ...popState,
@@ -65,13 +77,17 @@ export default function PopupProvider(props: any) {
         return (
           <ConfirmPoop message={popState.message}  callback={popState.callback} close={close}/>
         );
+      case 'common':
+        return (
+          <CommonPoop message={popState.message}  callback={popState.callback} close={close}/>
+        );
       default:
         return "";
     }
   }, [popState]);
 
   return (
-    <PopupContext.Provider value={{ popState, showConfirmPop }}>
+    <PopupContext.Provider value={{ popState, showConfirmPop, showCommonPop }}>
       {SelectedPop}
       {children}
     </PopupContext.Provider>

@@ -23,6 +23,7 @@ import KakaoRedirect from './components/Login/KakaoRedirect';
 import NaverRedirect from './components/Login/NaverRedirect';
 import { getAccessToken } from './utils';
 import { UserAPI, ThreadAPI } from './apis';
+import BookmarkDetailInfo from './components/MyPage/Bookmark/BookmarkDetailInfo';
 
 const notAuthLoader = async () => {
   const token = getAccessToken();
@@ -90,6 +91,11 @@ const router = createBrowserRouter([
       {
         path: '/mypage',
         element: <MyPage />,
+        loader: notAuthLoader,
+      },
+      {
+        path: '/bookmark-info',
+        element: <BookmarkDetailInfo />,
         loader: notAuthLoader,
       },
       {

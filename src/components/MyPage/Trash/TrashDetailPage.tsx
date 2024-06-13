@@ -70,7 +70,7 @@ export default function TrashDetailPage() {
             <button className={'trash-btn'}>복원</button>
           </div>
         </div>
-        <Pagination paginationLength={paginationLength} page={page} />
+        <Pagination paginationLength={paginationLength} page={page} pagination={pagination} />
       </div>
     </div>
   );
