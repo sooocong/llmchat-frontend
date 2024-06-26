@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/index.css';
@@ -24,6 +24,21 @@ import NaverRedirect from './components/Login/NaverRedirect';
 import { getAccessToken } from './utils';
 import { UserAPI, ThreadAPI } from './apis';
 import BookmarkDetailInfo from './components/MyPage/Bookmark/BookmarkDetailInfo';
+
+// 웹뷰 환경 감지 및 speechSynthesis 비활성화
+if (
+  typeof window !== 'undefined' &&
+  window.navigator &&
+  window.navigator.userAgent
+) {
+  const isWebView = /wv|Android|iPhone|iPad|iPod|Mobile|iOS/.test(
+    navigator.userAgent
+  );
+  if (isWebView) {
+    // 웹뷰 환경에서는 speechSynthesis를 비활성화
+    (window as any).speechSynthesis = null;
+  }
+}
 
 const notAuthLoader = async () => {
   const token = getAccessToken();
