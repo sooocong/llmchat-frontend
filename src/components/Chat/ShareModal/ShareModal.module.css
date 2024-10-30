@@ -51,7 +51,7 @@
   padding: 10px;
   border: none;
   border-radius: 50px;
-  background-color: #003da5;
+  background-color: var(--color-normal-blue);
   color: white;
   cursor: pointer;
   margin-left: 1rem;

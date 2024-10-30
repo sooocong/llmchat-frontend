@@ -24,12 +24,13 @@
   --color-normal-gray: #ebebeb;
   --color-gray: #d9d9d9;
   --color-light-blue: #d9e3f6;
-  --color-normal-blue: #5f85c7;
-  --color-deep-blue: #003da5;
-  --color-chat-box: #9ab2db;
+  --color-normal-blue: #02a27c;
+  --color-deep-blue: #2fabcc;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
 }
@@ -95,7 +96,6 @@ html, body, #root {
   margin-top: 30px;
 }
 
-
 .ml10 {
   margin-right: 10px;
 }
@@ -112,7 +112,6 @@ html, body, #root {
   margin-right: 30px;
 }
 
-
 .mb10 {
   margin-bottom: 10px;
 }
@@ -125,29 +124,27 @@ html, body, #root {
   margin-bottom: 30px;
 }
 
-
-
 /* flex 관련 단축 css */
 .flex {
   display: flex;
 }
-.justify-content-start{
+.justify-content-start {
   justify-content: flex-start;
 }
-.justify-content-center{
+.justify-content-center {
   justify-content: center;
 }
 .justify-content-end {
   justify-content: flex-end;
 }
-.justify-content-between{
+.justify-content-between {
   justify-content: space-between;
 }
-.justify-content-around{
+.justify-content-around {
   justify-content: space-around;
 }
 .align-items-center {
- align-items: center;
+  align-items: center;
 }
 .align-items-start {
   align-items: flex-start;
@@ -159,17 +156,17 @@ html, body, #root {
 .outlined-btn {
   width: 80px;
   height: 32px;
-  border: 1px solid #003DA5;
+  border: 1px solid #003da5;
   background: none;
   border-radius: 5px;
 }
 
 .color-primary {
-  color: #003DA5;
+  color: #003da5;
 }
 
 .bg-primary {
-  background: #003DA5;
+  background: #003da5;
 }
 
 /* font 관련 */
@@ -177,7 +174,9 @@ html, body, #root {
   font-size: 20px;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
 }
@@ -243,7 +242,6 @@ html, body, #root {
   margin-top: 30px;
 }
 
-
 .ml10 {
   margin-right: 10px;
 }
@@ -260,7 +258,6 @@ html, body, #root {
   margin-right: 30px;
 }
 
-
 .mb10 {
   margin-bottom: 10px;
 }
@@ -273,29 +270,27 @@ html, body, #root {
   margin-bottom: 30px;
 }
 
-
-
 /* flex 관련 단축 css */
 .flex {
   display: flex;
 }
-.justify-content-start{
+.justify-content-start {
   justify-content: flex-start;
 }
-.justify-content-center{
+.justify-content-center {
   justify-content: center;
 }
 .justify-content-end {
   justify-content: flex-end;
 }
-.justify-content-between{
+.justify-content-between {
   justify-content: space-between;
 }
-.justify-content-around{
+.justify-content-around {
   justify-content: space-around;
 }
 .align-items-center {
- align-items: center;
+  align-items: center;
 }
 .align-items-start {
   align-items: flex-start;
@@ -313,17 +308,17 @@ html, body, #root {
 .outlined-btn {
   width: 80px;
   height: 32px;
-  border: 1px solid #003DA5;
+  border: 1px solid #003da5;
   background: none;
   border-radius: 5px;
 }
 
 .color-primary {
-  color: #003DA5;
+  color: #003da5;
 }
 
 .bg-primary {
-  background: #003DA5;
+  background: #003da5;
 }
 
 /* font 관련 */
