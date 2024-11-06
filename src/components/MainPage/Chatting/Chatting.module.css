@@ -4,6 +4,7 @@
   min-width: 306px;
   margin-top: var(--spacing-base);
   margin-bottom: var(--spacing-base);
+  margin-left: var(--spacing-xl);
   display: flex;
   flex-direction: column;
 }
@@ -14,7 +15,7 @@
   width: 85%;
   max-width: 700px;
   min-width: 306px;
-  border-color: var(--color-chat-box);
+  border-color: var(--color-normal-blue);
   border-style: solid;
   border-width: 1px;
   color: var(--color-black);
@@ -28,14 +29,14 @@
   max-width: 700px;
   min-width: 306px;
   padding: 11px;
-  border-color: var(--color-gray);
+  border-color: var(--color-normal-blue);
   border-style: solid;
   border-width: 1px;
   border-radius: 20px;
   display: flex;
   justify-content: space-between; /* 좌우 정렬 */
   align-items: flex-end; /* 하단 정렬 */
-  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 4px 8px rgba(2, 162, 124, 0.15);
   position: relative;
   min-height: 60px;
   max-height: 172px;
@@ -76,7 +77,7 @@
 }
 
 .leftBox {
-  flex: 0 0 auto;
+  flex: 0 0 12%;
   display: flex;
   align-items: flex-start;
 }
@@ -114,7 +115,8 @@
 .questionTextBox {
   display: flex;
   width: 100%;
-  margin-top: var(--spacing-base);
+  margin-left: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
   word-break: break-word; /* 긴 단어 줄바꿈 */
   line-height: 1.7; /* 행 간 간격 조절 */
 }
@@ -140,15 +142,15 @@
   width: 50px;
   height: 50px;
   margin: var(--spacing-xs);
-  background-image: url('/src/assets/profile.png');
+  background-image: url('/src/assets/user.svg');
   background-size: cover;
   display: inline-block;
 }
 
 .answerIcon {
-  width: 50px;
-  height: 37px;
-  margin: var(--spacing-xs);
+  width: 100px;
+  height: 100px;
+  margin: var(--spacing-sm);
   background-image: url('/src/assets/answer.svg');
   background-size: cover;
   display: inline-block;
@@ -167,7 +169,9 @@
   width: 24px;
   height: 24px;
   background-image: url('/src/assets/clickBookmark.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -177,7 +181,9 @@
   height: 24px;
   margin-right: 10px;
   background-image: url('/src/assets/speaker.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -187,7 +193,9 @@
   height: 23px;
   margin-right: 10px;
   background-image: url('/src/assets/speakStop.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -202,7 +210,9 @@
   height: 24px;
   margin-right: 10px;
   background-image: url('/src/assets/copy.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -212,7 +222,9 @@
   height: 24px;
   margin-right: 10px;
   background-image: url('/src/assets/reanswer.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -222,7 +234,9 @@
   height: 24px;
   margin-right: 0px;
   background-image: url('/src/assets/share.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -232,7 +246,9 @@
   height: 24px;
   margin-right: 10px;
   background-image: url('/src/assets/good.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -242,7 +258,9 @@
   height: 24px;
   margin-right: 10px;
   background-image: url('/src/assets/clickGood.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -252,7 +270,9 @@
   height: 24px;
   margin-right: 0px;
   background-image: url('/src/assets/bad.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -262,7 +282,9 @@
   height: 24px;
   margin-right: 0px;
   background-image: url('/src/assets/clickBad.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -276,9 +298,11 @@
 .voiceIcon {
   right: 60px;
   width: 38px;
-  height: 38px;
+  height: 33px;
   background-image: url('/src/assets/voice.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
@@ -286,11 +310,13 @@
 .sendIcon {
   right: 20px;
   width: 35px;
-  height: 35px;
+  height: 36px;
   border: none;
   background-color: transparent;
   background-image: url('/src/assets/send.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
 }
