@@ -28,7 +28,7 @@
   width: 85%;
   max-width: 700px;
   min-width: 306px;
-  padding: 11px;
+  padding: 15px;
   border-color: var(--color-normal-blue);
   border-style: solid;
   border-width: 1px;
@@ -44,9 +44,12 @@
 }
 
 .inputWrapper {
-  width: 80%; /* 전체의 80% 차지 */
+  width: 80%;
+  margin-left: 60px;
+  margin-right: 100px;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .inputField {
@@ -177,9 +180,9 @@
 }
 
 .speakerIcon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+  width: 27px;
+  height: 27px;
+  margin-right: 15px;
   background-image: url('/src/assets/speaker.svg');
   background-size: contain;
   background-position: center;
@@ -191,7 +194,7 @@
 .speakStopIcon {
   width: 23px;
   height: 23px;
-  margin-right: 10px;
+  margin-right: 15px;
   background-image: url('/src/assets/speakStop.svg');
   background-size: contain;
   background-position: center;
@@ -206,9 +209,9 @@
 }
 
 .copyIcon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+  width: 26px;
+  height: 26px;
+  margin-right: 15px;
   background-image: url('/src/assets/copy.svg');
   background-size: contain;
   background-position: center;
@@ -217,10 +220,22 @@
   cursor: pointer;
 }
 
+.checkIcon {
+  width: 26px;
+  height: 26px;
+  margin-right: 15px;
+  background-image: url('/src/assets/check.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  cursor: pointer;
+}
+
 .reanswerIcon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+  margin-right: 15px;
   background-image: url('/src/assets/reanswer.svg');
   background-size: contain;
   background-position: center;
@@ -230,8 +245,8 @@
 }
 
 .shareIcon {
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: 25px;
   margin-right: 0px;
   background-image: url('/src/assets/share.svg');
   background-size: contain;
@@ -282,6 +297,20 @@
   height: 24px;
   margin-right: 0px;
   background-image: url('/src/assets/clickBad.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.fileIcon {
+  position: absolute;
+  left: 20px;
+  bottom: 15px;
+  width: 40px;
+  height: 33px;
+  background-image: url('/src/assets/file.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -370,4 +399,41 @@
 
 .list li {
   margin-bottom: var(--spacing-sm);
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 1000;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+}
+
+.copyIcon,
+.checkIcon {
+  transition: all 0.3s ease-in-out;
 }

@@ -65,10 +65,28 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (e.shiftKey) {
-        // Shift + Enter: 줄바꿈 추가
-        setInputText((prev) => prev + '\n');
+        e.preventDefault();
+
+        // 현재 입력 중인 한글 조합을 완성시키기 위해 setTimeout 사용
+        setTimeout(() => {
+          const cursorPosition = textareaRef.current?.selectionStart || 0;
+          const currentText = textareaRef.current?.value || '';
+
+          setInputText(
+            currentText.slice(0, cursorPosition) +
+              '\n' +
+              currentText.slice(cursorPosition)
+          );
+
+          // 커서 위치 조정
+          setTimeout(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart = cursorPosition + 1;
+              textareaRef.current.selectionEnd = cursorPosition + 1;
+            }
+          }, 0);
+        }, 0);
       } else {
-        // Enter만 누를 경우: 메시지 전송
         e.preventDefault();
         if (inputText.trim()) {
           onSendMessage(inputText.replace(/\n/g, '<br />'));
@@ -141,9 +159,17 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             rows={1}
-            style={{ minHeight: '38px', maxHeight: '150px' }}
           />
         </div>
+        <label className={styles.fileIcon}>
+          <input
+            type="file"
+            // onChange={handleFileSelect}
+            className={styles.fileInput}
+            accept=".txt,.pdf,.doc,.docx,.csv"
+            style={{ display: 'none' }}
+          />
+        </label>
         <div className={styles.voiceIcon} onClick={handleVoiceInput}></div>
         <button type="submit" className={styles.sendIcon}></button>
       </form>

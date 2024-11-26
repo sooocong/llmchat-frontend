@@ -15,6 +15,8 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
 }) => {
   const { selectedThreadId, messages, refreshAnswer } = useThreads();
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const handleSpeechEnd = () => {
@@ -42,7 +44,18 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
       navigator.clipboard
         .writeText(textToCopy)
         .then(() => {
-          alert('답변이 복사되었습니다.');
+          setIsCopied(true);
+          setShowToast(true);
+
+          // 2초 후에 체크 아이콘을 복사 아이콘으로 되돌림
+          setTimeout(() => {
+            setIsCopied(false);
+          }, 2000);
+
+          // 3초 후에 토스트 메시지를 숨김
+          setTimeout(() => {
+            setShowToast(false);
+          }, 2000);
         })
         .catch((err) => {
           console.error('복사 실패: ', err);
@@ -82,23 +95,33 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
     }
   };
 
+  const handleReanswerClick = () => {
+    const currentMessageIndex = messages.findIndex(
+      (msg) => msg.id === messageId
+    );
+    const questionMessage = messages[currentMessageIndex - 1]; // 현재 답변의 질문 메시지
+
+    if (questionMessage && selectedThreadId) {
+      refreshAnswer(selectedThreadId, messageId, questionMessage.content);
+    }
+  };
+
   return (
     <div className={styles.iconGroupLeft}>
       <div
         className={`${styles.icon} ${isSpeaking ? styles.speakStopIcon : styles.speakerIcon}`}
         onClick={handleSpeakerClick}
       ></div>
-      <div className={styles.icon} onClick={handleCopyClick}>
-        <div className={styles.copyIcon}></div>
+      <div onClick={handleCopyClick}>
+        <div className={isCopied ? styles.checkIcon : styles.copyIcon} />
       </div>
-      {messages[0].id === messageId && (
-        <div className={styles.icon} onClick={handleRefreshClick}>
-          <div className={styles.reanswerIcon}></div>
-        </div>
-      )}
+      <div className={styles.icon} onClick={handleReanswerClick}>
+        <div className={styles.reanswerIcon}></div>
+      </div>
       <div className={styles.icon} onClick={handleShareClick}>
         <div className={styles.shareIcon}></div>
       </div>
+      {showToast && <div className={styles.toast}>답변이 복사되었습니다.</div>}
     </div>
   );
 };
