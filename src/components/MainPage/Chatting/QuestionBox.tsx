@@ -62,10 +62,20 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     setIsListening(true);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (inputText.trim()) {
+        onSendMessage(inputText.trim());
+        setInputText('');
+      }
+    }
+  };
+
   const handleSendClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputText.trim()) {
-      onSendMessage(inputText.replace(/\n/g, '<br />')); // 줄바꿈을 <br />로 변환
+      onSendMessage(inputText.trim());
       setInputText('');
     }
   };
@@ -123,8 +133,9 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
             placeholder="질문해 보세요!"
             value={inputText}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             rows={1}
-            style={{ minHeight: '38px', maxHeight: '150px' }} // 최소 및 최대 높이 설정
+            style={{ minHeight: '38px', maxHeight: '150px' }}
           />
         </div>
         <div className={styles.voiceIcon} onClick={handleVoiceInput}></div>
