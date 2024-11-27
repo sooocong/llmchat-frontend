@@ -49,7 +49,7 @@
   margin: 0 auto;
   margin-bottom: 10px;
   padding: var(--spacing-base) var(--spacing-sm);
-  border: 1px solid var(--color-chat-box);
+  border: 1px solid var(--color-normal-blue);
   border-radius: 15px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -58,8 +58,8 @@
 }
 
 .answerIcon {
-  width: 55px;
-  height: 37px;
+  width: 80px;
+  height: 80px;
   background-image: url('/src/assets/answer.svg');
   background-size: cover;
   display: inline-block;
@@ -88,7 +88,7 @@
 }
 .highlight {
   font-weight: 800;
-  color: #003da5;
+  color: var(--color-normal-blue);
 }
 
 /* 커스텀 스크롤바 스타일링 제거 */
