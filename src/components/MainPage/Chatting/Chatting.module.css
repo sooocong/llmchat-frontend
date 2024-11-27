@@ -45,7 +45,7 @@
 
 .inputWrapper {
   width: 80%;
-  margin-left: 60px;
+  margin-left: 10px;
   margin-right: 100px;
   display: flex;
   align-items: center;
@@ -107,7 +107,7 @@
 
 .centerBox {
   flex-grow: 1;
-  padding: 0 var(--spacing-lg) var(--spacing-sm) 0;
+  padding: 0 var(--spacing-lg) var(--spacing-lg) 0;
   line-height: 1.7; /* 행 간 간격 조절 */
   word-break: break-all; /* 긴 단어 줄바꿈 */
   white-space: normal; /* 줄바꿈 허용 */
@@ -180,8 +180,8 @@
 }
 
 .speakerIcon {
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   margin-right: 15px;
   background-image: url('/src/assets/speaker.svg');
   background-size: contain;
@@ -192,8 +192,8 @@
 }
 
 .speakStopIcon {
-  width: 23px;
-  height: 23px;
+  width: 24px;
+  height: 24px;
   margin-right: 15px;
   background-image: url('/src/assets/speakStop.svg');
   background-size: contain;
@@ -209,8 +209,8 @@
 }
 
 .copyIcon {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   margin-right: 15px;
   background-image: url('/src/assets/copy.svg');
   background-size: contain;
@@ -221,8 +221,8 @@
 }
 
 .checkIcon {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   margin-right: 15px;
   background-image: url('/src/assets/check.svg');
   background-size: contain;
@@ -233,8 +233,8 @@
 }
 
 .reanswerIcon {
-  width: 25px;
-  height: 25px;
+  width: 23px;
+  height: 23px;
   margin-right: 15px;
   background-image: url('/src/assets/reanswer.svg');
   background-size: contain;
@@ -245,8 +245,8 @@
 }
 
 .shareIcon {
-  width: 25px;
-  height: 25px;
+  width: 23px;
+  height: 23px;
   margin-right: 0px;
   background-image: url('/src/assets/share.svg');
   background-size: contain;
@@ -257,8 +257,8 @@
 }
 
 .goodIcon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   margin-right: 10px;
   background-image: url('/src/assets/good.svg');
   background-size: contain;
@@ -269,8 +269,8 @@
 }
 
 .clickGoodIcon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   margin-right: 10px;
   background-image: url('/src/assets/clickGood.svg');
   background-size: contain;
@@ -281,8 +281,8 @@
 }
 
 .badIcon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   margin-right: 0px;
   background-image: url('/src/assets/bad.svg');
   background-size: contain;
@@ -293,24 +293,10 @@
 }
 
 .clickBadIcon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   margin-right: 0px;
   background-image: url('/src/assets/clickBad.svg');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.fileIcon {
-  position: absolute;
-  left: 20px;
-  bottom: 15px;
-  width: 40px;
-  height: 33px;
-  background-image: url('/src/assets/file.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -326,8 +312,8 @@
 
 .voiceIcon {
   right: 60px;
-  width: 38px;
-  height: 33px;
+  width: 30px;
+  height: 30px;
   background-image: url('/src/assets/voice.svg');
   background-size: contain;
   background-position: center;
@@ -338,8 +324,8 @@
 
 .sendIcon {
   right: 20px;
-  width: 35px;
-  height: 36px;
+  width: 33px;
+  height: 33px;
   border: none;
   background-color: transparent;
   background-image: url('/src/assets/send.svg');
@@ -403,7 +389,7 @@
 
 .toast {
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.8);
@@ -417,7 +403,7 @@
 @keyframes fadeInOut {
   0% {
     opacity: 0;
-    transform: translate(-50%, 20px);
+    transform: translate(-50%, -20px);
   }
   15% {
     opacity: 1;
