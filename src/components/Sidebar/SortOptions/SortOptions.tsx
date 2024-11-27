@@ -38,7 +38,7 @@ function SortOptions({ cb }: ISortOptions) {
               selectSort('desc');
             }}
           >
-            최근순
+            최신순
           </li>
           <li
             className={styles.optionItem}

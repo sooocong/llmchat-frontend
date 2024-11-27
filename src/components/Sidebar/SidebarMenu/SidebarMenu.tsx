@@ -8,6 +8,7 @@ import { useThreads } from '../../../hooks';
 import { ReactComponent as LeftIcon } from '../../../assets/left-arrow-button.svg';
 import { ReactComponent as CreateIcon } from '../../../assets/create-button.svg';
 import { useNavigate } from 'react-router-dom';
+
 interface ISidebarMenu {
   isSidebarVisible: boolean;
   onClose: () => void;
@@ -32,11 +33,14 @@ function SidebarMenu({
       className={`${styles.container} ${isSidebarVisible ? styles.visible : styles.hidden}`}
     >
       <div className={styles.buttonList}>
+        <button
+          className={`${styles.IconButton} ${styles.createButton}`}
+          onClick={handleCreateClick}
+        >
+          <CreateIcon width="100px" />
+        </button>
         <button className={styles.IconButton} onClick={onClose}>
           <LeftIcon />
-        </button>
-        <button className={styles.IconButton} onClick={handleCreateClick}>
-          <CreateIcon />
         </button>
       </div>
       <SearchBar />
