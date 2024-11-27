@@ -45,7 +45,11 @@
 
 .inputWrapper {
   width: 80%;
+<<<<<<< Updated upstream
   margin-left: 10px;
+=======
+  margin-left: 60px;
+>>>>>>> Stashed changes
   margin-right: 100px;
   display: flex;
   align-items: center;
