@@ -62,21 +62,32 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     setIsListening(true);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      if (inputText.trim()) {
-        onSendMessage(inputText.trim());
-        setInputText('');
-      }
+  const sendMessage = () => {
+    if (inputText.trim()) {
+      onSendMessage(inputText);
+      setInputText('');
     }
   };
 
-  const handleSendClick = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputText.trim()) {
-      onSendMessage(inputText.trim());
-      setInputText('');
+    sendMessage();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.nativeEvent.isComposing) {
+      return; // 한글 조합 중이면 아무 동작도 하지 않음
+    }
+
+    if (e.key === 'Enter') {
+      if (e.shiftKey) {
+        // Shift + Enter: 줄바꿈
+        return;
+      } else {
+        // Enter: 메시지 전송
+        e.preventDefault();
+        sendMessage();
+      }
     }
   };
 
@@ -89,7 +100,6 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
       const pasteText = event.clipboardData?.getData('text') || '';
       setInputText((prevText) => prevText + pasteText);
 
-      // 상태를 업데이트 후 handleChange 호출
       if (textareaRef.current) {
         handleChange({
           target: textareaRef.current,
@@ -112,10 +122,10 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     if (textareaRef.current && chatInputBoxRef.current) {
       textareaRef.current.style.height = 'auto';
       const scrollHeight = textareaRef.current.scrollHeight;
-      const maxHeight = 150; // 최대 높이 150px
+      const maxHeight = 150;
       const newHeight = Math.min(scrollHeight, maxHeight);
       textareaRef.current.style.height = `${newHeight}px`;
-      chatInputBoxRef.current.style.height = `${newHeight + 22}px`; // padding 추가
+      chatInputBoxRef.current.style.height = `${newHeight + 22}px`;
     }
   }, [inputText]);
 
@@ -123,7 +133,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     <>
       <form
         className={styles.chatInputBox}
-        onSubmit={handleSendClick}
+        onSubmit={handleSendMessage}
         ref={chatInputBoxRef}
       >
         <div className={styles.inputWrapper}>

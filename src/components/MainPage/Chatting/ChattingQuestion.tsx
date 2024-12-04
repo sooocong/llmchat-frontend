@@ -10,6 +10,10 @@ interface ChattingQuestionProps {
   message: string;
 }
 
+const escapeMarkdownSpecialCharacters = (text: string): string => {
+  return text.replace(/([*_`~|#{}[\]<>+=.!$%^&\-\\])/g, '\\$1');
+};
+
 const ChattingQuestion: React.FC<ChattingQuestionProps> = ({ message }) => {
   return (
     <div className={styles.questionBox}>
@@ -19,36 +23,16 @@ const ChattingQuestion: React.FC<ChattingQuestionProps> = ({ message }) => {
         </div>
         <div className={styles.rightBox}>
           <div className={styles.questionTextBox}>
-            <ReactMarkdown
-              rehypePlugins={[rehypeRaw]}
-              remarkPlugins={[remarkGfm]}
-              components={{
-                code({ node, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || '');
-                  return match ? (
-                    <SyntaxHighlighter
-                      style={vscDarkPlus}
-                      language={match[1]}
-                      PreTag="div"
-                    >
-                      {String(children).replace(/\n$/, '')}
-                    </SyntaxHighlighter>
-                  ) : (
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-                ol: ({ children }) => (
-                  <ol className={styles.list}>{children}</ol>
-                ),
-                ul: ({ children }) => (
-                  <ul className={styles.list}>{children}</ul>
-                ),
+            {/* ReactMarkdown 대신 일반 텍스트로 표시 */}
+            <pre
+              style={{
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                fontFamily: 'inherit',
               }}
             >
               {message}
-            </ReactMarkdown>
+            </pre>
           </div>
         </div>
       </div>
