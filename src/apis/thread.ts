@@ -80,7 +80,7 @@ export class ThreadAPI {
     threadId: number,
     page: number,
     size = this.QUERY_PER_PAGE,
-    sort: SortType = 'desc',
+    sort: SortType = 'desc'
   ): Promise<IMessage[]> {
     const { data } = await axiosInstance.get(
       `${this.PATH_ISSUES}/${threadId}/message`,
@@ -171,6 +171,19 @@ export class ThreadAPI {
   static async deleteBookmark(messageId: number): Promise<void> {
     await axiosInstance.delete(`/bookmark/${messageId}`);
   }
+
+  // 문서 등록
+  static async createDocument(
+    content: string,
+    securityLevel: 'LOW' | 'MID' | 'HIGH'
+  ): Promise<IDocument> {
+    const { data } = await axiosInstance.post('/document', {
+      content,
+      securityLevel,
+    });
+
+    return data;
+  }
 }
 
 interface IBookmark {
@@ -179,4 +192,13 @@ interface IBookmark {
   emoji: string;
   userMessage: string;
   assistantMessage: string;
+}
+
+// 문서 인터페이스 정의
+interface IDocument {
+  id: number;
+  content: string;
+  securityLevel: 'LOW' | 'MID' | 'HIGH';
+  createdAt: string;
+  updatedAt: string;
 }
