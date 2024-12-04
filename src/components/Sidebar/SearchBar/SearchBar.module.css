@@ -82,7 +82,7 @@
 }
 .highlight {
   font-weight: 800;
-  color: var(--color-normal-blue);
+  color: var(--color-deep-blue);
 }
 
 /* 커스텀 스크롤바 스타일링 */

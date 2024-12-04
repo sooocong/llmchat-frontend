@@ -307,26 +307,36 @@ export function ThreadContextProvider({
   // 메시지 전송
   const sendMessage = async (message: string) => {
     try {
+      console.log('전송할 메시지:', message);
+
       if (selectedThreadId === -1) {
-        // 스레드 선택 전
+        console.log('스레드가 선택되지 않음, 새 스레드 생성 중...');
         // 1. 쓰레드 생성
         const response = await ThreadAPI.createThread();
+        console.log('새 스레드 생성 완료:', response.id);
+
         // 2. 현재 스레드 변경
         setSelectedThreadId(response.id);
+        console.log('현재 스레드 ID 설정:', response.id);
+
         // 3. 메시지 보내기
         listenToMessegeSSE(response.id, message, response);
+        console.log('메시지 전송 완료:', message);
 
         if (sort === 'asc') {
           resetThread('desc');
           isFirstAnswer.current = false;
+          console.log('스레드 정렬 변경: desc');
         }
       } else {
+        console.log('기존 스레드에 메시지 전송:', selectedThreadId);
         isNewChatRef.current = false;
         // 메시지 보내기
         listenToMessegeSSE(selectedThreadId, message);
+        console.log('메시지 전송 완료:', message);
       }
     } catch (error) {
-      console.error(error);
+      console.error('메시지 전송 중 오류 발생:', error);
     }
   };
 
