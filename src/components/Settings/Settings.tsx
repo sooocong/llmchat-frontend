@@ -6,7 +6,10 @@ import settings_sound from '../../assets/settings_sound.png';
 import settings_personal from '../../assets/settings_personal.png';
 import settings_version from '../../assets/settings_version.png';
 import settings_select from '../../assets/settings_select.png';
+import settings_add from '../../assets/addSecurity.svg';
+import settings_addfile from '../../assets/addFile.svg';
 import axios from 'axios';
+import { ThreadAPI } from '../../apis/thread';
 
 function Settings({
   openSettings,
@@ -78,6 +81,11 @@ function Settings({
   ];
   const remainingLanguages = languages.filter((lang) => lang !== language);
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [securityLevel, setSecurityLevel] = useState('MID');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [documentContent, setDocumentContent] = useState<string>('');
+  const [showToast, setShowToast] = useState(false);
+
   const handleTab = (idx: React.SetStateAction<number>) => {
     setTabState(idx);
     setActiveModal(null);
@@ -226,179 +234,212 @@ function Settings({
     };
   }, [openSettings, closeSettings]);
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleSecurityLevel = (level: string) => {
+    setSecurityLevel(level);
+    setActiveModal(null);
+  };
+
+  const handleDocumentSubmit = async () => {
+    try {
+      const response = await ThreadAPI.createDocument(
+        documentContent,
+        securityLevel as 'LOW' | 'MID' | 'HIGH'
+      );
+      if (response) {
+        setDocumentContent('');
+        setSecurityLevel('MID');
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        closeSettings();
+      }
+    } catch (error) {
+      console.error('문서 등록 에러:', error);
+    }
+  };
+
   return (
-    <div className={openSettings ? styles.modal : styles.closeModal}>
-      <div className={styles.settings_modal} ref={modalRef}>
-        <div className={styles.settings_top}>
-          <img
-            className={styles.settings_icon}
-            src={settings_icon}
-            alt="settings"
-          />
-          <div className={styles.settings_title}>
-            <h1 className={styles.settings_title_txt}>설정</h1>
+    <>
+      <div className={openSettings ? styles.modal : styles.closeModal}>
+        <div className={styles.settings_modal} ref={modalRef}>
+          <div className={styles.settings_top}>
+            <img
+              className={styles.settings_icon}
+              src={settings_icon}
+              alt="settings"
+            />
+            <div className={styles.settings_title}>
+              <h1 className={styles.settings_title_txt}>설정</h1>
+            </div>
+            <button className={styles.btn_close} onClick={closeSettings}>
+              X
+            </button>
           </div>
-          <button className={styles.btn_close} onClick={closeSettings}>
-            X
-          </button>
-        </div>
-        <div className={styles.settings_detail}>
-          <div className={styles.settings_tab}>
-            <div
-              className={
-                tabState === 1
-                  ? styles.settings_tab_menu_active
-                  : styles.settings_tab_menu
-              }
-              onClick={() => handleTab(1)}
-            >
-              <img
-                className={styles.settings_basic}
-                src={settings_basic}
-                alt="basic"
-              />
-              <h1 className={styles.settings_tab_txt}>기본</h1>
+          <div className={styles.settings_detail}>
+            <div className={styles.settings_tab}>
+              <div
+                className={
+                  tabState === 1
+                    ? styles.settings_tab_menu_active
+                    : styles.settings_tab_menu
+                }
+                onClick={() => handleTab(1)}
+              >
+                <img
+                  className={styles.settings_basic}
+                  src={settings_basic}
+                  alt="basic"
+                />
+                <h1 className={styles.settings_tab_txt}>기본</h1>
+              </div>
+              <div
+                className={
+                  tabState === 2
+                    ? styles.settings_tab_menu_active
+                    : styles.settings_tab_menu
+                }
+                onClick={() => handleTab(2)}
+              >
+                <img
+                  className={styles.settings_basic}
+                  src={settings_sound}
+                  alt="basic"
+                />
+                <h1 className={styles.settings_tab_txt}>소리</h1>
+              </div>
+              <div
+                className={
+                  tabState === 3
+                    ? styles.settings_tab_menu_active
+                    : styles.settings_tab_menu
+                }
+                onClick={() => handleTab(3)}
+              >
+                <img
+                  className={styles.settings_basic}
+                  src={settings_personal}
+                  alt="basic"
+                />
+                <h1 className={styles.settings_tab_txt}>맞춤 설정</h1>
+              </div>
+              <div
+                className={
+                  tabState === 4
+                    ? styles.settings_tab_menu_active
+                    : styles.settings_tab_menu
+                }
+                onClick={() => handleTab(4)}
+              >
+                <img
+                  className={styles.settings_basic}
+                  src={settings_version}
+                  alt="basic"
+                />
+                <h1 className={styles.settings_tab_txt}>버전</h1>
+              </div>
+              <div
+                className={
+                  tabState === 5
+                    ? styles.settings_tab_menu_active
+                    : styles.settings_tab_menu
+                }
+                onClick={() => handleTab(5)}
+              >
+                <img
+                  className={styles.settings_basic}
+                  src={settings_add}
+                  alt="add security"
+                />
+                <h1 className={styles.settings_tab_txt}>보안 추가</h1>
+              </div>
             </div>
-            <div
-              className={
-                tabState === 2
-                  ? styles.settings_tab_menu_active
-                  : styles.settings_tab_menu
-              }
-              onClick={() => handleTab(2)}
-            >
-              <img
-                className={styles.settings_basic}
-                src={settings_sound}
-                alt="basic"
-              />
-              <h1 className={styles.settings_tab_txt}>소리</h1>
-            </div>
-            <div
-              className={
-                tabState === 3
-                  ? styles.settings_tab_menu_active
-                  : styles.settings_tab_menu
-              }
-              onClick={() => handleTab(3)}
-            >
-              <img
-                className={styles.settings_basic}
-                src={settings_personal}
-                alt="basic"
-              />
-              <h1 className={styles.settings_tab_txt}>맞춤 설정</h1>
-            </div>
-            <div
-              className={
-                tabState === 4
-                  ? styles.settings_tab_menu_active
-                  : styles.settings_tab_menu
-              }
-              onClick={() => handleTab(4)}
-            >
-              <img
-                className={styles.settings_basic}
-                src={settings_version}
-                alt="basic"
-              />
-              <h1 className={styles.settings_tab_txt}>버전</h1>
-            </div>
-          </div>
-          <div className={styles.settings_content}>
-            <div
-              className={
-                tabState === 1
-                  ? styles.settings_content_active
-                  : styles.settings_content_detail
-              }
-            >
-              <div className={styles.settings_option}>
-                <p>테마</p>
-                <button
-                  className={styles.btn_option}
-                  onClick={() =>
-                    setActiveModal(activeModal === 'theme' ? null : 'theme')
-                  }
-                >
-                  <span className={styles.selected_option}>
-                    {theme === 'LIGHT' ? '라이트 모드' : '다크 모드'}
-                  </span>
-                  <span className={styles.select_arrow}>
-                    <img
-                      className={styles.select_arrow_icon}
-                      src={settings_select}
-                      alt="arrow"
-                    />
-                  </span>
-                </button>
-                <div
-                  className={
-                    activeModal === 'theme'
-                      ? styles.settings_theme
-                      : styles.closeModal
-                  }
-                >
-                  <div>
-                    <span
-                      className={styles.option_box}
-                      onClick={() => {
-                        handleTheme('LIGHT');
-                      }}
-                    >
-                      라이트 모드
+            <div className={styles.settings_content}>
+              <div
+                className={
+                  tabState === 1
+                    ? styles.settings_content_active
+                    : styles.settings_content_detail
+                }
+              >
+                <div className={styles.settings_option}>
+                  <p>테마</p>
+                  <button
+                    className={styles.btn_option}
+                    onClick={() =>
+                      setActiveModal(activeModal === 'theme' ? null : 'theme')
+                    }
+                  >
+                    <span className={styles.selected_option}>
+                      {theme === 'LIGHT' ? '라이트 모드' : '다크 모드'}
                     </span>
-                    <span
-                      className={styles.option_box}
-                      onClick={() => {
-                        handleTheme('DARK');
-                      }}
-                    >
-                      다크 모드
+                    <span className={styles.select_arrow}>
+                      <img
+                        className={styles.select_arrow_icon}
+                        src={settings_select}
+                        alt="arrow"
+                      />
                     </span>
+                  </button>
+                  <div
+                    className={
+                      activeModal === 'theme'
+                        ? styles.settings_theme
+                        : styles.closeModal
+                    }
+                  >
+                    <div>
+                      <span
+                        className={styles.option_box}
+                        onClick={() => {
+                          handleTheme('LIGHT');
+                        }}
+                      >
+                        라이트 모드
+                      </span>
+                      <span
+                        className={styles.option_box}
+                        onClick={() => {
+                          handleTheme('DARK');
+                        }}
+                      >
+                        다크 모드
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={styles.settings_option}>
-                <p>언어</p>
-                <button
-                  className={styles.btn_option}
-                  onClick={() =>
-                    setActiveModal(
-                      activeModal === 'language' ? null : 'language'
-                    )
-                  }
-                >
-                  <span className={styles.selected_option}>{language}</span>
-                  <span className={styles.select_arrow}>
-                    <img
-                      className={styles.select_arrow_icon}
-                      src={settings_select}
-                      alt="arrow"
-                    />
-                  </span>
-                </button>
-                <div
-                  className={
-                    activeModal === 'language'
-                      ? styles.settings_language
-                      : styles.closeModal
-                  }
-                >
-                  <div className={styles.selected_language}>
-                    <span
-                      className={styles.option_box}
-                      onClick={() => {
-                        handleLanguage(language);
-                      }}
-                    >
-                      {language}
+                <div className={styles.settings_option}>
+                  <p>언어</p>
+                  <button
+                    className={styles.btn_option}
+                    onClick={() =>
+                      setActiveModal(
+                        activeModal === 'language' ? null : 'language'
+                      )
+                    }
+                  >
+                    <span className={styles.selected_option}>{language}</span>
+                    <span className={styles.select_arrow}>
+                      <img
+                        className={styles.select_arrow_icon}
+                        src={settings_select}
+                        alt="arrow"
+                      />
                     </span>
-                  </div>
-                  <div className={styles.language_option}>
-                    {remainingLanguages.map((language, index) => (
+                  </button>
+                  <div
+                    className={
+                      activeModal === 'language'
+                        ? styles.settings_language
+                        : styles.closeModal
+                    }
+                  >
+                    <div className={styles.selected_language}>
                       <span
-                        key={index}
                         className={styles.option_box}
                         onClick={() => {
                           handleLanguage(language);
@@ -406,200 +447,313 @@ function Settings({
                       >
                         {language}
                       </span>
-                    ))}
+                    </div>
+                    <div className={styles.language_option}>
+                      {remainingLanguages.map((language, index) => (
+                        <span
+                          key={index}
+                          className={styles.option_box}
+                          onClick={() => {
+                            handleLanguage(language);
+                          }}
+                        >
+                          {language}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.settings_option}>
+                  <p>모든 채팅 삭제하기</p>
+                  <button className={styles.btn_delete} onClick={chkDelete}>
+                    모두 삭제
+                  </button>
+                </div>
+              </div>
+              <div
+                className={
+                  tabState === 2
+                    ? styles.settings_content_active
+                    : styles.settings_content_detail
+                }
+              >
+                <div className={styles.settings_option}>
+                  <p>음성</p>
+                  <button
+                    className={styles.btn_option}
+                    onClick={() =>
+                      setActiveModal(activeModal === 'voice' ? null : 'voice')
+                    }
+                  >
+                    <span className={styles.selected_option}>
+                      {voice === 'MALE' ? '남성' : '여성'}
+                    </span>
+                    <span className={styles.select_arrow}>
+                      <img
+                        className={styles.select_arrow_icon}
+                        src={settings_select}
+                        alt="arrow"
+                      />
+                    </span>
+                  </button>
+                  <div
+                    className={
+                      activeModal === 'voice'
+                        ? styles.settings_voice
+                        : styles.closeModal
+                    }
+                  >
+                    <div>
+                      <span
+                        className={styles.option_box}
+                        onClick={() => {
+                          handleVoice('MALE');
+                        }}
+                      >
+                        남성
+                      </span>
+                      <span
+                        className={styles.option_box}
+                        onClick={() => {
+                          handleVoice('FEMALE');
+                        }}
+                      >
+                        여성
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={styles.settings_option}>
-                <p>모든 채팅 삭제하기</p>
-                <button className={styles.btn_delete} onClick={chkDelete}>
-                  모두 삭제
-                </button>
-              </div>
-            </div>
-            <div
-              className={
-                tabState === 2
-                  ? styles.settings_content_active
-                  : styles.settings_content_detail
-              }
-            >
-              <div className={styles.settings_option}>
-                <p>음성</p>
-                <button
-                  className={styles.btn_option}
-                  onClick={() =>
-                    setActiveModal(activeModal === 'voice' ? null : 'voice')
-                  }
-                >
-                  <span className={styles.selected_option}>
-                    {voice === 'MALE' ? '남성' : '여성'}
-                  </span>
-                  <span className={styles.select_arrow}>
-                    <img
-                      className={styles.select_arrow_icon}
-                      src={settings_select}
-                      alt="arrow"
-                    />
-                  </span>
-                </button>
-                <div
-                  className={
-                    activeModal === 'voice'
-                      ? styles.settings_voice
-                      : styles.closeModal
-                  }
-                >
-                  <div>
-                    <span
-                      className={styles.option_box}
-                      onClick={() => {
-                        handleVoice('MALE');
-                      }}
-                    >
-                      남성
-                    </span>
-                    <span
-                      className={styles.option_box}
-                      onClick={() => {
-                        handleVoice('FEMALE');
-                      }}
-                    >
-                      여성
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                tabState === 3
-                  ? styles.settings_content_active
-                  : styles.settings_content_detail
-              }
-            >
-              <div>
+              <div
+                className={
+                  tabState === 3
+                    ? styles.settings_content_active
+                    : styles.settings_content_detail
+                }
+              >
                 <div>
-                  <p className={styles.settings_personal_txt}>
-                    Fasoo Chat이 더 나은 응답을 제공해 드리기 위해 사용자님에
-                    대해 알아두어야 할 것이
-                    <br />
-                    있다면 무엇인가요?
-                  </p>
+                  <div>
+                    <p className={styles.settings_personal_txt}>
+                      Fasoo Chat이 더 나은 응답을 제공해 드리기 위해 사용자님에
+                      대해 알아두어야 할 것이
+                      <br />
+                      있다면 무엇인가요?
+                    </p>
+                    <textarea
+                      className={styles.settings_personal_txtarea}
+                      onChange={(e) => {
+                        setUserMessageCnt(e.target.value.length);
+                        setUserMessage(e.target.value);
+                        window.localStorage.setItem('userMsg', e.target.value);
+                      }}
+                      maxLength={1500}
+                      value={userMessage}
+                    />
+
+                    <p className={styles.settings_personal_txtarea_cnt}>
+                      <span>{userMessageCnt}</span>
+                      <span>/1500</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className={styles.settings_personal_txt}>
+                      Fasoo Chat이 어떻게 응답했으면 하시나요?
+                    </p>
+                    <textarea
+                      className={styles.settings_personal_txtarea}
+                      onChange={(e) => {
+                        setModelMessageCnt(e.target.value.length);
+                        setModelMessage(e.target.value);
+                        window.localStorage.setItem('modelMsg', e.target.value);
+                      }}
+                      maxLength={1500}
+                      value={modelMessage}
+                    />
+                    <p className={styles.settings_personal_txtarea_cnt}>
+                      <span>{modelMessageCnt}</span>
+                      <span>/1500</span>
+                    </p>
+                  </div>
+                  <div className={styles.settings_personal_section}>
+                    <p className={styles.settings_personal_chk_txt}>
+                      새 채팅에 적용
+                    </p>
+                    <input
+                      type="checkbox"
+                      onChange={handleCheckboxChange}
+                      checked={messageEnabled}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  tabState === 4
+                    ? styles.settings_content_active
+                    : styles.settings_content_detail
+                }
+              >
+                <div className={styles.settings_option}>
+                  <p>버전</p>
+                  <button
+                    className={styles.btn_option}
+                    onClick={() =>
+                      setActiveModal(
+                        activeModal === 'version' ? null : 'version'
+                      )
+                    }
+                  >
+                    <span className={styles.selected_option}>{version}</span>
+                    <span className={styles.select_arrow}>
+                      <img
+                        className={styles.select_arrow_icon}
+                        src={settings_select}
+                        alt="arrow"
+                      />
+                    </span>
+                  </button>
+                  <div
+                    className={
+                      activeModal === 'version'
+                        ? styles.settings_version
+                        : styles.closeModal
+                    }
+                  >
+                    <span
+                      className={styles.version_option}
+                      onClick={() => {
+                        handleVersion('1.0');
+                      }}
+                    >
+                      <p>1.0</p>
+                      <p className={styles.version_desc_txt}>
+                        Fasoo Chat의 초기 버전이자 기본버전
+                        <br />
+                        일상적 대화에 특화
+                      </p>
+                    </span>
+                    <span
+                      className={styles.version_option}
+                      onClick={() => {
+                        handleVersion('1.5');
+                      }}
+                    >
+                      <p>1.5</p>
+                      <p className={styles.version_desc_txt}>
+                        Fasoo Chat의 베타버전
+                        <br />
+                        사용자 맞춤 서비스에 특화
+                      </p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  tabState === 5
+                    ? styles.settings_content_active
+                    : styles.settings_content_detail
+                }
+              >
+                <div className={styles.security_container}>
+                  <h2>보안 내용 추가</h2>
+
+                  {/* 파스트 입력란 추가 */}
                   <textarea
-                    className={styles.settings_personal_txtarea}
-                    onChange={(e) => {
-                      setUserMessageCnt(e.target.value.length);
-                      setUserMessage(e.target.value);
-                      window.localStorage.setItem('userMsg', e.target.value);
-                    }}
-                    maxLength={1500}
-                    value={userMessage}
+                    className={styles.security_textarea}
+                    value={documentContent}
+                    onChange={(e) => setDocumentContent(e.target.value)}
+                    placeholder="문서 내용을 입력하세요"
                   />
 
-                  <p className={styles.settings_personal_txtarea_cnt}>
-                    <span>{userMessageCnt}</span>
-                    <span>/1500</span>
-                  </p>
-                </div>
-                <div>
-                  <p className={styles.settings_personal_txt}>
-                    Fasoo Chat이 어떻게 응답했으면 하시나요?
-                  </p>
-                  <textarea
-                    className={styles.settings_personal_txtarea}
-                    onChange={(e) => {
-                      setModelMessageCnt(e.target.value.length);
-                      setModelMessage(e.target.value);
-                      window.localStorage.setItem('modelMsg', e.target.value);
-                    }}
-                    maxLength={1500}
-                    value={modelMessage}
-                  />
-                  <p className={styles.settings_personal_txtarea_cnt}>
-                    <span>{modelMessageCnt}</span>
-                    <span>/1500</span>
-                  </p>
-                </div>
-                <div className={styles.settings_personal_section}>
-                  <p className={styles.settings_personal_chk_txt}>
-                    새 채팅에 적용
-                  </p>
-                  <input
-                    type="checkbox"
-                    onChange={handleCheckboxChange}
-                    checked={messageEnabled}
-                  />
+                  {/* 파일 업로드 영역 */}
+                  <div className={styles.file_upload_area}>
+                    {selectedFile ? (
+                      <div className={styles.selected_file}>
+                        <span>{selectedFile.name}</span>
+                        <span>
+                          {(selectedFile.size / (1024 * 1024)).toFixed(1)}MB
+                        </span>
+                        <button onClick={() => setSelectedFile(null)}>X</button>
+                      </div>
+                    ) : (
+                      <div className={styles.upload_box}>
+                        <img
+                          src={settings_addfile}
+                          alt="upload"
+                          style={{ marginBottom: '12px' }}
+                        />
+                        <p style={{ color: '#8C8D8A' }}>
+                          추가 파일을 올려보세요.
+                        </p>
+                        <input
+                          type="file"
+                          onChange={handleFileUpload}
+                          accept=".pdf,.doc,.docx,.png,.jpg"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 보안 등급 선택 */}
+                  <div className={styles.security_level}>
+                    <p>보안등급</p>
+                    <button
+                      className={styles.btn_option}
+                      onClick={() =>
+                        setActiveModal(
+                          activeModal === 'security' ? null : 'security'
+                        )
+                      }
+                    >
+                      <span className={styles.selected_option}>
+                        {securityLevel}
+                      </span>
+                      <span className={styles.select_arrow}>
+                        <img
+                          className={styles.select_arrow_icon}
+                          src={settings_select}
+                          alt="arrow"
+                        />
+                      </span>
+                    </button>
+                    <div
+                      className={
+                        activeModal === 'security'
+                          ? styles.security_dropdown
+                          : styles.closeModal
+                      }
+                    >
+                      {['LOW', 'MID', 'HIGH'].map((level) => (
+                        <span
+                          key={level}
+                          className={styles.option_box}
+                          onClick={() => handleSecurityLevel(level)}
+                        >
+                          {level}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 저장 버튼 추가 */}
+                  <button
+                    className={styles.btn_save}
+                    onClick={handleDocumentSubmit}
+                    disabled={!documentContent || !securityLevel}
+                  >
+                    저장
+                  </button>
                 </div>
               </div>
             </div>
-            <div
-              className={
-                tabState === 4
-                  ? styles.settings_content_active
-                  : styles.settings_content_detail
-              }
-            >
-              <div className={styles.settings_option}>
-                <p>버전</p>
-                <button
-                  className={styles.btn_option}
-                  onClick={() =>
-                    setActiveModal(activeModal === 'version' ? null : 'version')
-                  }
-                >
-                  <span className={styles.selected_option}>{version}</span>
-                  <span className={styles.select_arrow}>
-                    <img
-                      className={styles.select_arrow_icon}
-                      src={settings_select}
-                      alt="arrow"
-                    />
-                  </span>
-                </button>
-                <div
-                  className={
-                    activeModal === 'version'
-                      ? styles.settings_version
-                      : styles.closeModal
-                  }
-                >
-                  <span
-                    className={styles.version_option}
-                    onClick={() => {
-                      handleVersion('1.0');
-                    }}
-                  >
-                    <p>1.0</p>
-                    <p className={styles.version_desc_txt}>
-                      Fasoo Chat의 초기 버전이자 기본버전
-                      <br />
-                      일상적 대화에 특화
-                    </p>
-                  </span>
-                  <span
-                    className={styles.version_option}
-                    onClick={() => {
-                      handleVersion('1.5');
-                    }}
-                  >
-                    <p>1.5</p>
-                    <p className={styles.version_desc_txt}>
-                      Fasoo Chat의 베타버전
-                      <br />
-                      사용자 맞춤 서비스에 특화
-                    </p>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <button className={styles.btn_save} onClick={saveSettings}>
-              저장
-            </button>
           </div>
         </div>
       </div>
-    </div>
+      <div className={`${styles.toast} ${showToast ? styles.toastShow : ''}`}>
+        문서가 성공적으로 등록되었습니다.
+      </div>
+    </>
   );
 }
 
