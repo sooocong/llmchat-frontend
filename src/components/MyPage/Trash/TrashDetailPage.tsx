@@ -2,19 +2,19 @@ import React, { useRef, useState } from 'react';
 import "./trashDetail.css";
 import SearchIcon from '../../../assets/icons/search-icon.png';
 import useTrashPagination from '../../../hooks/useTrashPagination';
-import Pagination from '../../Pagination';
+
 export default function TrashDetailPage() {
   const { list, setList, pagination, paginationInfo: { paginationLength, page } } = useTrashPagination();
 
   const selectAll = () => {
     setList((prevState) => {
-      return [...prevState.map(item => ({...item, selected:true}))];
+      return [...prevState.map(item => ({...item, selected: true}))];
     })
   }
 
   const handleClickItem = (item: any) => {
     setList((prevState) => {
-      return [...prevState.map(listItem => ({...listItem, selected:item?.no === listItem.no ? !listItem?.selected : listItem?.selected}))];
+      return [...prevState.map(listItem => ({...listItem, selected: item?.no === listItem.no ? !listItem?.selected : listItem?.selected}))];
     })
   }
 
@@ -70,7 +70,19 @@ export default function TrashDetailPage() {
             <button className={'trash-btn'}>복원</button>
           </div>
         </div>
-        <Pagination paginationLength={paginationLength} page={page} pagination={pagination} />
+
+        {/* 페이지네이션 버튼 추가 */}
+        <div className="pagination-container">
+          {[...Array(paginationLength)].map((_, index) => (
+            <button 
+              key={index}
+              className={`pagination-btn ${page === index + 1 ? 'active' : ''}`} 
+              onClick={() => pagination({ page: index + 1 })}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -80,7 +92,6 @@ function Search(pagination: any) {
   const interval = useRef<any>(null);
   const [search, setSearch] = useState('');
 
-  // 추후 api 에 검색 기능 연동할 때 적용하기 위해 미리 디바운스 기능 구현
   const handleSearch = (value: string) => {
     setSearch(value);
     if (interval.current) clearInterval(interval.current);
@@ -91,8 +102,15 @@ function Search(pagination: any) {
   }
 
   return <div className={'search-container'}>
-    <input type="text" className={'trash-search'} placeholder={'채팅 검색'} value={search}
-           onChange={(e) => handleSearch(e.target.value)} />
-    <button className={'search-button'}><img src={SearchIcon} alt="" /></button>
+    <input 
+      type="text" 
+      className={'trash-search'} 
+      placeholder={'채팅 검색'} 
+      value={search}
+      onChange={(e) => handleSearch(e.target.value)} 
+    />
+    <button className={'search-button'}>
+      <img src={SearchIcon} alt="" />
+    </button>
   </div>;
 }

@@ -1,34 +1,33 @@
-/* src/components/MyPage/ProfileHeader.module.css */
-@font-face {
-    font-family: 'NotoSansKR';
-    src: url('../fonts/NotoSansKR-VariableFont_wght.ttf') format('truetype');
-    font-weight: 300 900;
-}
-
+/*ProfileHeader.module.css*/
 .profileHeader {
+    width: 100%; /* 부모의 너비를 따라감 */
+    max-width: unset;
     display: flex;
     align-items: center;
-    background-color: #f1f1f1; /* 배경 색상 */
-    padding: 20px;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 20px 20px;
+    height: 100px;
+    justify-content: center; /* 중앙 정렬 */
+    gap: 20px; /* Logo와 userInfo 간의 간격 설정 */
 }
 
-.profileImage {
-    width: 80px; /* 이미지 크기 조정 */
-    height: 80px;
-    border-radius: 50%;
-    margin-right: 20px;
+.logo {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
 }
 
 .userInfo {
     display: flex;
     flex-direction: column;
-    font-family: 'NotoSansKR', sans-serif; /* 폰트 적용 */
+    font-family: 'NotoSansKR', sans-serif;
 }
 
 .username {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
-    color: #333; /* 글자 색상 */
+    color: #333;
 }
 
 .email {
