@@ -19,19 +19,16 @@ export default function BookmarkDetailPage() {
       const idx = prevState.findIndex(listItem => listItem.type === item.type);
       if (idx === -1) prevState;
 
-      prevState = prevState.map((listItem, itemIdx) => ({ ...listItem, active: itemIdx === idx ? !listItem?.active : false}))
+      prevState = prevState.map((listItem, itemIdx) => ({ ...listItem, active: itemIdx === idx ? !listItem?.active : false }))
       return [...prevState];
     })
   }
 
   const handleClickModifyName = (item: any) => {
     if (item?.modify) {
-      // api 전송...
-
       handleClickPopMenu(item);
     }
 
-    // 클라이언트에는 따로 변경사항 적용
     const value = modifyValue;
     setList((prevState) => {
       const idx = prevState.findIndex(listItem => listItem.type === item.type);
@@ -49,34 +46,29 @@ export default function BookmarkDetailPage() {
 
   const handleDeleteItem = async (item: any) => {
     showConfirmPop("정말 삭제 하시겠습니까?", async () => {
-      // api logic 추가하기..
-
-      // 클라이언트 반영
       setList((prevState) => ([...prevState].filter(listItem => listItem.type !== item.type)))
     })
   }
 
   const popMenuClose = () => {
     setList((prevState) => {
-      return [...prevState.map(item => ({...item, active:false}))];
+      return [...prevState.map(item => ({ ...item, active: false }))];
     })
   }
 
   const selectAll = () => {
     setList((prevState) => {
-      return [...prevState.map(item => ({...item, select:true}))];
+      return [...prevState.map(item => ({ ...item, select: true }))];
     })
   }
 
   const toggleItem = (item: any) => {
-    console.log('click...', item);
     setList((prevState) => {
-      return [...prevState.map(listItem => ({...listItem, select: item.type === listItem.type ? !listItem?.select : listItem?.select}))];
+      return [...prevState.map(listItem => ({ ...listItem, select: item.type === listItem.type ? !listItem?.select : listItem?.select }))];
     })
   }
 
-  const moveBookmarkInfo = (item:any) => {
-    console.log('item', item);
+  const moveBookmarkInfo = (item: any) => {
     navigate("/bookmark-info", {
       state: {
         uuid: item.uuid,
@@ -89,9 +81,7 @@ export default function BookmarkDetailPage() {
       <ul className={'bookmark-table w-full mb10'} ref={bookmarkListRef}>
         {list.map((item, idx) => {
           return (
-            <li key={item.type} className={'flex' + (item?.select ? ' select' : '')} onClick={(e:any) => {
-
-              console.log('e.target', e.target);
+            <li key={item.type} className={'flex' + (item?.select ? ' select' : '')} onClick={(e: any) => {
               !e.target.classList.contains("non-click") && toggleItem(item)
             }}>
               <div className={'flex flex-direction-column justify-content-center align-items-center'}>
@@ -107,11 +97,11 @@ export default function BookmarkDetailPage() {
               </div>
               <div className={'flex flex-direction-column justify-content-center align-items-center'}>
                 <button className={'non-click'} onClick={() => handleClickPopMenu(item)}>
-                  <img className={'non-click'} src={menuImg} alt="" />
+                  <img className={'non-click'} src={menuImg} alt="menu" />
                 </button>
                 <ul className={`pop-menu`} style={{ display: item?.active ? 'block' : 'none' }}>
                   <li className={'flex justify-content-start align-items-center'} onClick={() => handleClickModifyName(item)}>
-                    <p className={' non-click'}>이름 변경</p>
+                    <p className={'non-click'}>이름 변경</p>
                   </li>
                   <li className={'flex justify-content-start align-items-center'}>
                     <p className={'non-click'} onClick={() => handleDeleteItem(item)}>삭제</p>
@@ -122,10 +112,23 @@ export default function BookmarkDetailPage() {
           );
         })}
       </ul>
+
       <div className={'flex justify-content-end align-items-center'}>
         <button className={'all-selected-btn'} onClick={() => selectAll()}>전체 선택</button>
       </div>
-      <Pagination paginationLength={paginationLength} page={page} className={'mt30'} pagination={pagination} />
+
+      {/* Pagination 추가 */}
+      <div className="pagination-container">
+        {[...Array(paginationLength)].map((_, index) => (
+          <button 
+            key={index}
+            className={`pagination-btn ${page === index + 1 ? 'active' : ''}`} 
+            onClick={() => pagination({ page: index + 1 })}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

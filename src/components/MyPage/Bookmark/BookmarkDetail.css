@@ -1,83 +1,125 @@
+/* 전체 컨테이너 */
 .bookmark-cover {
+    max-width: 900px; 
+    width: 100%; 
     padding: 0 40px;
-}
-
-.bookmark-table > li {
-    height: 54px;
-    border: 2px solid #D9E3F6;
+    margin: 0 auto;
+  }
+  
+  /* 표 스타일 */
+  .bookmark-table {
+    width: 100%; 
+    max-width: 900px; 
+    border-collapse: collapse; 
+  }
+  
+  .bookmark-table > li {
+    display: flex;
+    height: 40px; 
+    border: 1px solid #BCEFF5; 
     border-radius: 5px;
-}
-
-.bookmark-table > li.select,
-.pop-menu > li:hover {
-    background: #D9E3F6;
-}
-
-.bookmark-table > li > div:nth-child(1){
-    width: 5%;
-}
-.bookmark-table > li > div:nth-child(2){
-    flex: auto;
-}
-.bookmark-table > li > div:nth-child(3){
-    width: 6%;
-}
-
-.bookmark-table > li > div:nth-child(4){
-    width: 5%;
+    align-items: center; 
+    justify-content: space-between; 
+  }
+  
+  .bookmark-table > li > div:nth-child(1) {
+    width: 10%; 
+  }
+  
+  .bookmark-table > li > div:nth-child(2) {
+    flex: 1; 
+  }
+  
+  .bookmark-table > li > div:nth-child(3) {
+    width: 20%; 
+  }
+  
+  .bookmark-table > li > div:nth-child(4) {
+    width: 10%; 
     position: relative;
-}
-
-.bookmark-table > li > div:nth-child(4) button {
+  }
+  
+  .bookmark-table > li > div:nth-child(4) button {
     height: 25px;
     border: none;
     background: none;
     position: relative;
     cursor: pointer;
-}
-
-.bookmark-table > li > div:nth-child(4) button img {
+  }
+  
+  .bookmark-table > li > div:nth-child(4) button img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-.bookmark-table > li .modify-input {
-    width: 98%;
-    border: none;
-    background: none;
-    color: #888888;
-    font-size: 20px;
-    outline: none;
-    border-bottom: 1px solid #888;
-}
-
-.pop-menu  {
+  }
+  
+  .pop-menu {
     width: 96px;
     height: 71px;
     background: white;
     position: absolute;
-    border: 1px solid #D9E3F6;
+    border: 1px solid #BCEFF5;
     border-radius: 5px;
     left: 45px;
     top: 50%;
     transform: translateY(-15%);
-}
+    z-index: 1000; /* ✅ pop-menu의 z-index를 높임 */
+  }
 
-.pop-menu > li {
+  .pop-menu > li:hover {
+    background-color: #BCEFF5; /* 커서가 올라갔을 때 배경색 변경 */
+  }
+  
+  .pop-menu > li {
     height: 35.5px;
     font-size: 14px;
     padding-left: 10px;
     cursor: pointer;
-    transition: .2s;
-}
-
-.all-selected-btn {
+    transition: 0.2s;
+  }
+  
+  .all-selected-btn {
     width: 80px;
     height: 28px;
-    background: #003DA5;
+    background: #2fabcc;
     border: none;
-    border-radius: 15px;
+    border-radius: 5px;
     color: #fff;
     font-size: 13px;
     cursor: pointer;
-}
+  }
+  
+  .pagination-container {
+    display: flex; 
+    justify-content: center; 
+    margin-top: 20px;
+  }
+  
+  .pagination-btn {
+    width: 30px; 
+    height: 30px; 
+    margin: 0 5px; 
+    border: none; 
+    border-radius: 50%; 
+    font-size: 14px; 
+    font-weight: bold; 
+    color: #333; 
+    background-color: #fff; 
+    cursor: pointer; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination-btn:hover {
+    background-color: #2fabcc; 
+    color: #fff; 
+  }
+  
+  .pagination-btn.active {
+    background-color: #2fabcc; 
+    color: #fff; 
+    font-weight: bold; 
+  }
+  

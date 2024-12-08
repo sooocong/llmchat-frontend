@@ -30,7 +30,7 @@
 
 /* 커스텀 스크롤바 스타일링 */
 .chatMessages::-webkit-scrollbar {
-  width: 8px; /* 스크롤바의 너비 */
+  width: 1px; /* 스크롤바의 너비 */
 }
 
 .chatMessages::-webkit-scrollbar-thumb {
