@@ -108,6 +108,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
     };
 
     if (textareaRef.current) {
+      console.log("!!!!!!!!!!!!!!!!!! 2");
       textareaRef.current.addEventListener('paste', handlePaste);
     }
 
