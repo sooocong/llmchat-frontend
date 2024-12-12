@@ -36,7 +36,7 @@ if (
   );
   if (isWebView) {
     // 웹뷰 환경에서는 speechSynthesis를 비활성화
-    (window as any).speechSynthesis = null;
+    // (window as any).speechSynthesis = null;
   }
 }
 

@@ -44,7 +44,6 @@ const MainLayout = ({ children }: IMainLayout) => {
     if (getIsSidebarOpen() === null) {
       setIsSidebarOpen(true);
     }
-    console.log("!!!!!!!!!!!!!!!!!! 6");
     mediaQuery.addEventListener('change', handleResize);
 
     return () => {
