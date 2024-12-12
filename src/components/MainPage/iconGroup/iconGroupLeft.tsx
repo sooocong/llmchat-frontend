@@ -23,6 +23,7 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
       setIsSpeaking(false);
     };
 
+    console.log("!!!!!!!!!!!!!!!!!! 3");
     speechSynthesis.addEventListener('end', handleSpeechEnd);
 
     return () => {

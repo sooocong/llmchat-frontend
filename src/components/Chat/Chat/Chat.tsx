@@ -67,6 +67,7 @@ const Chat = () => {
             const onAnimationEnd = () => {
               targetElement.classList.remove(style.blinkAnimation);
             };
+            console.log("!!!!!!!!!!!!!!!!!! 1");
             targetElement.addEventListener('animationend', onAnimationEnd);
 
             return () => {
