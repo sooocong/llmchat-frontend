@@ -17,9 +17,11 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [isSpeechSupported, setIsSpeechSupported] = useState(false);
 
   useEffect(() => {
-    // Check if Speech Synthesis API is available
+    setIsSpeechSupported(typeof window !== 'undefined' && !!window.speechSynthesis);
+
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       const handleSpeechEnd = () => {
         setIsSpeaking(false);
@@ -107,10 +109,12 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
   return (
     <>
       <div className={styles.iconGroupLeft}>
-        <div
-          className={`${styles.icon} ${isSpeaking ? styles.speakStopIcon : styles.speakerIcon}`}
-          onClick={handleSpeakerClick}
-        ></div>
+        {isSpeechSupported && (
+          <div
+            className={`${styles.icon} ${isSpeaking ? styles.speakStopIcon : styles.speakerIcon}`}
+            onClick={handleSpeakerClick}
+          ></div>
+        )}
         <div className={styles.icon} onClick={handleCopyClick}>
           <div
             className={`${isCopied ? styles.checkIcon : styles.copyIcon} ${isCopied ? styles.iconFadeIn : ''}`}
