@@ -228,7 +228,6 @@ function Settings({
       }
     }
 
-    console.log("!!!!!!!!!!!!!!!!!! 4");
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
