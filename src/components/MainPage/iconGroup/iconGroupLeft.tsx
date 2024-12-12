@@ -19,15 +19,20 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    const handleSpeechEnd = () => {
-      setIsSpeaking(false);
-    };
+    // Check if Speech Synthesis API is available
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      const handleSpeechEnd = () => {
+        setIsSpeaking(false);
+      };
 
-    speechSynthesis.addEventListener('end', handleSpeechEnd);
+      window.speechSynthesis.addEventListener('end', handleSpeechEnd);
 
-    return () => {
-      speechSynthesis.removeEventListener('end', handleSpeechEnd);
-    };
+      return () => {
+        window.speechSynthesis.removeEventListener('end', handleSpeechEnd);
+      };
+    } else {
+      console.warn('Speech Synthesis API is not supported in this environment');
+    }
   }, []);
 
   const findQuestionIndex = () =>
@@ -69,7 +74,9 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
 
     if (centerBoxRef.current) {
       if (isSpeaking) {
-        speechSynthesis.cancel();
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
         setIsSpeaking(false);
       } else {
         const textToSpeak = centerBoxRef.current.innerText;
@@ -89,7 +96,9 @@ const IconGroupLeft: React.FC<IconGroupLeftProps> = ({
         utterance.voice = selectedVoice;
 
         utterance.onend = () => setIsSpeaking(false); // 음성이 끝나면 상태 변경
-        speechSynthesis.speak(utterance);
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          window.speechSynthesis.speak(utterance);
+        }
         setIsSpeaking(true);
       }
     }
