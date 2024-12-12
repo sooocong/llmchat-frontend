@@ -43,7 +43,6 @@ const SharePage = () => {
         targetAnswerElement.classList.remove(styles.blinkAnimation);
       };
 
-      console.log("!!!!!!!!!!!!!!!!!! 7");
       targetAnswerElement.addEventListener('animationend', onAnimationEnd);
 
       return () => {
