@@ -51,8 +51,28 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ onSendMessage }) => {
         setIsListening(false);
       };
 
-      recognition.onerror = () => {
-        setIsListening(false);
+      recognition.onerror = (event) => {
+        const error = event as any;
+        console.error('Speech recognition error:', error.error, error.message);
+        
+        // iOS Safari에서 자주 발생하는 'not-allowed' 에러 처리
+        if (error.error === 'not-allowed') {
+          console.log('Attempting to request microphone permission...');
+          navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(() => {
+              console.log('Microphone permission granted');
+              // 권한을 받은 후 재시도
+              if (recognitionRef.current) {
+                recognitionRef.current.start();
+              }
+            })
+            .catch((err) => {
+              console.error('Failed to get microphone permission:', err);
+              setIsListening(false);
+            });
+        } else {
+          setIsListening(false);
+        }
       };
 
       recognitionRef.current = recognition;
