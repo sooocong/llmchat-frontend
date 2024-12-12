@@ -15,6 +15,7 @@ const useHideByClickOutside = (onClose: () => void, targetName: string) => {
       }
     }
 
+    console.log("!!!!!!!!!!!!!!!!!! 5");
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
