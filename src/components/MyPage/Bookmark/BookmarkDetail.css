@@ -21,6 +21,10 @@
     align-items: center; 
     justify-content: space-between; 
   }
+
+  .bookmark-table > li.select {
+    background: #CAF1EE;
+  }
   
   .bookmark-table > li > div:nth-child(1) {
     width: 10%; 
@@ -81,7 +85,7 @@
   .all-selected-btn {
     width: 80px;
     height: 28px;
-    background: #2fabcc;
+    background: #01A27A;
     border: none;
     border-radius: 5px;
     color: #fff;

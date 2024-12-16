@@ -1,24 +1,45 @@
-import React, { useRef, useState } from 'react';
-import "./trashDetail.css";
+import { useContext, useRef, useState } from 'react';
+import { ThreadAPI } from '../../../apis';
 import SearchIcon from '../../../assets/icons/search-icon.png';
 import useTrashPagination from '../../../hooks/useTrashPagination';
+import { PopupContext } from '../../../provider/popupProvider';
+import "./trashDetail.css";
 
 export default function TrashDetailPage() {
+  const { showConfirmPop, showCommonPop } = useContext(PopupContext);
   const { list, setList, pagination, paginationInfo: { paginationLength, page } } = useTrashPagination();
 
   const selectAll = () => {
     setList((prevState) => {
-      return [...prevState.map(item => ({...item, selected: true}))];
+      return [...prevState.map(item => ({ ...item, selected: true }))];
     })
   }
 
   const handleClickItem = (item: any) => {
     setList((prevState) => {
-      return [...prevState.map(listItem => ({...listItem, selected: item?.no === listItem.no ? !listItem?.selected : listItem?.selected}))];
+      return [...prevState.map(listItem => ({ ...listItem, selected: item?.id === listItem.id ? !listItem?.selected : listItem?.selected }))];
     })
   }
 
-  console.log('pagination', pagination, list);
+  const handleClickRestore = () => {
+    const targetList = list.filter(item => item.selected);
+    if (targetList.length === 0) return showCommonPop("복원할 채팅을 선택해주세요.", null);
+
+    showConfirmPop("복원하시겠습니까?", async () => {
+
+      for (const target of targetList) {
+        try {
+          const result = await ThreadAPI.restoreThread(target.id);
+          console.log('result', result);
+          window.location.reload();
+        } catch (error) {
+          console.log('error', error);
+        }
+      }
+
+      setList((prevState) => ([...prevState].filter(listItem => targetList.findIndex(item => item.id === listItem.id) === -1)));
+    });
+  }
 
   return (
     <div className={'trash-detail-container'}>
@@ -34,49 +55,49 @@ export default function TrashDetailPage() {
             <col width="10%" />
             <col width="10%" />
           </colgroup>
-          <thead>
-          <tr>
-            <th>번호</th>
-            <th>채팅 이름</th>
-            <th>채팅 생성일</th>
-            <th>채팅 삭제일</th>
-          </tr>
+          <thead className='bg-[#08A386]'>
+            <tr>
+              <th>번호</th>
+              <th>채팅 이름</th>
+              <th>채팅 생성일</th>
+              <th>채팅 삭제일</th>
+            </tr>
           </thead>
           <tbody>
-          {list.map((item) => {
-            return (
-              <tr key={item.no} className={item?.selected ? 'selected' : ''} onClick={(e) => handleClickItem(item)}>
-                <td>
-                  <p>{item.no}</p>
-                </td>
-                <td>
-                  <p>{item.name}</p>
-                </td>
-                <td>
-                  <p>{item.createDate}</p>
-                </td>
-                <td>
-                  <p>{item.deleteDate}</p>
-                </td>
-              </tr>
-            );
-          })}
+            {list.map((item) => {
+              return (
+                <tr key={item.id} className={item?.selected ? 'selected' : ''} onClick={(e) => handleClickItem(item)}>
+                  <td>
+                    <p>{item.id}</p>
+                  </td>
+                  <td>
+                    <p>{item.chatName}</p>
+                  </td>
+                  <td>
+                    <p>{item.createdAt}</p>
+                  </td>
+                  <td>
+                    <p>{item.updatedAt}</p>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div className={'flex justify-content-between mb20'}>
           <div></div>
           <div className={'flex justify-content-center align-items-center'}>
             <button className={'trash-btn mr10'} onClick={() => selectAll()}>전체선택</button>
-            <button className={'trash-btn'}>복원</button>
+            <button className={'trash-btn'} onClick={() => handleClickRestore()}>복원</button>
           </div>
         </div>
 
         {/* 페이지네이션 버튼 추가 */}
         <div className="pagination-container">
           {[...Array(paginationLength)].map((_, index) => (
-            <button 
+            <button
               key={index}
-              className={`pagination-btn ${page === index + 1 ? 'active' : ''}`} 
+              className={`pagination-btn ${page === index + 1 ? 'active' : ''}`}
               onClick={() => pagination({ page: index + 1 })}
             >
               {index + 1}
@@ -88,26 +109,27 @@ export default function TrashDetailPage() {
   );
 }
 
-function Search(pagination: any) {
+function Search(props: any) {
+  const { pagination } = props;
   const interval = useRef<any>(null);
   const [search, setSearch] = useState('');
 
   const handleSearch = (value: string) => {
     setSearch(value);
-    if (interval.current) clearInterval(interval.current);
-    interval.current = setInterval(() => {
+    if (interval.current) clearTimeout(interval.current);
+    interval.current = setTimeout(() => {
       console.log('value~~', value);
-      pagination({ searchValue: value })
+      pagination && pagination({ searchValue: value })
     }, 500);
   }
 
   return <div className={'search-container'}>
-    <input 
-      type="text" 
-      className={'trash-search'} 
-      placeholder={'채팅 검색'} 
+    <input
+      type="text"
+      className={'trash-search'}
+      placeholder={'채팅 검색'}
       value={search}
-      onChange={(e) => handleSearch(e.target.value)} 
+      onChange={(e) => handleSearch(e.target.value)}
     />
     <button className={'search-button'}>
       <img src={SearchIcon} alt="" />

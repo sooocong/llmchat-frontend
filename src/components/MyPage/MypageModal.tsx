@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './MypageModal.css';
 import closeIcon from '../../assets/close2.svg'; // ✅ close2.svg 아이콘 추가
+import './MypageModal.css';
 
 interface ModalProps {
   isOpen: boolean;

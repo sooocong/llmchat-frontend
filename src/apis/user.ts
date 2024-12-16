@@ -13,6 +13,14 @@ const axiosInstance = axios.create({
   },
 });
 
+interface IMyInfo extends IUser {
+  password: string;
+  passwordCheck: string;
+  isSocialLogin: boolean;
+}
+
+export type { IMyInfo };
+
 axiosInstance.interceptors.request.use((request) => {
   const ACCESS_TOKEN = getAccessToken();
   if (ACCESS_TOKEN) request.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`;
@@ -32,17 +40,7 @@ export class UserAPI {
   }
 
   // 사용자 프로필 수정
-  static async editUserProfile(
-    password: string,
-    name: string,
-    mobileNumber: string,
-    email: string
-  ) {
-    await axiosInstance.post(`${this.PATH_ISSUES}/profile`, {
-      password,
-      name,
-      mobileNumber,
-      email,
-    });
+  static async editUserProfile(myInfo: IMyInfo) {
+    await axiosInstance.post(`${this.PATH_ISSUES}/profile`, myInfo);
   }
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { getAccessToken } from '../utils';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { getAccessToken } from '../utils';
 
 // withCredentials 전역 설정
 axios.defaults.withCredentials = true;
@@ -38,6 +38,14 @@ export class ThreadAPI {
 
     return data.content;
   }
+
+  static async restoreThread(threadId: any): Promise<IThread[]> {
+    const { data } = await axiosInstance.post(`${this.PATH_ISSUES}/${threadId}/restore`);
+
+    return data.content;
+  }
+
+
   // 쓰레드 검색
   static async getSearchedThreadList(query: string): Promise<ISearch[]> {
     const { data } = await axiosInstance.get(`${this.PATH_ISSUES}/search`, {
@@ -167,6 +175,20 @@ export class ThreadAPI {
     return data;
   }
 
+  //  채팅 휴지동 조회
+  static async paginationThreadDeleted(page: number, size: number, searchValue: string): Promise<IThreadResponse> {
+    const { data } = await axiosInstance.get(`/chat/thread/deleted?page=${page}&size=${size}&query=${searchValue}`);
+
+    return data;
+  }
+
+  // 북마크 조회
+  static async paginationBookmark(page: number, size: number): Promise<IBookmarkResponse> {
+    const { data } = await axiosInstance.get(`/bookmark?page=${page}&size=${size}`);
+
+    return data;
+  }
+
   // 북마크 삭제
   static async deleteBookmark(messageId: number): Promise<void> {
     await axiosInstance.delete(`/bookmark/${messageId}`);
@@ -192,6 +214,9 @@ interface IBookmark {
   emoji: string;
   userMessage: string;
   assistantMessage: string;
+  select?:any;
+  active?:any;
+  modify?: any;
 }
 
 // 문서 인터페이스 정의
@@ -202,3 +227,48 @@ interface IDocument {
   createdAt: string;
   updatedAt: string;
 }
+
+interface ISort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+interface IPageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: ISort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+interface IBookmarkResponse {
+  content: IBookmark[];
+  pageable: IPageable;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: ISort;
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+interface IThreadResponse {
+  content: IThread[];
+  pageable: IPageable;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: ISort;
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export type { IBookmark, IBookmarkResponse, IDocument, IThreadResponse };

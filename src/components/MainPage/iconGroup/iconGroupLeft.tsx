@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../Chatting/Chatting.module.css';
+import React, { useEffect, useState } from 'react';
 import { useThreads } from '../../../hooks';
+import styles from '../Chatting/Chatting.module.css';
 
 interface IconGroupLeftProps {
   centerBoxRef: React.RefObject<HTMLDivElement>;

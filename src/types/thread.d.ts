@@ -3,6 +3,9 @@ interface IThread {
   chatName: string;
   createdAt: string;
   updatedAt: string;
+  selected?:any;
+  active?:any;
+  modify?: any;
 }
 
 type SortType = 'asc' | 'desc';
