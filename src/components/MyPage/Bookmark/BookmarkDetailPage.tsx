@@ -1,10 +1,10 @@
-import React, { useContext, useRef, useState } from 'react';
-import useBookmarkPagination from '../../../hooks/useBookmarkPagination';
-import "./BookmarkDetail.css";
-import menuImg from '../../../assets/menu.png';
-import Pagination from '../../Pagination';
-import { PopupContext } from '../../../provider/popupProvider';
+import { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IBookmark, ThreadAPI } from '../../../apis';
+import menuImg from '../../../assets/menu.png';
+import useBookmarkPagination from '../../../hooks/useBookmarkPagination';
+import { PopupContext } from '../../../provider/popupProvider';
+import "./BookmarkDetail.css";
 
 export default function BookmarkDetailPage() {
   const { showConfirmPop } = useContext(PopupContext);
@@ -16,7 +16,7 @@ export default function BookmarkDetailPage() {
 
   const handleClickPopMenu = (item: any) => {
     setList((prevState) => {
-      const idx = prevState.findIndex(listItem => listItem.type === item.type);
+      const idx = prevState.findIndex(listItem => listItem.id === item.id);
       if (idx === -1) prevState;
 
       prevState = prevState.map((listItem, itemIdx) => ({ ...listItem, active: itemIdx === idx ? !listItem?.active : false }))
@@ -31,13 +31,13 @@ export default function BookmarkDetailPage() {
 
     const value = modifyValue;
     setList((prevState) => {
-      const idx = prevState.findIndex(listItem => listItem.type === item.type);
+      const idx = prevState.findIndex(listItem => listItem.id === item.id);
       if (idx === -1) prevState;
 
       prevState = prevState.map((listItem, itemIdx) => ({
         ...listItem,
         modify: itemIdx === idx ? !listItem?.modify : false,
-        name: itemIdx === idx && item?.modify ? value : listItem.name,
+        name: itemIdx === idx && item?.modify ? value : listItem.title,
       }))
       return [...prevState];
     })
@@ -45,8 +45,15 @@ export default function BookmarkDetailPage() {
   }
 
   const handleDeleteItem = async (item: any) => {
+    console.log('삭제...')
     showConfirmPop("정말 삭제 하시겠습니까?", async () => {
-      setList((prevState) => ([...prevState].filter(listItem => listItem.type !== item.type)))
+      try {
+          const result = await ThreadAPI.deleteBookmark(item.id);
+          console.log('result', result);
+      } catch(error) {
+        console.log('error', error);
+      }
+      setList((prevState) => ([...prevState].filter(listItem => listItem.id !== item.id)))
     })
   }
 
@@ -64,14 +71,14 @@ export default function BookmarkDetailPage() {
 
   const toggleItem = (item: any) => {
     setList((prevState) => {
-      return [...prevState.map(listItem => ({ ...listItem, select: item.type === listItem.type ? !listItem?.select : listItem?.select }))];
+      return [...prevState.map(listItem => ({ ...listItem, select: item.id === listItem.id ? !listItem?.select : listItem?.select }))];
     })
   }
 
-  const moveBookmarkInfo = (item: any) => {
+  const moveBookmarkInfo = (item: IBookmark) => {
     navigate("/bookmark-info", {
       state: {
-        uuid: item.uuid,
+        uuid: item.id,
       }
     })
   }
@@ -81,29 +88,29 @@ export default function BookmarkDetailPage() {
       <ul className={'bookmark-table w-full mb10'} ref={bookmarkListRef}>
         {list.map((item, idx) => {
           return (
-            <li key={item.type} className={'flex' + (item?.select ? ' select' : '')} onClick={(e: any) => {
+            <li key={item.id} className={'flex' + (item?.select ? ' select' : '')} onClick={(e: any) => {
               !e.target.classList.contains("non-click") && toggleItem(item)
             }}>
               <div className={'flex flex-direction-column justify-content-center align-items-center'}>
-                <p>{item.type}</p>
+                <p>{item.id}</p>
               </div>
               <div className={'flex flex-direction-column justify-content-center'}>
                 {item?.modify ?
                   <input type="text" className={'modify-input non-click'} value={modifyValue} onInput={(e: any) => setModifyValue(e.target.value)} placeholder={'새로운 이름을 입력하세요.'} />
-                  : <p className={'non-click'} onClick={() => moveBookmarkInfo(item)}>{item.name}</p>}
+                  : <p className={'non-click'} onClick={() => moveBookmarkInfo(item)}>{item.title}</p>}
               </div>
               <div className={'flex flex-direction-column justify-content-center align-items-center'}>
-                <p>{item.createDate}</p>
+                <p>생성일...</p>
               </div>
               <div className={'flex flex-direction-column justify-content-center align-items-center'}>
                 <button className={'non-click'} onClick={() => handleClickPopMenu(item)}>
                   <img className={'non-click'} src={menuImg} alt="menu" />
                 </button>
                 <ul className={`pop-menu`} style={{ display: item?.active ? 'block' : 'none' }}>
-                  <li className={'flex justify-content-start align-items-center'} onClick={() => handleClickModifyName(item)}>
+                  <li className={'non-click flex justify-content-start align-items-center'} onClick={() => handleClickModifyName(item)}>
                     <p className={'non-click'}>이름 변경</p>
                   </li>
-                  <li className={'flex justify-content-start align-items-center'}>
+                  <li className={'non-click flex justify-content-start align-items-center'}>
                     <p className={'non-click'} onClick={() => handleDeleteItem(item)}>삭제</p>
                   </li>
                 </ul>
