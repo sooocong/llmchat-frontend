@@ -1,4 +1,3 @@
-import React from 'react';
 import "./popup.css";
 interface IConfirmPop {
   message: string;
@@ -8,7 +7,7 @@ interface IConfirmPop {
 
 export type {
   IConfirmPop
-}
+};
 export default function ConfirmPoop(props: IConfirmPop) {
   const { message,callback, close } = props;
   return (
@@ -18,11 +17,11 @@ export default function ConfirmPoop(props: IConfirmPop) {
       </div>
       <div className={'btn-box w-full flex justify-content-end align-items-center'}>
         <div>
-          <button className={'cancel'} onClick={() => close()}>æ∆¥œø‰</button>
+          <button className={'cancel'} onClick={() => close()}>ÔøΩ∆¥œøÔøΩ</button>
           <button className={'submit'} onClick={() => {
             callback();
             close();
-          }}>øπ</button>
+          }}>ÌôïÏù∏</button>
         </div>
       </div>
     </div>

@@ -169,7 +169,7 @@
     font-family: 'Noto Sans KR';
     font-size: 18px;
     font-weight: 400;
-    margin-top: 120px;
+    margin-top: 60px;
 }
 
 .login_detail {
@@ -279,11 +279,11 @@
     color: white;
     width: 145px;
     height: 30px;
-    background-color: #003DA5;
     border: none;
     border-radius: 5px;
     margin-top: 30px;
     cursor: pointer;
+    background: linear-gradient(90deg, #2FABCC 0%, #02A27B 100%);
 }
 
 .btn_signup {

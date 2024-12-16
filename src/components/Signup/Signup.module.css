@@ -106,7 +106,27 @@
   font-weight: 600;
 }
 
-.signup_info1::after {
+/* signup_info1 복사 후 left만 수정  */
+.signup_info3 {
+  font-family: 'Noto Sans KR';
+  font-size: 13px;
+  position: absolute;
+  left: 0px;
+  font-weight: 600;
+}
+
+/* signup_info2 복사 후 left만 수정 */
+.signup_info4 {
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  position: absolute;
+  left: 0px;
+  font-weight: 600;
+}
+
+.signup_info1::after,
+.signup_info3::after
+{
   content: '*';
   color: #ff0000;
 }
@@ -133,11 +153,12 @@
 .btn_dup {
   width: 80px;
   height: 32px;
-  color: #003da5;
+  color: var(--color-normal-blue);
   background-color: white;
-  border: 1px solid #003da5;
+  border: 1px solid var(--color-normal-blue);
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .email_section {
@@ -167,7 +188,6 @@
 }
 
 .signup_email_select {
-  width: 93px;
   height: 32px;
   border: 1px solid rgba(76, 87, 188, 0.4);
   border-radius: 5px;
@@ -184,7 +204,7 @@
   font-family: 'Noto Sans KR';
   font-weight: 300;
   color: white;
-  background-color: #003da5;
+  background: linear-gradient(90deg, #2FABCC 0%, #02A27B 100%);
   border: none;
   border-radius: 5px;
   margin-top: 30px;

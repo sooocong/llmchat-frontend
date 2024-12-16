@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { ThreadContextProvider } from './context';
 import MyProfileProvider from './provider/myProfileProvider';
 import PopupProvider from './provider/popupProvider';
-import { ThreadContextProvider } from './context';
 
 function App() {
   useEffect(() => {

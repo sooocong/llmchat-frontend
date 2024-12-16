@@ -1,21 +1,20 @@
 //BookmarkDetaillnfo.tsx
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import "./BookmarkDetailInfo.css";
-import logo from "../../../assets/logo.png";
-import profile from "../../../assets/profile.png";
-import like from "../../../assets/icons/like.png";
-import noLike from "../../../assets/icons/no-like.png";
 import bookmarked from "../../../assets/icons/bookmarked.png";
-import messageCover from "../../../assets/icons/message-cover.png";
 import copy from "../../../assets/icons/copy.png";
+import like from "../../../assets/icons/like.png";
+import messageCover from "../../../assets/icons/message-cover.png";
+import noLike from "../../../assets/icons/no-like.png";
 import retry from "../../../assets/icons/retry.png";
-import searchIcon from "../../../assets/icons/search-icon.png";
 import share from "../../../assets/icons/share.png";
 import sound from "../../../assets/icons/sound.png";
 import threeMenu from "../../../assets/icons/three-menu.png";
+import logo from "../../../assets/logo.png";
+import profile from "../../../assets/profile.png";
 import { PopupContext } from '../../../provider/popupProvider';
+import "./BookmarkDetailInfo.css";
 
 interface IChatItem {
   uuid: string;

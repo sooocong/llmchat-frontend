@@ -2,17 +2,14 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as AerochatLogo } from '../../assets/aerochatLogo.svg';
-import desc_icon1 from '../../assets/desc_icon1.png';
-import desc_icon2 from '../../assets/desc_icon2.png';
-import desc_img1 from '../../assets/desc_img1.png';
-import desc_img2 from '../../assets/desc_img2.png';
 import google_icon from '../../assets/devicon_google.png';
 import kakao_icon from '../../assets/devicon_kakao.png';
 import naver_icon from '../../assets/devicon_naver.png';
+import loginLogo from '../../assets/logo/login_logo.png';
 import { removeAccessToken, setAccessToken } from '../../utils';
 import styles from './Login.module.css';
 
-function Login() {
+export const NewLoginPage = () => {
   const url = 'https://api.aero-chat.com';
   const googleUrl =
     `https://accounts.google.com/o/oauth2/auth?client_id=374896040124-3usn6g5to8tugcd0qdsi925klr0f2ac9.apps.googleusercontent.com&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/google/callback&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile`;
@@ -53,48 +50,26 @@ function Login() {
   };
 
   return (
-    <div className={styles.modal}>
-      <div className={styles.login_modal}>
-        <div className={styles.desc_container}>
-          <div className={styles.desc_title}>
-            <h1>FASOO</h1>
-          </div>
-          <div className={styles.desc_detail}>
-            <div className={styles.desc_first}>
-              <img src={desc_icon1} alt="chat" />
-              <h1>
-                다양한 기능과 사용자 중심의 편의성을 <strong>AI Chat</strong>
-                <br />
-                사용자 개인에게 최적화된 대화 경험을 해보세요!
-              </h1>
-            </div>
-            <div className={styles.desc_second}>
-              <img src={desc_icon2} alt="chat" />
-              <h1>
-                사용자 맞춤 솔루션 제공과 사용 편의성 극대화를
-                <br />
-                목표로 한 <strong>맥가이버형 AI Chat</strong>
-              </h1>
-            </div>
-          </div>
-          <div className={styles.desc_img_container}>
-            <div className={styles.desc_img1_container}>
-              <img className={styles.desc_img1} src={desc_img1} alt="desc1" />
-            </div>
-            <div className={styles.desc_img2_container}>
-              <img className={styles.desc_img2} src={desc_img2} alt="desc2" />
-            </div>
-          </div>
+    <div className="w-full h-[calc(100%-74px)] relative flex">
+      <div className="w-[50%] relative border-2 border-black flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute right-0 z-[-1] w-[1440px] h-[1440px] bg-gradient-to-b from-[10%] from-emerald to-emeraldBlue rounded-full"></div>
+        <div className="content flex flex-col items-center justify-center">
+          <img src={loginLogo} alt="login logo" />
+          <h3 className="text-white mt-5">AEROCAHT에 오신 걸 환영합니다. </h3>
         </div>
+      </div>
+      {/* form */}
+      <div className="flex-1 relative flex items-center justify-center">
         <div className={styles.login_container}>
           <div className={styles.login_title}>
-            <AerochatLogo className={styles.mobile_logo}/>
+            <AerochatLogo className={styles.mobile_logo} />
             <h1>로그인</h1>
           </div>
           <div className={styles.login_detail}>
             <div className={styles.login_input}>
               <input
-                className={loginFail ? styles.id_input_fail : styles.id_input}
+                className={`${loginFail ? styles.id_input_fail : styles.id_input} pl-[5px]`}
                 type="text"
                 placeholder="아이디"
                 onChange={(e) => setId(e.target.value)}
@@ -107,7 +82,7 @@ function Login() {
                 }
               />
               <input
-                className={loginFail ? styles.pw_input_fail : styles.pw_input}
+                className={`${loginFail ? styles.pw_input_fail : styles.pw_input} pl-[5px]`}
                 type="password"
                 placeholder="비밀번호"
                 onChange={(e) => setPw(e.target.value)}
@@ -175,6 +150,4 @@ function Login() {
       </div>
     </div>
   );
-}
-
-export default Login;
+};

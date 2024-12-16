@@ -1,11 +1,19 @@
-import React from 'react';
 
-import Login from '../../components/Login/Login';
+import { NewLoginPage } from '../../components/Login/NewLoginPage';
+import { NewHeader } from '../../components/common/NewHeader';
+
 
 const LoginPage = () => {
   return (
-    <Login />
+    // <Login />
+    <>
+      <NewHeader />
+      <NewLoginPage />
+    </>
   );
 };
 
+
+
 export { LoginPage };
+

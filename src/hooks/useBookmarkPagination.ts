@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { IBookmark, ThreadAPI } from '../apis';
 
 const TEMP_DATA = [
   { type: 1, name: '영상편집', createDate: '2023.12.28' },
@@ -10,12 +11,27 @@ const TEMP_DATA = [
 ];
 
 export default function useBookmarkPagination() {
-  const [list, setList] = useState<Array<any>>(TEMP_DATA);
+  const [list, setList] = useState<Array<IBookmark>>([]);
   const [paginationInfo, setPaginationInfo] = useState({
-    page: 1,
+    page: 0,
     pagePerLength: 5, 
     paginationLength: Math.ceil(TEMP_DATA.length / 5)
   });
+
+  useEffect(() => {
+    const getList = async () => {
+      console.log('paginationInfo', paginationInfo);
+      const result = await ThreadAPI.paginationBookmark(paginationInfo.page, paginationInfo.pagePerLength);
+      setList(result.content);
+      setPaginationInfo((prevState) => ({
+        ...prevState,
+        paginationLength: result.totalPages
+      }));
+    };
+    getList();
+  }, [paginationInfo.page, paginationInfo.pagePerLength]);
+
+  console.log("list", list)
 
   const pagination = (newPaginationInfo: any) => {
     setPaginationInfo((prevState) => ({
@@ -24,20 +40,8 @@ export default function useBookmarkPagination() {
     }));
   };
 
-  const currentPageList = list.slice(
-    (paginationInfo.page - 1) * paginationInfo.pagePerLength,
-    paginationInfo.page * paginationInfo.pagePerLength
-  );
-
-  useEffect(() => {
-    setPaginationInfo((prevState) => ({
-      ...prevState,
-      paginationLength: Math.ceil(list.length / prevState.pagePerLength)
-    }));
-  }, [list]);
-
   return {
-    list: currentPageList,
+    list,
     setList,
     pagination,
     paginationInfo
