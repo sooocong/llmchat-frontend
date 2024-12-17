@@ -1,3 +1,4 @@
+import React from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,12 +15,9 @@ import styles from './Login.module.css';
 
 function Login() {
   const url = 'https://api.aero-chat.com';
-  const googleUrl =
-    `https://accounts.google.com/o/oauth2/auth?client_id=374896040124-3usn6g5to8tugcd0qdsi925klr0f2ac9.apps.googleusercontent.com&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/google/callback&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile`;
-  const kakaoUrl =
-    `https://kauth.kakao.com/oauth/authorize?client_id=48a8238aa85a4e36a0ac39dd28172645&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/kakao/callback&response_type=code&scope=account_email%20profile_nickname%20profile_image`;
-  const naverUrl =
-    `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=qGH7qAsGi7uuHOcVOJq0&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/naver/callback&state=0`;
+  const googleUrl = `https://accounts.google.com/o/oauth2/auth?client_id=374896040124-3usn6g5to8tugcd0qdsi925klr0f2ac9.apps.googleusercontent.com&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/google/callback&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile`;
+  const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=48a8238aa85a4e36a0ac39dd28172645&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/kakao/callback&response_type=code&scope=account_email%20profile_nickname%20profile_image`;
+  const naverUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=qGH7qAsGi7uuHOcVOJq0&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/naver/callback&state=0`;
   const [loginFail, setLoginFail] = useState<boolean>(false);
   const [id, setId] = useState<string | null>('');
   const [pw, setPw] = useState<string | null>('');
@@ -88,7 +86,7 @@ function Login() {
         </div>
         <div className={styles.login_container}>
           <div className={styles.login_title}>
-            <AerochatLogo className={styles.mobile_logo}/>
+            <AerochatLogo className={styles.mobile_logo} />
             <h1>로그인</h1>
           </div>
           <div className={styles.login_detail}>
@@ -98,26 +96,22 @@ function Login() {
                 type="text"
                 placeholder="아이디"
                 onChange={(e) => setId(e.target.value)}
-                onKeyDown={
-                  (e) => {
-                    if (e.key === 'Enter') {
-                      login(e);
-                    }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    login(e);
                   }
-                }
+                }}
               />
               <input
                 className={loginFail ? styles.pw_input_fail : styles.pw_input}
                 type="password"
                 placeholder="비밀번호"
                 onChange={(e) => setPw(e.target.value)}
-                onKeyDown={
-                  (e) => {
-                    if (e.key === 'Enter') {
-                      login(e);
-                    }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    login(e);
                   }
-                }
+                }}
               />
               <p
                 className={

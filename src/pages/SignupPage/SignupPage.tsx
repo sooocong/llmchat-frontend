@@ -1,4 +1,4 @@
-
+import React from 'react';
 import NewSignUp from '../../components/Signup/NewSignUp';
 
 const SignupPage = () => {
@@ -9,4 +9,3 @@ const SignupPage = () => {
 };
 
 export { SignupPage };
-
