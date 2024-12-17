@@ -1,7 +1,6 @@
-
+import React from 'react';
 import { NewLoginPage } from '../../components/Login/NewLoginPage';
 import { NewHeader } from '../../components/common/NewHeader';
-
 
 const LoginPage = () => {
   return (
@@ -13,7 +12,4 @@ const LoginPage = () => {
   );
 };
 
-
-
 export { LoginPage };
-

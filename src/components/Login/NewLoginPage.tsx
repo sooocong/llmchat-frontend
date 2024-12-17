@@ -1,3 +1,4 @@
+import React from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,12 +12,9 @@ import styles from './Login.module.css';
 
 export const NewLoginPage = () => {
   const url = 'https://api.aero-chat.com';
-  const googleUrl =
-    `https://accounts.google.com/o/oauth2/auth?client_id=374896040124-3usn6g5to8tugcd0qdsi925klr0f2ac9.apps.googleusercontent.com&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/google/callback&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile`;
-  const kakaoUrl =
-    `https://kauth.kakao.com/oauth/authorize?client_id=48a8238aa85a4e36a0ac39dd28172645&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/kakao/callback&response_type=code&scope=account_email%20profile_nickname%20profile_image`;
-  const naverUrl =
-    `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=qGH7qAsGi7uuHOcVOJq0&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/naver/callback&state=0`;
+  const googleUrl = `https://accounts.google.com/o/oauth2/auth?client_id=374896040124-3usn6g5to8tugcd0qdsi925klr0f2ac9.apps.googleusercontent.com&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/google/callback&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile`;
+  const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=48a8238aa85a4e36a0ac39dd28172645&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/kakao/callback&response_type=code&scope=account_email%20profile_nickname%20profile_image`;
+  const naverUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=qGH7qAsGi7uuHOcVOJq0&redirect_uri=${process.env.REACT_APP_AEROCHAT_URL}/login/naver/callback&state=0`;
   const [loginFail, setLoginFail] = useState<boolean>(false);
   const [id, setId] = useState<string | null>('');
   const [pw, setPw] = useState<string | null>('');
@@ -52,8 +50,7 @@ export const NewLoginPage = () => {
   return (
     <div className="w-full h-[calc(100%-74px)] relative flex">
       <div className="w-[50%] relative border-2 border-black flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute right-0 z-[-1] w-[1440px] h-[1440px] bg-gradient-to-b from-[10%] from-emerald to-emeraldBlue rounded-full"></div>
+        <div className="absolute right-0 z-[-1] w-[1440px] h-[1440px] bg-gradient-to-b from-[10%] from-emerald to-emeraldBlue rounded-full"></div>
         <div className="content flex flex-col items-center justify-center">
           <img src={loginLogo} alt="login logo" />
           <h3 className="text-white mt-5">AEROCAHT에 오신 걸 환영합니다. </h3>
@@ -73,26 +70,22 @@ export const NewLoginPage = () => {
                 type="text"
                 placeholder="아이디"
                 onChange={(e) => setId(e.target.value)}
-                onKeyDown={
-                  (e) => {
-                    if (e.key === 'Enter') {
-                      login(e);
-                    }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    login(e);
                   }
-                }
+                }}
               />
               <input
                 className={`${loginFail ? styles.pw_input_fail : styles.pw_input} pl-[5px]`}
                 type="password"
                 placeholder="비밀번호"
                 onChange={(e) => setPw(e.target.value)}
-                onKeyDown={
-                  (e) => {
-                    if (e.key === 'Enter') {
-                      login(e);
-                    }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    login(e);
                   }
-                }
+                }}
               />
               <p
                 className={
