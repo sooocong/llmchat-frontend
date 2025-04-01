@@ -1,2 +1,3 @@
 # llmchat-frontend
-리액트 기반 LLM Chat 웹페이지!
+[Aerochat] 기업용 LLM Chat 웹 서비스
+# 졸업프로젝트
